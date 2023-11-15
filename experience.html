@@ -31,7 +31,7 @@
         left: 0;
         width: 100%;
         padding: 20px 100px;
-        background: transparent;
+        background: #fff;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -107,7 +107,7 @@
         position: absolute;
         width: 2px;
         height: 100%;
-        background-color: #696868;
+        background-color: #a1a1a1;
         left: calc(50% - 1px);
       }
       .timeline-item {
@@ -128,7 +128,7 @@
       .timeline-dot {
         height: 16px;
         width: 16px;
-        background-color: #eaa023;
+        background-color: #1380ac;
         position: absolute;
         left: calc(50% - 8px);
         border-radius: 50%;
@@ -136,7 +136,7 @@
       }
       .timeline-date {
         font-size: 18px;
-        color: #eaa023;
+        color: #1380ac;
         margin: 6px 0 15px;
       }
       .timeline-content {
@@ -157,65 +157,105 @@
         font-weight: 300;
         line-height: 22px;
       }
+      .timeline-content p {
+        text-align: justify;
+      }
 
       /*Breakpoints*/
       @media (max-width: 1770px) {
         .header {
-          padding: 1.3rem 5%;
-        }
-      }
-      @media (max-width: 1600px) {
-        .icons {
-          display: inline-flex;
-        }
-
-        #check:checked ~ .icons #menu-icon {
-          display: none;
-        }
-
-        .icons #close-icon {
-          display: none;
-        }
-
-        #check:checked ~ .icons #close-icon {
-          display: block;
-        }
-
-        .navbar {
-          position: absolute;
-          top: 100%;
+          position: fixed;
+          top: 0;
           left: 0;
-          height: 0;
           width: 100%;
-          overflow: hidden;
-          transition: 0.3s ease;
+          padding: 20px 100px;
+          background: #fff; /* Add a background color */
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          z-index: 10000;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow */
         }
+        @media (max-width: 1600px) {
+          .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 100px;
+            background: #fff; /* Add a background color */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10000;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow */
+          }
 
-        #check:checked ~ .navbar {
-          height: 17.7rem;
-        }
+          .icons {
+            display: inline-flex;
+          }
 
-        .navbar a {
-          display: block;
-          font-size: 1.1rem;
-          margin: 1.25rem 0;
-          text-align: center;
-          transform: translateY(-50px);
-          transition: 0.3s ease;
-        }
-        .timeline-items::before {
-          left: 7px;
-        }
-        .timeline-item:nth-child(odd) {
-          padding-right: 0;
-          text-align: left;
-        }
-        .timeline-item:nth-child(odd),
-        .timeline-item:nth-child(even) {
-          padding-left: 37px;
-        }
-        .timeline-dot {
-          left: 0;
+          .logo {
+            font-size: 20px;
+            color: #696868;
+            text-decoration: none;
+            font-weight: 400;
+          }
+
+          #check:checked ~ .icons #menu-icon {
+            display: none;
+          }
+
+          .icons #close-icon {
+            display: none;
+          }
+
+          #check:checked ~ .icons #close-icon {
+            display: block;
+          }
+
+          .navbar {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            height: 0;
+            width: 100%;
+            overflow: hidden;
+            transition: height 0.3s ease;
+            background-color: #ffffff;
+          }
+
+          #check:checked ~ .navbar {
+            height: auto;
+          }
+
+          .navbar a {
+            display: block;
+            font-size: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            transform: translateY(-50px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+          }
+
+          #check:checked ~ .navbar a {
+            opacity: 1; /* Show the items when the checkbox is checked */
+            transform: translateY(0);
+          }
+          .timeline-items::before {
+            left: 7px;
+          }
+          .timeline-item:nth-child(odd) {
+            padding-right: 0;
+            text-align: left;
+          }
+          .timeline-item:nth-child(odd),
+          .timeline-item:nth-child(even) {
+            padding-left: 37px;
+          }
+          .timeline-dot {
+            left: 0;
+          }
         }
       }
     </style>
@@ -254,78 +294,74 @@
       <div class="timeline-items">
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-date">July 2023</div>
+          <div class="timeline-date">July 2022 – Present</div>
           <div class="timeline-content">
-            <h3>CCBA Certification</h3>
+            <h3>Senior Business Analyst - Scrum Master</h3>
+            <h3 style="font-size: small">HSBC | Istanbul, Turkey</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              - Driving operational efficiency and ensuring compliance with
+              regulatory standards for EFT, SWIFT, money transfers and cheques
+              services.
+              <br />
+              - Eliciting and translating business requirements into actionable
+              project plans, maintaining alignment with industry best practices
+              outlined in the BABOK guide.
+              <br />
+              - Proactively automating test processes, resulting in a 70%
+              reduction in time spent on routine tasks and minimizing the risk
+              of incorrect input.
+              <br />
+              - Coordinating UAT with adherence to SDLC processes for on-time
+              releases resulting in a 30% decrease in post-deployment issues
+              over the last year.
+              <br />
+              - Fostering collaboration and optimizing Agile practices as a
+              Scrum Master.
             </p>
           </div>
         </div>
+
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-date">January 2023</div>
+          <div class="timeline-date">January 2022 – June 2022</div>
           <div class="timeline-content">
-            <h3>PSPO I Certification</h3>
+            <h3>Business Analyst</h3>
+            <h3 style="font-size: small">LF Global Tech | Istanbul, Turkey</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              - Conducted comprehensive requirement gathering sessions following
+              BABOK methodologies, ensuring a thorough understanding of business
+              needs and objectives.
+              <br />
+              - Delivered 95% stakeholder satisfaction while aligning projects
+              with business goals, user requirements, and tracking user
+              journeys.
+              <br />
+              - Played a key role in UI/UX and database design, resulted in a
+              user satisfaction rating of 90% and improvement of conversion
+              rates.
+              <br />
+              - Streamlined project timelines by 20% within a 3-month period by
+              introducing Agile methodology.
+              <br />
+              - Fostering collaboration and optimizing Agile practices as a
+              Scrum Master.
             </p>
           </div>
         </div>
+
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-date">December 2022</div>
+          <div class="timeline-date">August 2017 – December 2021</div>
           <div class="timeline-content">
-            <h3>PSPO I Certification</h3>
+            <h3>Internal Auditor - Data Specialist</h3>
+            <h3 style="font-size: small">Garanti BBVA | Istanbul, Turkey</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-date">2018</div>
-          <div class="timeline-content">
-            <h3>timeline item title</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-date">2019</div>
-          <div class="timeline-content">
-            <h3>timeline item title</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-date">2020</div>
-          <div class="timeline-content">
-            <h3>timeline item title</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-date">2021</div>
-          <div class="timeline-content">
-            <h3>timeline item title</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              - Conducted on-site branch audits, fraud investigations, agile
+              audits. Saved thirty man/days annually for the department by
+              creating and implementing macros.
+              <br />
+              - Developed remediation plans and guided departments in addressing
+              deficiencies uncovered during audits.
             </p>
           </div>
         </div>
