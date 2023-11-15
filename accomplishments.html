@@ -25,8 +25,6 @@
         min-height: 100vh;
       }
 
-
-
       .header {
         position: fixed;
         top: 0;
@@ -40,16 +38,15 @@
         z-index: 10000;
       }
 
-      .header::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        /*backdrop-filter: blur(50px);*/
-        z-index: -1;
-      }
+      /* .header::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+} */
 
       .logo {
         font-size: 32px;
@@ -160,6 +157,11 @@
         line-height: 22px;
       }
 
+      .timeline-content p {
+        color: #c8c8c8;
+        font-size: 16px;
+      }
+
       /*Breakpoints*/
       @media (max-width: 1770px) {
         .header {
@@ -178,18 +180,18 @@
       }
       @media (max-width: 1600px) {
         .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 100px;
-            background: #fff; /* Add a background color */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10000;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow */
-          }
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          padding: 20px 100px;
+          background: #fff; /* Add a background color */
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          z-index: 10000;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow */
+        }
 
         .icons {
           display: inline-flex;
@@ -220,7 +222,7 @@
           left: 0;
           height: 0;
           width: 100%;
-          overflow:hidden;
+          overflow: hidden;
           transition: height 0.3s ease;
           background-color: #ffffff;
         }
@@ -240,9 +242,9 @@
         }
 
         #check:checked ~ .navbar a {
-            opacity: 1; /* Show the items when the checkbox is checked */
-            transform: translateY(0);
-          }
+          opacity: 1; /* Show the items when the checkbox is checked */
+          transform: translateY(0);
+        }
         .timeline-items::before {
           left: 7px;
         }
@@ -257,7 +259,6 @@
         .timeline-dot {
           left: 0;
         }
-       
       }
     </style>
   </head>
@@ -265,7 +266,9 @@
   <body>
     <!--Navbar  -->
     <header class="header">
-      <a style="color:ffffff" href="index.html" class="logo">Alp Cagatay Batuhan</a>
+      <a style="color: ffffff" href="index.html" class="logo"
+        >Alp Cagatay Batuhan</a
+      >
 
       <input type="checkbox" id="check" />
       <label for="check" class="icons">
@@ -297,9 +300,20 @@
           <div class="timeline-dot"></div>
           <div class="timeline-date">July 2023</div>
           <div class="timeline-content">
-            <a href=""></a><h3 ><a style="color:white;text-decoration: none" href="Alp Cagatay Batuhan _ CCBA Certification.pdf" >CCBA®</a></h3>
+            <h3>
+              <a
+                href="Alp Cagatay Batuhan _ CCBA Certification.pdf"
+                style="color: #ffffff; text-decoration: none"
+                >CCBA®</a
+              >
+            </h3>
             <p>
-              Certification of Capability in Business Analysis®, <a style="color:white;text-decoration: none" href="https://www.iiba.org/">IIBA</a><br> 
+              Certification of Capability in Business Analysis®,
+              <a
+                style="color: #c8c8c8; text-decoration: none"
+                href="https://www.iiba.org/"
+                >IIBA</a
+              ><br />
               Expiry Date: Jul 2026
             </p>
           </div>
@@ -308,11 +322,21 @@
           <div class="timeline-dot"></div>
           <div class="timeline-date">January 2023</div>
           <div class="timeline-content">
-            <h3><a style="color:white;text-decoration: none" href="Alp Cagatay Batuhan - Professional Scrum Product Owner I.pdf">PSPO™ I</h3></a>
+            <h3>
+              <a
+                href="Alp Cagatay Batuhan - Professional Scrum Product Owner I.pdf"
+                style="color: #ffffff; text-decoration: none"
+                >PSPO™ I</a
+              >
+            </h3>
             <p>
               Professional Scrum Product Owner™ I,
-              <a style="color:white;text-decoration: none" href="https://www.scrum.org/">Scrum.org</a><br> No
-              Expiration Date
+              <a
+                style="color: #c8c8c8; text-decoration: none"
+                href="https://www.scrum.org/"
+                >Scrum.org</a
+              ><br />
+              No Expiration Date
             </p>
           </div>
         </div>
@@ -320,11 +344,21 @@
           <div class="timeline-dot"></div>
           <div class="timeline-date">December 2022</div>
           <div class="timeline-content">
-            <h3><a style="color:white;text-decoration: none" href="Alp Cagatay Batuhan - Professional Scrum Master I.pdf">PSM™ I</h3></a>
+            <h3>
+              <a
+                href="Alp Cagatay Batuhan - Professional Scrum Master I.pdf"
+                style="color: #ffffff; text-decoration: none"
+                >PSM™ I</a
+              >
+            </h3>
             <p>
               Professional Scrum Master™ I,
-              <a style="color:white;text-decoration: none" href="https://www.scrum.org/">Scrum.org</a><br> No
-              Expiration Date
+              <a
+                style="color: #c8c8c8; text-decoration: none"
+                href="https://www.scrum.org/"
+                >Scrum.org</a
+              ><br />
+              No Expiration Date
             </p>
           </div>
         </div>
@@ -333,7 +367,13 @@
           <div class="timeline-date">February 2022</div>
           <div class="timeline-content">
             <h3>M.Sc. in Software Engineering</h3>
-            <p>Bogazici University</p>
+            <p>
+              <a
+                style="color: #c8c8c8; text-decoration: none"
+                href="https://bogazici.edu.tr/en-US/Index"
+                >Bogazici University, Istanbul-Turkey</a
+              >
+            </p>
           </div>
         </div>
         <div class="timeline-item">
@@ -342,14 +382,16 @@
           <div class="timeline-content">
             <h3>B.A. in Economics</h3>
             <p>
-              TED University, Ankara, Turkey
+              <a
+                style="color: #c8c8c8; text-decoration: none"
+                href="https://www.tedu.edu.tr/en"
+                >TED University</a
+              >, Ankara - Turkey
               <br />
               Minor: Business Administration
             </p>
           </div>
         </div>
-        
-       
       </div>
     </section>
 
