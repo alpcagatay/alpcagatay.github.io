@@ -38,6 +38,8 @@
         z-index: 10000;
       }
 
+      
+
       /* .header::before {
   content: "";
   position: fixed;
@@ -47,8 +49,8 @@
   height: 100%;
   z-index: -1;
 } */
-
-      .logo {
+  
+.logo {
         font-size: 32px;
         color: #696868;
         text-decoration: none;
@@ -95,7 +97,7 @@
         padding: 100px 15px;
       }
       .timeline-items {
-        max-width: 1000px;
+        max-width: 1200px;
         margin: auto;
         display: flex;
         flex-wrap: wrap;
@@ -139,9 +141,10 @@
         margin: 6px 0 15px;
       }
       .timeline-content {
-        background-color: #696868;
+        background-color: transparent;
         padding: 30px;
         border-radius: 5px;
+        
       }
       .timeline-content h3 {
         font-size: 20px;
@@ -151,19 +154,42 @@
         font-weight: 500;
       }
       .timeline-content p {
-        color: #c8c8c8;
+        color: #353535;
         font-size: 16px;
         font-weight: 300;
         line-height: 22px;
       }
+      .icon {
+      display: inline-block;
+      vertical-align: middle;
+    }
 
-      .timeline-content p {
-        color: #c8c8c8;
-        font-size: 16px;
-      }
+    .icon img {
+      width: 75px;
+      margin-right: 10px;
+    }
+    .contentdetails {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .icon-even{
+      float: right; margin-right: 10px; vertical-align: middle
+    }
+    .icon-odd{
+      float: left; margin-left: 10px; vertical-align: middle
+    }
+     
 
       /*Breakpoints*/
       @media (max-width: 1770px) {
+        .icon img {
+      width: 75px;
+      margin-right: 10px;
+    }
+    .contentdetails {
+      display: inline-block;
+      vertical-align: middle;
+    }
         .header {
           position: fixed;
           top: 0;
@@ -179,6 +205,14 @@
         }
       }
       @media (max-width: 1600px) {
+        .icon img {
+      width: 75px;
+      margin-left: 10px;
+    }
+    .contentdetails {
+      display: inline-block;
+      vertical-align: middle;
+    }
         .header {
           position: fixed;
           top: 0;
@@ -259,6 +293,13 @@
         .timeline-dot {
           left: 0;
         }
+        .icon-even{
+      float: left; margin-left:10px;
+    }
+    .icon-odd{
+      float: left; margin-right:10px;
+    }
+    
       }
     </style>
   </head>
@@ -300,99 +341,140 @@
           <div class="timeline-dot"></div>
           <div class="timeline-date">July 2023</div>
           <div class="timeline-content">
-            <h3>
-              <a
-                href="Alp Cagatay Batuhan _ CCBA Certification.pdf"
-                style="color: #ffffff; text-decoration: none"
-                >CCBA®</a
-              >
-            </h3>
-            <p>
-              Certification of Capability in Business Analysis®,
-              <a
-                style="color: #c8c8c8; text-decoration: none"
-                href="https://www.iiba.org/"
-                >IIBA</a
-              ><br />
-              Expiry Date: Jul 2026
-            </p>
+            <div class="icon-odd">
+            <img
+              src="ccba badge.webp"
+              alt="ccba"
+              width="75px"
+              
+            />
+          </div>
+            <div class="contentdetails">
+              <h3>
+                <a
+                  href="Alp Cagatay Batuhan _ CCBA Certification.pdf"
+                  style="color: #353535; text-decoration: none; vertical-align: middle;"
+                  >CCBA®</a
+                >
+              </h3>
+              <p>
+                Certification of Capability in Business Analysis®,
+                <a
+                  style="color: #353535; text-decoration: none"
+                  href="https://www.iiba.org/"
+                  >IIBA</a
+                ><br />
+                Expiry Date: Jul 2026
+              </p>
+            </div>
           </div>
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
           <div class="timeline-date">January 2023</div>
           <div class="timeline-content">
-            <h3>
-              <a
-                href="Alp Cagatay Batuhan - Professional Scrum Product Owner I.pdf"
-                style="color: #ffffff; text-decoration: none"
-                >PSPO™ I</a
-              >
-            </h3>
-            <p>
-              Professional Scrum Product Owner™ I,
-              <a
-                style="color: #c8c8c8; text-decoration: none"
-                href="https://www.scrum.org/"
-                >Scrum.org</a
-              ><br />
-              No Expiration Date
-            </p>
+            <div class="icon-even"><img
+              src="pspoi.png"
+              alt="pspo"
+              width="75px"
+              
+            />
+          </div>
+            <div class="contentdetails">
+              <h3>
+                <a
+                  href="Alp Cagatay Batuhan - Professional Scrum Product Owner I.pdf"
+                  style="color: #353535; text-decoration: none"
+                  >PSPO™ I</a
+                >
+              </h3>
+              <p>
+                Professional Scrum Product Owner™ I,
+                <a
+                  style="color: #353535; text-decoration: none"
+                  href="https://www.scrum.org/"
+                  >Scrum.org</a
+                ><br />
+                No Expiration Date
+              </p>
+            </div>
           </div>
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
           <div class="timeline-date">December 2022</div>
           <div class="timeline-content">
-            <h3>
-              <a
-                href="Alp Cagatay Batuhan - Professional Scrum Master I.pdf"
-                style="color: #ffffff; text-decoration: none"
-                >PSM™ I</a
-              >
-            </h3>
-            <p>
-              Professional Scrum Master™ I,
-              <a
-                style="color: #c8c8c8; text-decoration: none"
-                href="https://www.scrum.org/"
-                >Scrum.org</a
-              ><br />
-              No Expiration Date
-            </p>
+            <div class="icon-odd"><img
+              src="psmi.png"
+              alt="psm"
+              width="75px"
+              
+            /></div>
+            <div class="contentdetails">
+              <h3>
+                <a
+                  href="Alp Cagatay Batuhan - Professional Scrum Master I.pdf"
+                  style="color: #353535; text-decoration: none"
+                  >PSM™ I</a
+                >
+              </h3>
+              <p>
+                Professional Scrum Master™ I,
+                <a
+                  style="color: #353535; text-decoration: none"
+                  href="https://www.scrum.org/"
+                  >Scrum.org</a
+                ><br />
+                No Expiration Date
+              </p>
+            </div>
           </div>
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
           <div class="timeline-date">February 2022</div>
           <div class="timeline-content">
-            <h3>M.Sc. in Software Engineering</h3>
-            <p>
-              <a
-                style="color: #c8c8c8; text-decoration: none"
-                href="https://bogazici.edu.tr/en-US/Index"
-                >Bogazici University, Istanbul-Turkey</a
-              >
-            </p>
+            <div class="icon-even"><img
+              src="boun.png"
+              alt="boun"
+              width="75px"
+              
+            /></div>
+            <div class="contentdetails">
+              <h3 style="color: #353535; text-decoration: none">M.Sc. in Software Engineering</h3>
+              <p>
+                <a
+                  style="color: #353535; text-decoration: none"
+                  href="https://bogazici.edu.tr/en-US/Index"
+                  >Bogazici University, Istanbul/Turkey</a
+                >
+              </p>
+            </div>
           </div>
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
           <div class="timeline-date">June 2017</div>
           <div class="timeline-content">
-            <h3>B.A. in Economics</h3>
-            <p>
-              <a
-                style="color: #c8c8c8; text-decoration: none"
-                href="https://www.tedu.edu.tr/en"
-                >TED University</a
-              >, Ankara - Turkey
-              <br />
-              Minor: Business Administration
-            </p>
+            <div class="icon-odd"><img
+              src="tedu.png"
+              alt="tedu"
+              width="75px"
+              
+            /></div>
+            <div class="contentdetails">
+              <h3 style="color: #353535; text-decoration: none">B.A in Economics (100% Scholarship)</h3>
+              <p>
+                <a
+                  style="color: #353535; text-decoration: none"
+                  href="https://bogazici.edu.tr/en-US/Index"
+                  >TED University, Ankara/Turkey</a
+                >
+              </p>
+              <p>Minor: Business Administration</p>
+            </div>
           </div>
         </div>
-      </div>
     </section>
 
     <!--Tab Animation  -->
