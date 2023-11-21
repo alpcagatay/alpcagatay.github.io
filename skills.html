@@ -11,7 +11,7 @@
       rel="stylesheet"
     />
 
-    <title>Skills</title>
+    <title>Accomplishments</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
@@ -23,6 +23,9 @@
       }
       body {
         min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .header {
@@ -37,99 +40,6 @@
         align-items: center;
         z-index: 10000;
       }
-
-      .skills-container {
-        min-height: 100vh;
-        padding: 100px 15px;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        grid-gap: 1rem;
-        font-size: 1.2rem;
-      }
-
-      .skill-box {
-        padding: 1rem;
-        cursor: pointer;
-      }
-
-      /* .skill-box:hover > .skill-title::after,
-      .skill-box:hover > .skill-title::before {
-        width: 35px;
-
-        .skill-box:hover .img {
-          transform: translateY(-100px);
-        }
-      } */
-      .skill-title {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 0.5rem;
-        margin-bottom: 0.5rem;
-        position: relative;
-      }
-
-      /* .skill-title h3 {
-        
-        margin: 0.5rem;
-      } */
-
-      /* .skill-title::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        right: 50%;
-        width: 35px;
-        height: 4px;
-        border-radius: 2px 0 0 2px;
-        background-color: #2ecc71;
-        transition: 0.5s;
-      } */
-
-      /* .skill-title::before {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 35px;
-        height: 4px;
-        border-radius: 0 2px 2px 0;
-        background-color: #2ecc71;
-        transition: 0.5s;
-      } */
-
-      .skill-icon {
-        width: 150px;
-        height: ;
-        z-index: 2;
-      }
-
-      .img {
-        width: 150px;
-        height: 150px;
-        position: relative;
-        border-radius: 45px;
-        background-color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: 0.5s;
-      }
-      /* .img::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 50%;
-        height: 90px;
-        background: rgba(100, 100, 100, 0.5);
-        border-radius: 45px;
-      } */
 
       /* .header::before {
   content: "";
@@ -184,17 +94,85 @@
         display: none;
       }
 
+      .icon {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .icon img {
+        width: 75px;
+        margin-right: 10px;
+      }
+      .contentdetails {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .skills {
+        padding: 50px 15px;
+        width: 100%;
+        max-width: 1200px;
+      }
+
+      .skill-name {
+        font-size: 18px;
+        font-weight: 500;
+        text-transform: uppercase;
+        margin: 20px 0;
+      }
+
+      .skill-bar {
+        height: 14px;
+        background: #696868;
+        border-radius: 3px;
+      }
+
+      .skill-per {
+        height: 14px;
+        background: #d13639;
+        border-radius: 3px;
+        position: relative;
+        animation: fillBars 2.5s 1;
+      }
+
+      .skill-per::before {
+        content: attr(per);
+        position: absolute;
+        padding: 4px 6px;
+        background: #f1f1f1;
+        border-radius: 4px;
+        font-size: 12px;
+        top: -35px;
+        right: 0;
+        transform: translateX(50%);
+      }
+
+      .skill-per::after {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: transparent;
+        top: -20px;
+        right: 0;
+        transform: translateX(50%) rotate(45deg);
+        border-radius: 2px;
+      }
+
+      @keyframes fillBars {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
       /*Breakpoints*/
 
       @media (max-width: 1100px) {
-        .skills-container {
-          grid-template-columns: repeat(2, 1fr);
-          padding: 2 rem 50 px;
-        }
-
         .icon img {
-          width: 100px;
-          height: 100px;
+          width: 75px;
           margin-left: 10px;
         }
         .contentdetails {
@@ -299,153 +277,31 @@
         <a href="tel://(+905072187375)" style="--i: 4" ;>+905072187375</a>
       </nav>
     </header>
-    <h1 style="color: #696868" ; font-size: 75px;>Skills</h1>
-    <div class="skills-container">
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="html.png" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
+
+    <!--Navbar End  -->
+
+    <div class="skills">
+      <div class="skill">
+        <div class="skill-name">HTML</div>
+        <div class="skill-bar">
+          <div class="skill-per" per="90%" style="max-width: 90%"></div>
         </div>
       </div>
 
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="css.png" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
+      <div class="skill">
+        <div class="skill-name">CSS</div>
+        <div class="skill-bar">
+          <div class="skill-per" per="70%" style="max-width: 70%"></div>
         </div>
       </div>
 
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="js.png" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
-        </div>
-      </div>
-
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="python.png" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
-        </div>
-      </div>
-
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="mssql.jpg" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
-        </div>
-      </div>
-
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="git.png" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
-        </div>
-      </div>
-
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="docker.png" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
-        </div>
-      </div>
-
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="jira.png" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
-        </div>
-      </div>
-
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="figma.png" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
-        </div>
-      </div>
-
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="ccba badge.webp" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
-        </div>
-      </div>
-
-      <div class="skill-box">
-        <div class="skill-title">
-          <div class="img">
-            <img src="ccba badge.webp" alt="" class="skill-icon" />
-          </div>
-          <!-- <h3>SKILL 1</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi,
-            quos?
-          </p> -->
+      <div class="skill">
+        <div class="skill-name">JavaScript</div>
+        <div class="skill-bar">
+          <div class="skill-per" per="60%" style="max-width: 60%"></div>
         </div>
       </div>
     </div>
-
-    <!--Navbar End  -->
 
     <!--Tab Animation  -->
     <script>
