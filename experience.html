@@ -127,20 +127,25 @@
       .timeline-dot {
         height: 32px;
         width: 32px;
-        background-color: #1380ac;
+        border: 3px solid #696868;
+        background-color: #ffffff;
         position: absolute;
         left: calc(50% - 16px);
         border-radius: 50%;
-        top: 10px;
+        top: 5px;
+        display: flex;
+    justify-content: center;
+    align-items: center; /* Center the content vertically */
       }
-      .timeline-dot img {
-        margin-top: 10px;
-        margin-left: 4px;
-        height: auto;
-        width: 24px;
-        
-      
-      }
+      .logo-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .timeline-dot img {
+    max-height: 12px;
+    max-width: 100%;
+  }
 
 
       .timeline-date {
@@ -238,6 +243,18 @@
           display: block;
         }
 
+
+        .timeline-dot {
+    left: 50%; /* Center horizontally */
+    transform: translateX(-25%); /* Adjust for centering */
+  }
+
+  
+
+
+
+
+
         .navbar {
           position: absolute;
           top: 100%;
@@ -327,7 +344,7 @@
     <section class="timeline-section">
       <div class="timeline-items">
         <div class="timeline-item">
-          <div class="timeline-dot"><img src="hsbc.png" alt="hsbc" style="height: 12px; display: block;"  ></div>
+          <div class="timeline-dot"><div class="logo-container"><img src="hsbc.png" alt="hsbc" style="width: 16px;"></div></div>
           <div class="timeline-date">July 2022 - Present</div>
           <div class="timeline-content">
             
@@ -357,7 +374,7 @@
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot"><div class="logo-container"><img src="lf.jpeg" alt="lf" style="width: 12px;" ></div></div>
           <div class="timeline-date">January 2022 - June 2022</div>
           <div class="timeline-content">
             
@@ -391,7 +408,7 @@
         </div>
         
         <div class="timeline-item">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot"><div class="logo-container"><img src="bbva.png" alt="bbva"></div></div>
           <div class="timeline-date">August 2017 - December 2021</div>
           <div class="timeline-content">
             
