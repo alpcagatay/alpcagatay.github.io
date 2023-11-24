@@ -126,15 +126,29 @@
       .timeline-item:nth-child(even) {
         padding-left: calc(50% + 30px);
       }
-      .timeline-dot {
-        height: 16px;
-        width: 16px;
-        background-color: #eaa023;
+   .timeline-dot {
+        height: 32px;
+        width: 32px;
+        border: 2px solid #eaa023;
+        background-color: #ffffff;
         position: absolute;
-        left: calc(50% - 8px);
+        left: calc(50% - 16px);
         border-radius: 50%;
-        top: 10px;
+        top: 5px;
+        display: flex;
+    justify-content: center;
+    align-items: center; /* Center the content vertically */
       }
+      .logo-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .timeline-dot img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+
       .timeline-date {
         font-size: 18px;
         color: #eaa023;
@@ -268,9 +282,15 @@
         .timeline-item:nth-child(even) {
           padding-left: 37px;
         }
-        .timeline-dot {
+              .timeline-dot {
+    left: 50%; /* Center horizontally */
+    transform: translateX(-25%); /* Adjust for centering */
+  }
+
+  .timeline-dot {
           left: 0;
         }
+
         .icon-even{
       float: left; margin-left:10px;
     }
@@ -318,17 +338,17 @@
     <section class="timeline-section">
       <div class="timeline-items">
         <div class="timeline-item">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot"><div class="logo-container"><img src="ccba badge.webp" alt="ccba" style="width: 20px;"></div></div>
           <div class="timeline-date">July 2023</div>
           <div class="timeline-content">
-            <div class="icon-odd">
+            <!-- <div class="icon-odd">
             <a href="Alp Cagatay Batuhan _ CCBA Certification.pdf"><img
               src="ccba badge.webp"
               alt="ccba"
               width="75px"
               
             /></a>
-          </div>
+          </div> -->
             <div class="contentdetails">
               <h3>
                 <a
@@ -350,17 +370,17 @@
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot"><div class="logo-container"><img src="pspoi.png" alt="pspoi" style="width: 16px;"></div></div>
           <div class="timeline-date">January 2023</div>
           <div class="timeline-content">
-            <div class="icon-even">
+            <!-- <div class="icon-even">
               <a href="Alp Cagatay Batuhan - Professional Scrum Product Owner I.pdf"><img
               src="pspoi.png"
               alt="pspo"
               width="75px"
               
             /></a>
-          </div>
+          </div> -->
             <div class="contentdetails">
               <h3>
                 <a
@@ -382,16 +402,16 @@
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot"><div class="logo-container"><img src="psmi.png" alt="psmi" style="width: 16px;"></div></div>
           <div class="timeline-date">December 2022</div>
           <div class="timeline-content">
-            <div class="icon-odd">
+            <!-- <div class="icon-odd">
               <a href="Alp Cagatay Batuhan - Professional Scrum Master I.pdf"><img
               src="psmi.png"
               alt="psm"
               width="75px"
               
-            /></a></div>
+            /></a></div> -->
             <div class="contentdetails">
               <h3>
                 <a
@@ -413,15 +433,15 @@
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot"><div class="logo-container"><img src="boun.png" alt="boun" style="width: 20px;"></div></div>
           <div class="timeline-date">February 2022</div>
           <div class="timeline-content">
-            <div class="icon-even"><img
+            <!-- <div class="icon-even"><img
               src="boun.png"
               alt="boun"
               width="75px"
               
-            /></div>
+            /></div> -->
             <div class="contentdetails">
               <h3 style="color: #353535; text-decoration: none">M.Sc. in Software Engineering</h3>
               <p>
@@ -435,15 +455,15 @@
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot"><div class="logo-container"><img src="tedu.png" alt="tedu" style="width: 20px;"></div></div>
           <div class="timeline-date">June 2017</div>
           <div class="timeline-content">
-            <div class="icon-odd"><img
+            <!-- <div class="icon-odd"><img
               src="tedu.png"
               alt="tedu"
               width="75px"
               
-            /></div>
+            /></div> -->
             <div class="contentdetails">
               <h3 style="color: #353535; text-decoration: none">B.A in Economics (100% Scholarship)</h3>
               <p>
