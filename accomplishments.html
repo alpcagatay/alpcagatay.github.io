@@ -11,7 +11,6 @@
       rel="stylesheet"
     />
 
-
     <title>Accomplishments</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
@@ -39,8 +38,6 @@
         z-index: 10000;
       }
 
-      
-
       /* .header::before {
   content: "";
   position: fixed;
@@ -58,7 +55,7 @@
         font-weight: 400;
       }
 
-      .navbar a {
+    .navbar a {
         position: relative;
         font-size: 12px;
         color: #696868;
@@ -85,6 +82,7 @@
       #check {
         display: none;
       }
+      
       .icons {
         position: absolute;
         right: 5%;
@@ -93,10 +91,12 @@
         cursor: pointer;
         display: none;
       }
+      
       .timeline-section {
         min-height: 100vh;
         padding: 100px 15px;
       }
+      
       .timeline-items {
         max-width: 1200px;
         margin: auto;
@@ -104,6 +104,7 @@
         flex-wrap: wrap;
         position: relative;
       }
+      
       .timeline-items::before {
         content: "";
         position: absolute;
@@ -112,22 +113,27 @@
         background-color: #696868;
         left: calc(50% - 1px);
       }
+      
       .timeline-item {
         margin-bottom: 40px;
         width: 100%;
         position: relative;
       }
+      
       .timeline-item:last-child {
         margin-bottom: 0;
       }
+      
       .timeline-item:nth-child(odd) {
         padding-right: calc(50% + 30px);
         text-align: right;
       }
+      
       .timeline-item:nth-child(even) {
         padding-left: calc(50% + 30px);
       }
-   .timeline-dot {
+   
+      .timeline-dot {
         height: 32px;
         width: 32px;
         border: 2px solid #eaa023;
@@ -140,12 +146,13 @@
     justify-content: center;
     align-items: center; /* Center the content vertically */
       }
+      
       .logo-container {
     display: flex;
     align-items: center;
   }
-
-  .timeline-dot img {
+   
+      .timeline-dot img {
     max-height: 100%;
     max-width: 100%;
   }
@@ -155,12 +162,13 @@
         color: #eaa023;
         margin: 6px 0 15px;
       }
+      
       .timeline-content {
         background-color: transparent;
         padding: 30px;
-        border-radius: 5px;
-        
+        border-radius: 5px;  
       }
+
       .timeline-content h3 {
         font-size: 20px;
         color: #ffffff;
@@ -168,45 +176,51 @@
         text-transform: capitalize;
         font-weight: 500;
       }
+      
       .timeline-content p {
         color: #353535;
         font-size: 16px;
         font-weight: 300;
         line-height: 22px;
       }
+      
       .icon {
       display: inline-block;
       vertical-align: middle;
     }
 
-    .icon img {
+      .icon img {
       width: 75px;
       margin-right: 10px;
     }
-    .contentdetails {
+
+      .contentdetails {
       display: inline-block;
       vertical-align: middle;
     }
-    .icon-even{
+
+      .icon-even{
       float: right; margin-right: 10px; vertical-align: middle
     }
-    .icon-odd{
+
+      .icon-odd{
       float: left; margin-left: 10px; vertical-align: middle
     }
      
-
       /*Breakpoints*/
      
       @media (max-width: 1100px) {
-        .icon img {
+    .icon img {
       width: 75px;
       margin-left: 10px;
     }
+        
     .contentdetails {
       display: inline-block;
       vertical-align: middle;
     }
-        .header {
+     
+      .header {
           position: fixed;
           top: 0;
           left: 0;
@@ -220,30 +234,30 @@
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow */
         }
 
-        .icons {
+      .icons {
           display: inline-flex;
         }
 
-        .logo {
+      .logo {
         font-size: 10px;
         color: #696868;
         text-decoration: none;
         font-weight: 400;
       }
 
-        #check:checked ~ .icons #menu-icon {
+      #check:checked ~ .icons #menu-icon {
           display: none;
         }
 
-        .icons #close-icon {
+      .icons #close-icon {
           display: none;
         }
 
-        #check:checked ~ .icons #close-icon {
+      #check:checked ~ .icons #close-icon {
           display: block;
         }
-
-        .navbar {
+        
+      .navbar {
           position: absolute;
           top: 100%;
           left: 0;
@@ -253,11 +267,11 @@
           transition: height 0.3s ease;
           background-color: #ffffff;
         }
-
-        #check:checked ~ .navbar {
+        
+      #check:checked ~ .navbar {
           height: auto;
         }
-
+        
         .navbar a {
           display: block;
           font-size: 1rem;
@@ -268,22 +282,26 @@
           background-color: #ffffff;
         }
 
-        #check:checked ~ .navbar a {
+      #check:checked ~ .navbar a {
           opacity: 1; /* Show the items when the checkbox is checked */
           transform: translateY(0);
         }
-        .timeline-items::before {
+      
+      .timeline-items::before {
           left: 7px;
         }
-        .timeline-item:nth-child(odd) {
+      
+      .timeline-item:nth-child(odd) {
           padding-right: 0;
           text-align: left;
         }
-        .timeline-item:nth-child(odd),
-        .timeline-item:nth-child(even) {
+      
+      .timeline-item:nth-child(odd),
+      .timeline-item:nth-child(even) {
           padding-left: 37px;
         }
-              .timeline-dot {
+      
+      .timeline-dot {
     left: 50%; /* Center horizontally */
     transform: translateX(-25%); /* Adjust for centering */
   }
@@ -292,10 +310,11 @@
           left: 0;
         }
 
-        .icon-even{
+  .icon-even{
       float: left; margin-left:10px;
     }
-    .icon-odd{
+  
+  .icon-odd{
       float: left; margin-right:10px;
     }
       }
