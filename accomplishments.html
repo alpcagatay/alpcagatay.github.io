@@ -10,314 +10,9 @@
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="style/style.css" />
     <title>Accomplishments</title>
-    <style>
-      
-      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
-      body {
-        min-height: 100vh;
-      }
-
-      .header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 20px 100px;
-        background: #fff;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 10000;
-      }
-
-      /* .header::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-} */
   
-.logo {
-        font-size: 16px;
-        color: #696868;
-        text-decoration: none;
-        font-weight: 400;
-      }
-
-    .navbar a {
-        position: relative;
-        font-size: 12px;
-        color: #696868;
-        font-weight: 500;
-        text-decoration: none;
-        margin-left: 25px;
-      }
-
-      .navbar a::before {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: #fff;
-        transition: 0.3s;
-      }
-
-      .navbar a:hover::before {
-        width: 100%;
-      }
-
-      #check {
-        display: none;
-      }
-      
-      .icons {
-        position: absolute;
-        right: 5%;
-        font-size: 75px;
-        color: #696868;
-        cursor: pointer;
-        display: none;
-      }
-      
-      .timeline-section {
-        min-height: 100vh;
-        padding: 100px 15px;
-      }
-      
-      .timeline-items {
-        max-width: 1200px;
-        margin: auto;
-        display: flex;
-        flex-wrap: wrap;
-        position: relative;
-      }
-      
-      .timeline-items::before {
-        content: "";
-        position: absolute;
-        width: 2px;
-        height: 100%;
-        background-color: #696868;
-        left: calc(50% - 1px);
-      }
-      
-      .timeline-item {
-        margin-bottom: 40px;
-        width: 100%;
-        position: relative;
-      }
-      
-      .timeline-item:last-child {
-        margin-bottom: 0;
-      }
-      
-      .timeline-item:nth-child(odd) {
-        padding-right: calc(50% + 30px);
-        text-align: right;
-      }
-      
-      .timeline-item:nth-child(even) {
-        padding-left: calc(50% + 30px);
-      }
-   
-      .timeline-dot {
-        height: 32px;
-        width: 32px;
-        border: 2px solid #eaa023;
-        background-color: #ffffff;
-        position: absolute;
-        left: calc(50% - 16px);
-        border-radius: 50%;
-        top: 5px;
-        display: flex;
-    justify-content: center;
-    align-items: center; /* Center the content vertically */
-      }
-      
-      .logo-container {
-    display: flex;
-    align-items: center;
-  }
-   
-      .timeline-dot img {
-    max-height: 100%;
-    max-width: 100%;
-  }
-
-      .timeline-date {
-        font-size: 18px;
-        color: #eaa023;
-        margin: 6px 0 15px;
-      }
-      
-      .timeline-content {
-        background-color: transparent;
-        padding: 30px;
-        border-radius: 5px;  
-      }
-
-      .timeline-content h3 {
-        font-size: 20px;
-        color: #ffffff;
-        margin: 0 0 10px;
-        text-transform: capitalize;
-        font-weight: 500;
-      }
-      
-      .timeline-content p {
-        color: #353535;
-        font-size: 16px;
-        font-weight: 300;
-        line-height: 22px;
-      }
-      
-      .icon {
-      display: inline-block;
-      vertical-align: middle;
-    }
-
-      .icon img {
-      width: 75px;
-      margin-right: 10px;
-    }
-
-      .contentdetails {
-      display: inline-block;
-      vertical-align: middle;
-    }
-
-      .icon-even{
-      float: right; margin-right: 10px; vertical-align: middle
-    }
-
-      .icon-odd{
-      float: left; margin-left: 10px; vertical-align: middle
-    }
-     
-      /*Breakpoints*/
-     
-      @media (max-width: 1100px) {
-    .icon img {
-      width: 75px;
-      margin-left: 10px;
-    }
-        
-    .contentdetails {
-      display: inline-block;
-      vertical-align: middle;
-    }
-     
-      .header {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          padding: 20px 50px;
-          background: #fff; /* Add a background color */
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          z-index: 10000;
-          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow */
-        }
-
-      .icons {
-          display: inline-flex;
-        }
-
-      .logo {
-        font-size: 10px;
-        color: #696868;
-        text-decoration: none;
-        font-weight: 400;
-      }
-
-      #check:checked ~ .icons #menu-icon {
-          display: none;
-        }
-
-      .icons #close-icon {
-          display: none;
-        }
-
-      #check:checked ~ .icons #close-icon {
-          display: block;
-        }
-        
-      .navbar {
-          position: absolute;
-          top: 100%;
-          left: 0;
-          height: 0;
-          width: 100%;
-          overflow: hidden;
-          transition: height 0.3s ease;
-          background-color: #ffffff;
-        }
-        
-      #check:checked ~ .navbar {
-          height: auto;
-        }
-        
-        .navbar a {
-          display: block;
-          font-size: 1rem;
-          margin: 1rem 0;
-          text-align: center;
-          transform: translateY(-50px);
-          transition: 0.3s ease, transform 0.3s ease;
-          background-color: #ffffff;
-        }
-
-      #check:checked ~ .navbar a {
-          opacity: 1; /* Show the items when the checkbox is checked */
-          transform: translateY(0);
-        }
-      
-      .timeline-items::before {
-          left: 7px;
-        }
-      
-      .timeline-item:nth-child(odd) {
-          padding-right: 0;
-          text-align: left;
-        }
-      
-      .timeline-item:nth-child(odd),
-      .timeline-item:nth-child(even) {
-          padding-left: 37px;
-        }
-      
-      .timeline-dot {
-    left: 50%; /* Center horizontally */
-    transform: translateX(-25%); /* Adjust for centering */
-  }
-
-  .timeline-dot {
-          left: 0;
-        }
-
-  .icon-even{
-      float: left; margin-left:10px;
-    }
-  
-  .icon-odd{
-      float: left; margin-right:10px;
-    }
-      }
-    </style>
   </head>
 
   <body>
@@ -352,12 +47,12 @@
 
 <!--Navbar End  -->
     
-    <section class="timeline-section">
-      <div class="timeline-items">
-        <div class="timeline-item">
-          <div class="timeline-dot"><div class="logo-container"><img src="icons/ccba badge.webp" alt="ccba" style="width: 20px;"></div></div>
-          <div class="timeline-date">July 2023</div>
-          <div class="timeline-content">
+    <section class="timeline-section-acc">
+      <div class="timeline-items-acc">
+        <div class="timeline-item-acc">
+          <div class="timeline-dot-acc"><div class="logo-container-acc"><img src="icons/ccba badge.webp" alt="ccba" style="width: 20px;"></div></div>
+          <div class="timeline-date-acc">July 2023</div>
+          <div class="timeline-content-acc">
             <!-- <div class="icon-odd">
             <a href="Alp Cagatay Batuhan _ CCBA Certification.pdf"><img
               src="ccba badge.webp"
@@ -366,7 +61,7 @@
               
             /></a>
           </div> -->
-            <div class="contentdetails">
+            <div class="contentdetails-acc">
               <h3>
                 <a
                   href="certifications/ccba_certification.pdf"
@@ -382,15 +77,15 @@
                   href="https://www.iiba.org/"
                   >IIBA</a
                 ><br />
-                Expiry Date: Jul 2026
+                Expiry Date: July 2026
               </p>
             </div>
           </div>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"><div class="logo-container"><img src="icons/pspoi.png" alt="pspoi" style="width: 16px;"></div></div>
-          <div class="timeline-date">January 2023</div>
-          <div class="timeline-content">
+        <div class="timeline-item-acc">
+          <div class="timeline-dot-acc"><div class="logo-container-acc"><img src="icons/pspoi.png" alt="pspoi" style="width: 16px;"></div></div>
+          <div class="timeline-date-acc">January 2023</div>
+          <div class="timeline-content-acc">
             <!-- <div class="icon-even">
               <a href="Alp Cagatay Batuhan - Professional Scrum Product Owner I.pdf"><img
               src="pspoi.png"
@@ -399,7 +94,7 @@
               
             /></a>
           </div> -->
-            <div class="contentdetails">
+            <div class="contentdetails-acc">
               <h3>
                 <a
                   href="certifications/pspo1_certification.pdf"
@@ -420,10 +115,10 @@
             </div>
           </div>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"><div class="logo-container"><img src="icons/psmi.png" alt="psmi" style="width: 16px;"></div></div>
-          <div class="timeline-date">December 2022</div>
-          <div class="timeline-content">
+        <div class="timeline-item-acc">
+          <div class="timeline-dot-acc"><div class="logo-container-acc"><img src="icons/psmi.png" alt="psmi" style="width: 16px;"></div></div>
+          <div class="timeline-date-acc">December 2022</div>
+          <div class="timeline-content-acc">
             <!-- <div class="icon-odd">
               <a href="Alp Cagatay Batuhan - Professional Scrum Master I.pdf"><img
               src="psmi.png"
@@ -431,7 +126,7 @@
               width="75px"
               
             /></a></div> -->
-            <div class="contentdetails">
+            <div class="contentdetails-acc">
               <h3>
                 <a
                   href="certifications/psm1_certification.pdf"
@@ -452,17 +147,17 @@
             </div>
           </div>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"><div class="logo-container"><img src="icons/boun.png" alt="boun" style="width: 20px;"></div></div>
-          <div class="timeline-date">February 2022</div>
-          <div class="timeline-content">
+        <div class="timeline-item-acc">
+          <div class="timeline-dot-acc"><div class="logo-container-acc"><img src="icons/boun.png" alt="boun" style="width: 20px;"></div></div>
+          <div class="timeline-date-acc">February 2022</div>
+          <div class="timeline-content-acc">
             <!-- <div class="icon-even"><img
               src="boun.png"
               alt="boun"
               width="75px"
               
             /></div> -->
-            <div class="contentdetails">
+            <div class="contentdetails-acc">
               <h3 style="color: #353535; text-decoration: none">M.Sc. in Software Engineering</h3>
               <p>
                 <a
@@ -474,17 +169,17 @@
             </div>
           </div>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"><div class="logo-container"><img src="icons/tedu.png" alt="tedu" style="width: 20px;"></div></div>
-          <div class="timeline-date">June 2017</div>
-          <div class="timeline-content">
+        <div class="timeline-item-acc">
+          <div class="timeline-dot-acc"><div class="logo-container-acc"><img src="icons/tedu.png" alt="tedu" style="width: 20px;"></div></div>
+          <div class="timeline-date-acc">June 2017</div>
+          <div class="timeline-content-acc">
             <!-- <div class="icon-odd"><img
               src="tedu.png"
               alt="tedu"
               width="75px"
               
             /></div> -->
-            <div class="contentdetails">
+            <div class="contentdetails-acc">
               <h3 style="color: #353535; text-decoration: none">B.A in Economics (100% Scholarship)</h3>
               <p>
                 <a
