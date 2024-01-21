@@ -19,7 +19,7 @@
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         overflow: hidden;
-        max-width: 600px;
+        max-width: 1000px;
         width: 90%;
         text-align: center;
       }
@@ -131,12 +131,12 @@
         }
       }
     </style>
-    <title>Modern Quiz App</title>
+    <title>PSM II Questions</title>
   </head>
 
   <body>
     <div id="quiz-container">
-      <h1>Quiz App</h1>
+      <h1>PSM II Questions</h1>
       <div id="question-numbers" class="question-numbers"></div>
       <p id="question-status"></p>
       <button class="start-button" onclick="selectQuiz()">Select Quiz</button>
@@ -154,7 +154,7 @@
 
         const quizButtons = [];
 
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 1; i <= 15; i++) {
           const quizBtn = document.createElement("button");
           quizBtn.classList.add("btn", "btn-quiz");
           quizBtn.innerText = `Quiz ${i}`;
@@ -214,6 +214,7 @@
             ],
             correctAnswer: [
               "Ask the Developers and the Product Owner what problem they are trying to solve by altering the Definition of Done and removing the regression testing from it. Ask coaching questions like 'in what ways will this decision impact transparency and quality'",
+              "Ask the Developers and the Product Owner if they are still be able to produce potentially shippable product Increments by altering the Definition of Done",
             ],
           },
           {
@@ -388,6 +389,7 @@
             ],
             correctAnswer: [
               "Newly formed teams will need time to stabilize before reaching their peak performance. During the initial stages of forming, performance will suffer and productivity may be low. However, there are still chances that the delivery of business value will increase",
+              "People from different layers and components will need time to become accustomed to working and delivering unified functionality together as one Scrum team thus productivity may suffer.",
             ],
           },
           {
@@ -572,7 +574,9 @@
               "All Scrum teams agree on a mutual understanding of 'done' that defines all work necessary to deliver a potentially shippable Increment that includes all previous Increments delivered for the product.",
               "Each Scrum Team delivers functionality at the end of each Sprint. New Product Backlog items will then be added to the next Sprint Backlog to integrate their functionality with the other teams to create a unified Increment",
             ],
-            correctAnswer: ["Paris"],
+            correctAnswer: [
+              "All Scrum teams agree on a mutual understanding of 'done' that defines all work necessary to deliver a potentially shippable Increment that includes all previous Increments delivered for the product.",
+            ],
           },
 
           // Add more questions as needed
@@ -870,7 +874,6 @@
             correctAnswer: [
               "Educate stakeholders and clients about Scrum",
               "Schedule formal trainings",
-              "Extend Retrospectives to include formal training",
               "Arrange 1:1 coaching sessions to discuss any identified concerns Steven may have",
             ],
           },
@@ -886,6 +889,7 @@
             ],
             correctAnswer: [
               "Timeboxing the events in Scrum to allow for regular inspection and adaptation creating opportunities to adjust course in any given path",
+              "Creating an integrated and potentially shippable Increment by the end of each Sprint",
             ],
           },
           {
@@ -1414,7 +1418,9 @@
               "When the project will be over if the Product Owner removes work that is equal in effort to any new work that is added.",
               "The evolution of the return of investment on the project",
             ],
-            correctAnswer: ["Paris"],
+            correctAnswer: [
+              "When the work remaining is projected to be completed if nothing changes on the Product Backlog or Developers",
+            ],
           },
         ],
         [
@@ -1590,7 +1596,10 @@
               "Timeboxes ensure that the Developers commit to completing the items in the Sprint Backlog by the end of the Sprint",
               "Timeboxes encourage the ones closest to the problem to make the best possible decisions within the time frame given the current situtation",
             ],
-            correctAnswer: ["Paris"],
+            correctAnswer: [
+              "Timeboxes help everybody concentrate on the same problem at the same time",
+              "Timeboxes encourage the ones closest to the problem to make the best possible decisions within the time frame given the current situtation",
+            ],
           },
           {
             // Question 15
@@ -1601,9 +1610,11 @@
               "Sprint Goals are defined when the completed work is reviewed at the end of a Sprint",
               "Sprint Goals can change as new insights emerge during the Sprint",
               "Sprint Goals are not achievable when the team has more than 10 members",
+              "During Sprint Planning, the entire Scrum team works together to create a Sprint Goal based on a business objective that the Product Owner wants to achieve during that Sprint.",
             ],
             correctAnswer: [
               "Sprint Goals allow developers to be more flexible and creative when it comes to implementing functionality during the Sprint",
+              "During Sprint Planning, the entire Scrum team works together to create a Sprint Goal based on a business objective that the Product Owner wants to achieve during that Sprint.",
             ],
           },
           {
@@ -1979,7 +1990,9 @@
               "Can be shared among multiple people in a Scrum Team. Is the same as a Project Manager. Is played by a committee or a team of people",
               "The Scrum Master can not be Product Owner as well",
             ],
-            correctAnswer: ["Paris"],
+            correctAnswer: [
+              "Is one person. Can be influenced by a committee. Is accountable for ordering the Product Backlog.",
+            ],
           },
           {
             // Question 13
@@ -2090,6 +2103,7 @@
             correctAnswer: [
               "An Increment is a concrete stepping stone toward the Prıduct Goal",
               "The Developers don't have a good enough Definition of Done, they should review it",
+              "The Developers are not doing enough testing to cover everything that they should",
               "The Definition of Done promotes transparency by ensuring that everyone is aware of the work that was completed as part of the Increment",
             ],
           },
@@ -2349,7 +2363,7 @@
               "All answers above apply",
               "None of the answers apply",
             ],
-            correctAnswer: ["Paris"],
+            correctAnswer: ["All answers above apply"],
           },
           {
             // Question 12
@@ -2487,7 +2501,9 @@
               "Only design and develop the architecture and infrastructure",
               "Create a potentially shippable product Increment that includes at least one piece of functionality",
             ],
-            correctAnswer: ["Paris"],
+            correctAnswer: [
+              "Create a potentially shippable product Increment that includes at least one piece of functionality",
+            ],
           },
           {
             // Question 24
@@ -2730,6 +2746,7 @@
               "Invite the stakeholders to a Sprint Review Part 2 meeting",
             ],
             correctAnswer: [
+              "Coach the Developers with time management techniques and how to present the key information the Stakeholders need",
               "Coach the stakeholders to understand Scrum and that all events are timeboxed and should not be extended, however they will discuss the timebox of the Sprint Review in the Sprint Retrospecrive and see if it can be extended for future Sprints. In the meantime help the Scrum Team to interact more with the stakeholders throughout the Sprint",
             ],
           },
@@ -2743,7 +2760,9 @@
               "As needed, as long as it doesn't impact productivity",
               "Never, as knowledge can be lost",
             ],
-            correctAnswer: ["Paris"],
+            correctAnswer: [
+              "As needed, whilst taking into account a short-term reduction in productivity",
+            ],
           },
           {
             // Question 15
@@ -2783,7 +2802,12 @@
               "Ask the Developers and the Product Owner if they are still able to produce releasable Increments by altering the Definition of Done",
               "Accept the decision as mutual agreement has been made between the Developers and the Product Owner",
             ],
-            correctAnswer: ["Paris"],
+            correctAnswer: [
+              "Reducing the Definition of Done will introduce technical debt such as unknown errors as functionality is added. The product might become more difficult to stabilize as work progresses. Development for future releases is likely to be slowed down in unpredictable ways.",
+              "Releasing the version with a reduced Definition of Done creates false assumptions about the actual state of the system and is risky. Fixes may need to be added post-release impacting user experience, reputation and development progress",
+              "Ask the Developers and the Product Owner what problem they are trying to solve by reducing the Definition of Done. In what ways will this decision impact transparency and quality",
+              "Ask the Developers and the Product Owner if they are still able to produce releasable Increments by altering the Definition of Done",
+            ],
           },
           {
             // Question 18
@@ -2922,6 +2946,7 @@
               "Make certain that the Deginition of Done is known and understood",
             ],
             correctAnswer: [
+              "Introduce the Scrum Team members to one another and provide a brief background on their talents and work history",
               "Allow the Developers to identify and discuss the procedure for converting the Product Backlog items into a possibly releaseable releasable increment",
               "Allow the Product Owner to answer questions about the product, its history, goals, and context",
               "Make certain that the Deginition of Done is known and understood",
@@ -3235,7 +3260,7 @@
             question:
               "During the Sprint Retrospective, the Product Owner raised a concern that the Developers only just met the Sprint Goal for the last Sprint. Developers think that the cause of the problem might be that some of them were working on other projects at the same time and that delayed the work. Which Scrum value were they not following? (choose 1)",
             options: ["Commitment", "Courage", "Focus", "Openness", "Respect"],
-            correctAnswer: ["Commitment"],
+            correctAnswer: ["Focus"],
           },
           {
             // Question 19
