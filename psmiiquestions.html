@@ -8,10 +8,27 @@
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         background-color: #f8f9fa;
         margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
+        min-height: 100vh; /* Ensure at least 100% viewport height */
+      }
+
+      #navbar {
+        background-color: #f8f9fa; /* Set to match the background color */
+        color: #ffffff;
+        padding: 10px;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+      }
+
+      .btn-home {
+        cursor: pointer;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1em;
+        margin: 10px; /* Add margin to buttons for better spacing */
       }
 
       #quiz-container {
@@ -21,31 +38,26 @@
         overflow: hidden;
         max-width: 600px;
         width: 90%;
+        margin: 80px auto 20px; /* Adjusted margin for better spacing */
         text-align: center;
       }
 
       h1 {
-        background-color: #007bff;
-        color: #ffffff;
         margin: 0;
-        padding: 20px;
         font-size: 1.5em;
       }
 
       .start-button,
       .btn,
-      .btn-quiz {
+      .btn-quiz,
+      .btn-next,
+      .btn-home {
         cursor: pointer;
         padding: 10px 20px;
         border: none;
         border-radius: 5px;
         font-size: 1em;
-      }
-
-      .start-button {
-        background-color: #28a745;
-        color: #ffffff;
-        margin: 20px;
+        margin: 10px; /* Add margin to buttons for better spacing */
       }
 
       .question-box {
@@ -57,7 +69,8 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
 
-      .question-number {
+      .question-number,
+      .question-number-top {
         display: inline-block;
         background-color: #007bff;
         color: #ffffff;
@@ -87,25 +100,6 @@
         font-weight: bold;
       }
 
-      .btn-next,
-      .question-number-top {
-        font-size: 1em;
-        margin: 0 10px;
-        padding: 5px 10px;
-        background-color: #007bff;
-        color: #fff;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        text-decoration: none;
-      }
-
-      .question-number-top:hover,
-      .btn-next:hover {
-        background-color: #0056b3;
-        text-decoration: underline;
-      }
-
       .results-message {
         background-color: #28a745;
         color: #ffffff;
@@ -128,13 +122,16 @@
       @media (min-width: 768px) {
         #quiz-container {
           width: 70%;
+          margin-top: 120px; /* Adjusted margin for better spacing */
         }
       }
     </style>
     <title>Modern Quiz App</title>
   </head>
-
   <body>
+    <div id="navbar">
+      <button class="btn-home" onclick="selectQuiz()">Home</button>
+    </div>
     <div id="quiz-container">
       <h1>Quiz App</h1>
       <div id="question-numbers" class="question-numbers"></div>
@@ -144,8 +141,18 @@
 
     <script>
       let selectedQuiz = null;
+      let currentQuestion = 0;
+      let userAnswers = [];
+      let answeredQuestions = [];
+      let testFinished = false;
 
       function selectQuiz() {
+        // Reset variables
+        currentQuestion = 0;
+        userAnswers = [];
+        answeredQuestions = [];
+        testFinished = false;
+
         const quizContainer = document.getElementById("quiz-container");
         quizContainer.innerHTML = "";
 
@@ -168,6 +175,7 @@
         quizContainer.appendChild(selectQuizMessage);
         quizButtons.forEach((btn) => quizContainer.appendChild(btn));
       }
+
 
       const quizzes = [
         [
@@ -6500,11 +6508,6 @@
         // Add more quizzes as needed
       ];
 
-      let currentQuestion = 0;
-      let userAnswers = [];
-      let answeredQuestions = [];
-      let testFinished = false;
-
       function startQuiz() {
         document.getElementById("quiz-container").innerHTML = "";
         displayQuestion();
@@ -6580,6 +6583,7 @@
         quizContainer.appendChild(questionBox);
 
         displayQuestionNumbers();
+        addHomeButton();
       }
 
       function submitAnswer() {
@@ -6602,6 +6606,7 @@
         answeredQuestions.push(currentQuestion);
 
         displayFeedback(isCorrect);
+        addHomeButton();
       }
 
       function displayFeedback(isCorrect) {
@@ -6635,6 +6640,7 @@
         }
 
         displayQuestionNumbers();
+        addHomeButton();
       }
 
       function nextQuestion() {
@@ -6680,6 +6686,7 @@
         quizContainer.appendChild(selectQuizBtn);
 
         displayQuestionNumbers();
+        addHomeButton();
       }
 
       function displayQuestionNumbers() {
@@ -6701,6 +6708,21 @@
         currentQuestion = index;
         document.getElementById("quiz-container").innerHTML = "";
         displayQuestion();
+      }
+
+      function goToHome() {
+        selectQuiz();
+      }
+
+      function addHomeButton() {
+        const homeButton = document.createElement("button");
+        homeButton.classList.add("btn", "btn-home");
+        homeButton.innerText = "Home";
+        homeButton.onclick = goToHome;
+
+        const navbar = document.getElementById("navbar");
+        navbar.innerHTML = ""; // Clear existing content
+        navbar.appendChild(homeButton);
       }
 
       function arraysEqual(arr1, arr2) {
