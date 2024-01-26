@@ -1,0 +1,2484 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        min-height: 100vh; /* Ensure at least 100% viewport height */
+      }
+
+      #navbar {
+        background-color: #f8f9fa; /* Set to match the background color */
+        color: #ffffff;
+        padding: 10px;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+      }
+
+      .btn-home {
+        cursor: pointer;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1em;
+        margin: 10px; /* Add margin to buttons for better spacing */
+      }
+
+      #quiz-container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        max-width: 600px;
+        width: 90%;
+        margin: 80px auto 20px; /* Adjusted margin for better spacing */
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.5em;
+      }
+
+      .start-button,
+      .btn,
+      .btn-quiz,
+      .btn-next,
+      .btn-home {
+        cursor: pointer;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1em;
+        margin: 10px; /* Add margin to buttons for better spacing */
+      }
+
+      .question-box {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin: 20px;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .question-number,
+      .question-number-top {
+        display: inline-block;
+        background-color: #007bff;
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .question-text {
+        margin-bottom: 20px;
+        font-size: 1.2em;
+      }
+
+      .answer {
+        margin-bottom: 10px;
+        text-align: left;
+      }
+
+      input[type="checkbox"] {
+        margin-right: 5px;
+      }
+
+      .feedback-message {
+        margin: 20px 0;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+
+      .results-message {
+        background-color: #28a745;
+        color: #ffffff;
+        margin: 0;
+        padding: 20px;
+        font-size: 1.5em;
+      }
+
+      .results-summary {
+        margin: 20px 0;
+        font-size: 1.2em;
+      }
+
+      .btn-quiz {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      @media (min-width: 768px) {
+        #quiz-container {
+          width: 70%;
+          margin-top: 120px; /* Adjusted margin for better spacing */
+        }
+      }
+    </style>
+    <title>Modern Quiz App</title>
+  </head>
+  <body>
+    <div id="navbar">
+      <button class="btn-home" onclick="selectQuiz()">Home</button>
+    </div>
+    <div id="quiz-container">
+      <h1>Quiz App</h1>
+      <div id="question-numbers" class="question-numbers"></div>
+      <p id="question-status"></p>
+      <button class="start-button" onclick="selectQuiz()">Select Quiz</button>
+    </div>
+
+    <script>
+      let selectedQuiz = null;
+      let currentQuestion = 0;
+      let userAnswers = [];
+      let answeredQuestions = [];
+      let testFinished = false;
+
+      function selectQuiz() {
+        // Reset variables
+        currentQuestion = 0;
+        userAnswers = [];
+        answeredQuestions = [];
+        testFinished = false;
+
+        const quizContainer = document.getElementById("quiz-container");
+        quizContainer.innerHTML = "";
+
+        const selectQuizMessage = document.createElement("div");
+        selectQuizMessage.innerText = "Select a Quiz:";
+
+        const quizButtons = [];
+
+        for (let i = 1; i <= 16; i++) {
+          const quizBtn = document.createElement("button");
+          quizBtn.classList.add("btn", "btn-quiz");
+          quizBtn.innerText = `Quiz ${i}`;
+          quizBtn.onclick = function () {
+            selectedQuiz = i - 1;
+            startQuiz();
+          };
+          quizButtons.push(quizBtn);
+        }
+
+        quizContainer.appendChild(selectQuizMessage);
+        quizButtons.forEach((btn) => quizContainer.appendChild(btn));
+      }
+
+      const quizzes = [
+        [
+          // QUIZ 01
+          {
+            // Question 01
+            question:
+              "True or False: The Product Owner is responsible for getting all stakeholders to agree on what provides the most value.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 02
+            question:
+              "True or False: A self-managing team has complete freedom to decide how it works.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 03
+            question:
+              "True or False: A critical responsibility of an Agile leader is to create an environment where agility is supported and to help remove impediments to delivering done product Increments.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 04
+            question:
+              "True or False: In an Agile organization the manager will always retain responsibility for the personal development of the members of a Scrum Team.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 05
+            question:
+              "True or False: A primary reason to adopt an Agile approach is that it reduces cost, since Scrum Teams work more efficiently and deliver more value in less time.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 06
+            question:
+              "True or False: Leadership/management attendance at every Sprint Retrospective is a good practice.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 07
+            question:
+              "True or False: Product Owners are interchangeable, without penalty, across Scrum Teams.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 08
+            question: "True or False: Teams must be co-located to use Scrum.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 09
+            question:
+              "True or False: Re-work, when it results from feedback given by customers or stakeholders, is both expected and beneficial when adopting an agile approach.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 10
+            question:
+              "True or False: Consistent achievement of Sprint Goals is a good indication that a Scrum Team is performing well.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },f
+
+          {
+            // Question 11
+            question:
+              "True or False: Velocity is a useful measure to compare the performance of two or more Scrum Teams.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 12
+            question:
+              "True or False: The primary benefit of an agile approach as compared to a traditional plan-based approach is to improve the ability of a team to deliver on-time, on-budget, and on-scope.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 13
+            question:
+              "True or False: Directing all Scrum Teams to adhere to the same release schedule improves the frequency of delivering value to the customer/user.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 14
+            question:
+              "True or False: Managers make good Product Owners since they are already used to making decisions and directing the teams responsible for product delivery.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 15
+            question:
+              "True or False: An Agile product delivery approach helps a team manage risk more effectively than a traditional plan-based approach.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 16
+            question:
+              "True or False: It is a good practice to spread team members across several Scrum Teams so that you can maintain high utilization of resources and be able to respond quickly and remain productive when impediments occur.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 17
+            question:
+              "True or False: When an organization starts adopting an agile approach, managers should shield Scrum Teams from change and uncertainty created by those who do not yet understand agile approaches.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 18
+            question:
+              "True or False: In an organization using Scrum, the manager is still responsible for the quality of the product.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 19
+            question:
+              "True or False: When using an agile approach, company leaders and the team developing the product have the final say on whether a product release delivers value or not.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 20
+            question:
+              "True or False: One benefit of an Agile approach is that planning and executing in shorter increments makes projects less complex.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 21
+            question:
+              "True or False: Managers make good Scrum Masters since they are already used to organizing and running teams.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 22
+            question:
+              "True or False: Forming teams and keeping them together is a good strategy for increasing utilization rates.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 23
+            question:
+              "True or False: Velocity is a useful measure of the value a Scrum Team produces.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 24
+            question:
+              "True or False: The primary benefit of an agile approach is delivering a fixed set of requirements more quickly.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 25
+            question:
+              "True or False: When Scrum is implemented correctly, managers are no longer needed.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 26
+            question:
+              "You want to improve your product’s time to market. Which of the following practices might help you achieve this goal?",
+            options: [
+              "Reduce the number of features in each release",
+              "Commit team members to only one team",
+              "Automate frequently performed tasks",
+              "Improve cross-functional team skills",
+              "All of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+
+          {
+            // Question 27
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 28
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 29
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 30
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 31
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 32
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 33
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 34
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 35
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 36
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          // Add more quizzes as needed
+        ],
+        [
+          // QUIZ 02
+          {
+            // Question 01
+            question: "Scrum is a methodology for developing complex products in complex environments.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 02
+            question: "What is Scrum founded on?",
+            options: ["Empirical Critique & Systems Thinking", "Empricism & Lean Thinking","Empirical Realism & Critical Thinking"],
+            correctAnswer: ["Empricism & Lean Thinking"],
+          },
+
+          {
+            // Question 03
+            question: "Experienced Scrum Teams decide which Scrum Events to do and which to skip.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 04
+            question: "What does the term “Cross-functionality” mean?",
+            options: ["Cross-functional teams consist of designers, copywriters, front-end developers, back-end developers, DevOps specialists, and a team leader.", "Cross-functional teams do not rely on help outside the team. They have all the expertise to create a usable increment","Cross-functional teams choose how to best accomplish their work"],
+            correctAnswer: ["Cross-functional teams do not rely on help outside the team. They have all the expertise to create a usable increment",],
+          },
+
+          {
+            // Question 05
+            question: "Select the Scrum Pillar.",
+            options: ["Commitment", "Adaptation","Focus"],
+            correctAnswer: ["Adaptation"],
+          },
+
+          {
+            // Question 06
+            question: "The duration of the Daily Scrum Event does not depend on the number of developers.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 07
+            question: "Self-Management increases creativity and commitment to the goals ahead.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 08
+            question: "The three pillars that uphold Scrum are Transparency, Inspection, and Adaptation. When do we do inspection and adaptation?",
+            options: ["During Sprint Planning", "During the Scrum Events","During Daily Scrum","During Sprint Retrospective"],
+            correctAnswer: ["During the Scrum Events"],
+          },
+
+          {
+            // Question 09
+            question: "How does Scrum control risk?",
+            options: ["By using external experts who consult the Scrum Team every 3 Sprints or so", "By being a ligthweight method","By using an iterative and incremental approach to development"],
+            correctAnswer: ["By using an iterative and incremental approach to development"],
+          },
+
+          {
+            // Question 10
+            question: "In complex environments, we do not know what will happen. Empiricism is an effective approach to help Scrum Teams deal with complexity and unknowns.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 11
+            question: "Who has the authority to cancel a Sprint?",
+            options: ["A Sprint cannot be canceled", "The Customer","The Product Owner","The CTO"],
+            correctAnswer: ["The Product Owner"],
+          },
+
+          {
+            // Question 12
+            question: "Who determines how many items to select for the Sprint Backlog?",
+            options: ["The Product Owner", "The Scrum Master","The Developers","The Customer"],
+            correctAnswer: ["The Developers"],
+          },
+
+          {
+            // Question 13
+            question: "Who is accountable for managing the Product Backlog?",
+            options: ["The Customer", "The Scrum Master","The Product Owner","The Developers"],
+            correctAnswer: ["The Product Owner"],
+          },
+
+          {
+            // Question 14
+            question: "Who is required to attend the Daily Scrum event?",
+            options: ["The whole Scrum Team", "The Development Team","The Scrum Master and the Product Owner","The Scrum Master (because he/she works as a developer) and the Developers"],
+            correctAnswer: ["The Scrum Master (because he/she works as a developer) and the Developers"],
+          },
+
+          {
+            // Question 15
+            question: "As a Scrum Master, you are required to solve all problems the Developers face during the Sprint.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 16
+            question: "Scrum Masters are true leaders. What is their leadership style?",
+            options: ["Command & Control Leadership", "Authoritative Leadership","Democratic Leadership","Servant Leadership","Autocratic Leadership"],
+            correctAnswer: ["Servant Leadership"],
+          },
+
+          {
+            // Question 17
+            question: "What skills should be present in a Scrum Team?",
+            options: ["Designing, Coding, Testing, Integrating", "All necessary skills to produce a useful increment each Sprint","Wireframing, Back-end development, front-end development, and Quality Assurance"],
+            correctAnswer: ["All necessary skills to produce a useful increment each Sprint"],
+          },
+
+          {
+            // Question 18
+            question: "The Product Owner manages the Developers during the Sprint to ensure, they will create an increment of the highest quality.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 19
+            question: "Typically, the Scrum Team consists of…?",
+            options: ["3-9 people", "2-6 people","10 or fewer people","10 or more people"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 20
+            question: "The Product Owner is knowledgeable about the marketplace of the Product. To ensure transparency and alignment, the Product Owner shares that knowledge with the Scrum Team. When does that happen? (Choose the best answer)",
+            options: ["During Release Planning", "During the Sprint on an ad-hoc basis","During Daily Scrum"],
+            correctAnswer: ["During the Sprint on an ad-hoc basis"],
+          },
+
+          {
+            // Question 21
+            question: "The Product Owner is actively seeking feedback from the Stakeholders. As a result, the Product Backlog is updated.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 22
+            question: "There are 3 sets of accountabilities in a Scrum Team. Which one of them is responsible for sizing the Product Backlog Items (PBIs)?",
+            options: ["The Product Owner", "The Developers","The Scrum Master","The Project Manager"],
+            correctAnswer: ["The Developers"],
+          },
+
+          {
+            // Question 23
+            question: "It is okay if the Product Owner attends Daily Scrum.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 24
+            question: "Which sentence best describes the Sprint Planning event?",
+            options: ["We discuss that we can accomplish, who will do it, but also why the Sprint is valuable.", "We discuss that we can accomplish, how we'll do it, but also why the Sprint is valuable","We discuss how the last Sprint went with regards to individuals, interactions, processes, tools, and the Definition of Done","We invite key stakeholders to demonstrate what we've done during the previous Sprint."],
+            correctAnswer: ["We discuss that we can accomplish, how we'll do it, but also why the Sprint is valuable"],
+          },
+
+          {
+            // Question 25
+            question: "Which Scrum Event has to do with work process improvement?",
+            options: ["Sprint Retrospective", "Sprint Review","Sprint Planning","Daily Scrum","The Sprint"],
+            correctAnswer: ["Sprint Retrospective"],
+          },
+
+          {
+            // Question 26
+            question: "What is the maximum duration of the Sprint Planning event?",
+            options: ["4 hours", "3 hours","8 hours for a one month Sprint","6 hours"],
+            correctAnswer: ["8 hours for a one month Sprint"],
+          },
+
+          {
+            // Question 27
+            question: "The Sprint is over when…",
+            options: ["The customer cancels it", "All the PBIs from the Sprint Backlog are completed according to the Definition of Done","The duration of the timebox is over."],
+            correctAnswer: ["The duration of the timebox is over."],
+          },
+
+          {
+            // Question 28
+            question: "Each developer must answer the 3 questions during Daily Scrum (What did I do yesterday? What will I do today? Do I see any impediments?).",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 29
+            question: "The Scrum Team has decided to use a 1-week long Sprints. After a discussion, the members came up with a timebox for the Sprint Planning event 5 hours. Does their decision break Scrum Rules?",
+            options: ["Yes", "No"],
+            correctAnswer: ["No"],
+          },
+
+          {
+            // Question 30
+            question: "Each Daily Scrum event must be facilitated by the Scrum Master.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 31
+            question: "What is the purpose of the Sprint Review event?",
+            options: ["To plan ways to increase quality and effectiveness", "To inspect the outcome of the Sprint and determine future adaptations","To inspect progress toward the Sprint Goal and adapt the Sprint Backlog as necessary, adjusting the upcoming planned work."],
+            correctAnswer: ["To inspect the outcome of the Sprint and determine future adaptations"],
+          },
+
+          {
+            // Question 32
+            question: "One Sprint ends, another one begins. There are no pauses between the Sprints",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 33
+            question: "A Senior Manager believes that your Scrum Team's velocity is not high enough. According to her calculations (including a comparison with other Scrum Teams), it should be 20% higher. Inviting that Senior Manager to the Sprint Retrospective event is a good way to update the whole Scrum Team and generate ideas on how to increase velocity.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 34
+            question: "The Developers cannot start work unless the Product Backlog is complete.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 35
+            question: "The Developers own the Sprint Backlog.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 36
+            question: "Who tracks the total remaining work in the Sprint Backlog?",
+            options: ["The Scrum Team", "The Scrum Master","The Developers"],
+            correctAnswer: ["The Developers"],
+          },
+
+          // Add more quizzes as needed
+        ],
+
+        [
+          // QUIZ 03
+          {
+            // Question 01
+            question: "Which sentence can be considered an Increment?",
+            options: ["New functionality that is in a usable state but it hasn't been verified (tested)", "New functionality that is in a usable state and added to the Product","All the PBIs that will be completed during the next Sprint"],
+            correctAnswer: ["New functionality that is in a usable state and added to the Product"],
+          },
+          {
+            // Question 02
+            question: "When is a PBI (Product Backlog Item) considered done?",
+            options: ["When it has been reviewed by the Scrum Master", "When the Product Owner says so","When it has been completed based on the Definition of Done"],
+            correctAnswer: ["When it has been completed based on the Definition of Done"],
+          },
+
+          {
+            // Question 03
+            question: "The commitment for the Product Backlog is the Definition of Done because if a Product Backlog item does not meet the Definition of Done, we cannot release or even present it at the Sprint Review.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 04
+            question: "The Scrum Team must release at least one increment at the end of every Sprint.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 05
+            question: "Highly-effective Scrum Teams work on several Product Goals at the same time.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 06
+            question: "Attributes of the PBIs vary by industry but the Scrum Guide mentions 3 attributes. Which of the following is not one of them?",
+            options: ["Description", "Order","Size","Value"],
+            correctAnswer: ["Value"],
+          },
+
+          {
+            // Question 07
+            question: "Who crafts the Sprint Goal during the Sprint Planning event?",
+            options: ["The Developers", "The Product Owner","The Scrum Master","The Developers and the Product Owner","The Scrum Team"],
+            correctAnswer: ["The Scrum Team"],
+          },
+
+          {
+            // Question 08
+            question: "A PBI that is not 100% done based on the Definition of Done could be released only if the Stakeholders and the Product Owner agree.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 09
+            question: "What is the benefit of having a Definition of Done?",
+            options: ["It helps the Developers know how much work is left to create the Increment", "It helps the Developers during Sprint Planning when they select PBIs for the Sprint Backlog","It creates transparency into the state of the Increment","All of the above"],
+            correctAnswer: ["All of the above"],
+          },
+
+          {
+            // Question 10
+            question: "The Product Owner (PO) comes up with an amazing idea for a feature that would potentially bring value to the end-users. In the middle of the Sprint, the PO requests a PBI about that feature to be added to the Sprint Backlog. What should the Developers do?",
+            options: ["The Developers are obliged to add the PBI to the Sprint Backlog", "The Sprint Backlog does not change during the Sprint. The Developers are not obliged to add the PBI to the Sprint Backlog","The Developers may decide to include the PBI in the Sprint Backlog as long as it does not endanger the Sprint Goal"],
+            correctAnswer: ["The Developers may decide to include the PBI in the Sprint Backlog as long as it does not endanger the Sprint Goal"],
+          },
+
+          {
+            // Question 11
+            question: "From the answers below, select the single objective for the Sprint.",
+            options: ["The Sprint Backlog", "The Product Goal","The Sprint Goal","The Project Charter"],
+            correctAnswer: ["The Sprint Goal"],
+          },
+
+          {
+            // Question 12
+            question: "Between Sprints, Scrum Teams may allot time for doing special tests to ensure the increments are usable before a release.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 13
+            question: "An Agile Leader strives to create an environment where people and teams can thrive.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 14
+            question: "Scrum does not approve Distributed Teams.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 15
+            question: "To increase ROI, your job as an Agile Leader is to closely monitor (and try to improve) the utilization of the developers in a Scrum Team.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 16
+            question: "Scrum favors narrow specialization in one area as opposed to multi-skilled professionals.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 17
+            question: "Healthy conflicts help the Scrum Team grow.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 18
+            question: "Which type of motivation lasts longer?",
+            options: ["Extrinsic (external) motivation", "Intrinsic (internal) motivation"],
+            correctAnswer: ["Intrinsic (internal) motivation"],
+          },
+
+          {
+            // Question 19
+            question: "Releasing small increments frequently is a great way to reduce risk.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 20
+            question: "Who is accountable for the Scrum Team’s effectiveness?",
+            options: ["The Product Owner", "The Scrum Master","The Project Manager","The whole Scrum Team", "The Developers"],
+            correctAnswer: ["The Scrum Master"],
+          },
+
+          {
+            // Question 21
+            question: "During Sprint 7, the Developers completed PBIs estimated at 127 story points. During the next Sprint (8), the Developers completed PBIs estimated at 186 story points. Which Sprint has delivered more value?",
+            options: ["Sprint 7", "We don't know","Sprint 8"],
+            correctAnswer: ["We don't know"],
+          },
+
+          {
+            // Question 22
+            question: "A good Scrum Master serves the organization, the Scrum Team, and the Product Owner. Select three ways that indicate how the Scrum Master serves the Scrum Team.(Choose three answers)",
+            options: ["The Scrum Master resolves all impediments so the Developers can focus on their work and be as productive as they could be", "The Scrum Master respects self-management and leaves the Developers to do whatever they want","The Scrum Master facilitates Scrum events as requested or needed","The Scrum Master coaches the team in self-management and cross-functionality","The Scrum Master supports and promotes empricism"],
+            correctAnswer: ["The Scrum Master facilitates Scrum events as requested or needed","The Scrum Master coaches the team in self-management and cross-functionality","The Scrum Master supports and promotes empricism"],
+          },
+
+          {
+            // Question 23
+            question: "An organization that has been using a plan-driven approach to development for 13 years, wants to transition to an adaptive approach - agile. As a framework, they chose Scrum. Right now, the company has several teams each working on different layers of the product (e.g. front-end, back-end). These are called Component Teams.As an Agile Leader, you need to help the organization with the transition. One of the first things you do is to introduce the concept of Feature Teams. You underline the importance of cross-functionality and delivering a done increment each Sprint. What should you consider when moving from Component Teams to Feature Teams?",
+            options: ["It is way easier to normalize the velocity of feature teams as opposed to component teams. This will help the manager determine which teams are underperforming","You would need the CVs of the members of the organization so it is easier for you to decide which team to assign the people to. In this way, you would truly form cross-functional teams", "Feature teams are not immediately productive. Initially, the productivity of the new Scrum Team may be low","Usually, a new Scrum Team goes through a few phases before it starts performing. This requires time"],
+            correctAnswer: ["Feature teams are not immediately productive. Initially, the productivity of the new Scrum Team may be low","Usually, a new Scrum Team goes through a few phases before it starts performing. This requires time"],
+          },
+
+          {
+            // Question 24
+            question: "Who tracks the progress toward the Product Goal during the Sprint? (Choose the best answer)",
+            options: ["The Product Owner", "The Development Team","The CEO after a discussion with the CTO","All members of the Scrum Team are responsible for tracking the progress","The Scrum Master","The Developers"],
+            correctAnswer: ["The Product Owner"],
+          },
+
+          {
+            // Question 25
+            question: "A Scrum Team has been working on a website for seven Sprints without a release. Recently the website has been released. The end-users are happy about it. They like and use most of the features the Developers built during the past seven Sprints. However, many end-users complain about the loading speed of the website. It is slow. A representative of the end-users shares that with the Product Owner. What would you advise the Product Owner to do? (Choose the best answer)",
+            options: ["In Scrum, the Developers commit to excellence. Releasing a slow website is unacceptable. Encourage the Product Owner to find who from the quality assurance team tested the website before the last release and have a serious talk with him or her", "Obviously, there is an issue with the Definition of Done. The Scrum Team revises it during Sprint Retrospective. Advide the Product Owner to wait for the event and share the concern","Explain to the Product Owner that it would be best to share this concern with the whole Scrum Team so collaboratively, they can decide how to approach the issue","Tell the Developers to add performance tests to the Definition of Done"],
+            correctAnswer: ["Explain to the Product Owner that it would be best to share this concern with the whole Scrum Team so collaboratively, they can decide how to approach the issue"],
+          },
+
+          {
+            // Question 26
+            question: "The Product Owner wants to know if customer value is being delivered. Which two measures would be the most helpful? (Select two answers)",
+            options: ["Feature Usage", "Customer Happiness","The Velocity of the Developers","How close the team adgeres to the Project Charter","Increase in time the Developers spent writing code"],
+            correctAnswer: ["Feature Usage", "Customer Happiness"],
+          },
+
+          {
+            // Question 27
+            question: "During the Sprint Review, the VP (Vice President) of marketing is excited and announces to the Scrum Team that a big deal has been closed. A company with 379 employees is going to start using the Product. The CTO (Chief Technical Officer) comments that the Product cannot handle 379 more people as the user base is already large. Also, he adds it is important the Scrum Team works on non-functional requirements with regard to scalability. The Product Owner knows that this is not the first time scalability has been a challenge. The participants of the Sprint Review start discussing ways to approach this. As an Agile Leader, what would you support? (Choose two answers)",
+            options: ["Non-functional requirements related to scalability are added to the Product Backlog. The Scrum Team may focus most of its effort on those PBIs, however, they should also create some business-facing functionality, regardless of how small it is", "The Product Owner should postpone the upcoming Sprint and have the team work only on scalability. Once all of the PBIs related to scalability are done, the PO resumes sprinting","During the Sprint Retrospective event, the Scrum Team discusses appropriate changes to the Definition of Done so handling scalability concerns is easier in the future","Non-functional requirements should be handled by a seperate component team that specializes in scalability and maintainability. They should work alongside the Scrum Team. In this way, there won't be any delays with business functionality"],
+            correctAnswer: ["Non-functional requirements related to scalability are added to the Product Backlog. The Scrum Team may focus most of its effort on those PBIs, however, they should also create some business-facing functionality, regardless of how small it is","During the Sprint Retrospective event, the Scrum Team discusses appropriate changes to the Definition of Done so handling scalability concerns is easier in the future"],
+          },
+
+          {
+            // Question 28
+            question: "What would be an accurate activity (discussion) to do during Sprint Retrospectives? (Select 3)",
+            options: ["Discuss the way the Developers work to reduce Technical Debt", "Execute Product Backlog Refinement","Discuss the length of the Sprint","Discuss complex PBIs","Discuss the Definition of Done"],
+            correctAnswer: ["Discuss the way the Developers work to reduce Technical Debt","Discuss the length of the Sprint","Discuss the Definition of Done"],
+          },
+
+          {
+            // Question 29
+            question: "Which Key Value Area has to do with the organization’s ability to deliver new capabilities and solutions?",
+            options: ["Unrealized value (UV)", "Current Value (CV)", "Time-to-Market (T2M)","Ability To Innovate (A2I)"],
+            correctAnswer: ["Ability To Innovate (A2I)"],
+          },
+
+          {
+            // Question 30
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 31
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 32
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 33
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 34
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 35
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 36
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          // Add more quizzes as needed
+        ],
+
+        [
+          // QUIZ 04
+          {
+            // Question 01
+            question: "Peter, an experienced back-end software engineer joins a well-established Scrum Team. A few weeks go by and Peter feels his opinions are always neglected by the rest of the team members. You are an influential agile leader outside the Scrum Team and Peter comes to you asking for help. He wants to be involved in the decision-making process. What do you do? (Choose the best answer)",
+            options: ["Tell Peter that he hasn't spent enough time with the team to make demands", "Ask Peter if he spoke about this issue with the Scrum Master and the other team members","Set up a meeting with the team members and tell them that they should work by the Scrum Values. It's obvious - the value of respect is broken","Talk to the HR department to move Peter to another team in the same organization. Although experienced, he doesn't get along with the rest of the team members"],
+            correctAnswer: ["Ask Peter if he spoke about this issue with the Scrum Master and the other team members"],
+          },
+          {
+            // Question 02
+            question: "What would help a Scrum Team (working in a software company) increase their ability to deliver value in a timely manner (improve Time to Market - T2M)? (Select all that apply)",
+            options: ["Do Product Backlog Refinement", "Synchronize the release schedules with other Scrum Teams in the organization","Eliminate waste and non-value-added activities","Reduce dependencies between PBIs as well as teams","Use tools to help automate the delivery process"],
+            correctAnswer: ["Do Product Backlog Refinement", "Eliminate waste and non-value-added activities","Reduce dependencies between PBIs as well as teams","Use tools to help automate the delivery process"],
+          },
+
+          {
+            // Question 03
+            question: "Which of the sentences below is NOT a good reason to keep an agile team together? (Choose the best answer)",
+            options: ["To improve focus", "To improve the ability to forecast","To improve collaboration","To increase utilization of the Developers"],
+            correctAnswer: ["To increase utilization of the Developers"],
+          },
+
+          {
+            // Question 04
+            question: "What would be the best course of action when you, as a Product Owner, are uncertain about the needs of the end-users? (Select the three best answers)",
+            options: ["Use Persona Canvases to discover more about the needs of the end users.", "Most of the users are not aware of what they want before they see a solution. Brainstorm ideas with the team and implement those that have the highest chance of delivering value","Run small experiments to validate the needs of the end-users","Release small increments to receive feedback from the marketplace faster","Talk to the end-users"],
+            correctAnswer: ["Run small experiments to validate the needs of the end-users","Release small increments to receive feedback from the marketplace faster","Talk to the end-users"],
+          },
+
+          {
+            // Question 05
+            question: "Who is considered the value maximizer in Scrum? (Choose the best answer)",
+            options: ["All Options", "The Developers","The Product Owner","The Scrum Master","The Project Manager"],
+            correctAnswer: ["The Product Owner"],
+          },
+
+          {
+            // Question 06
+            question: "Several agile teams are working on one product. You are a manager and you want to find out which team is performing the best. Which of the following options are true? (Select the best two answers)",
+            options: ["Consider Velocity when comparing teams but also Technical Debt trends because a team may reach a high velocity but high Technical Debt may cause unexpected problems later", "It's not a good idea to compare teams' performance because it often leads to unhealthy behaviors","The highest-performing agile team is the one that delivered the most story points(the highest velocity)","Instead of focusing on comparing teams, it would be better to focus on creating a better environment for those teams. An Agile Leader can do that by removing impediments, encouraging experimentation and collaboration, leading by example, and promoting the Scrum Values."],
+            correctAnswer: ["It's not a good idea to compare teams' performance because it often leads to unhealthy behaviors","Instead of focusing on comparing teams, it would be better to focus on creating a better environment for those teams. An Agile Leader can do that by removing impediments, encouraging experimentation and collaboration, leading by example, and promoting the Scrum Values."],
+          },
+
+          {
+            // Question 07
+            question: "You are a Marketing Director working closely with the highest-paying customers of an organization. They have expressed a need for a feature that is currently not available. There isn’t a Product Backlog Item (PBI) written in the Product Backlog. Jessica, an experienced Product Owner (PO) is familiar with that feature and she likes it, however, she thinks that right now other features would deliver more overall value to the customer base as well as attract potential customers. Jessica agrees to prioritize the feature after a few Sprints. What should you do? (Choose the best answer)",
+            options: ["Support Jessica, she is the PO and knows best how to maximize the value the product delivers", "Disagree with JEssica and talk to other stakeholders to put priority on the feature to get it done ASAP","Write a PBI and assign it to the team lead - this is the fastest way to get the feature done and satisfy the highest paying clients","Report Jessica to her manager because she doesn't listen to the needs of the highest-paying end users"],
+            correctAnswer: ["Support Jessica, she is the PO and knows best how to maximize the value the product delivers"],
+          },
+
+          {
+            // Question 08
+            question: "You are a senior manager and a Scrum Team comes to you asking to hire 3 more developers. This would increase the team’s ability to deliver value in a timely manner. You have the budget and you trust the team’s judgment. How would you proceed? (Choose the best answer)",
+            options: ["Ask the HR department to hire three Developers to join the Scrum Team", "Involve the Scrum Team in the hiring process. Give them a budget and let them interview and hire new team members","You do the interview and hire those people who are the best fit with the team"],
+            correctAnswer: ["Involve the Scrum Team in the hiring process. Give them a budget and let them interview and hire new team members"],
+          },
+
+          {
+            // Question 09
+            question: "Generally, the members of effective Scrum Teams work full-time on one product and one team at a time.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 10
+            question: "What is true about distributed Scrum Teams (five Developers work in different timezones)? (Choose the best answer)",
+            options: ["Scrum orohibits distributed teams. All members of a Scrum Team must be in the same physical location", "The team members may experience challenges with building trust and communication due to different time zones","If the Developers have trouble doing Daily Scrum due to timezone differences, they can do the event twice per week"],
+            correctAnswer: ["The team members may experience challenges with building trust and communication due to different time zones"],
+          },
+
+          {
+            // Question 11
+            question: "You are a manager in an organization adopting agile. However, there are still practices from traditional management that are still used. One of them is rewarding individual performance. A point system that helps identify the top performers and reward bonuses only to those people. The rest of the people don’t get a bonus. What do you think about this? (Choose the best answer)",
+            options: ["It's not okay. All members of the agile team contribute to the success of the initiative. It's not fair only certain people get the bonuses", "It's okay. The top performers are the people who put the most effort. It's fair that they should get the bonuses"],
+            correctAnswer: ["It's not okay. All members of the agile team contribute to the success of the initiative. It's not fair only certain people get the bonuses"],
+          },
+
+          {
+            // Question 12
+            question: "How would you know if a product is delivering value? (Select all that apply)",
+            options: ["The customer base is growing", "Zero defects go to production","Increase in the time spent writing code","High company impact - the product generates profit for the organization","The high velocity of the Developers - they get more PBIs done now in comparison with a month ago (for the same period of time)","High customer satisfaction score - increase in Current Value(CV)"],
+            correctAnswer: ["The customer base is growing","High company impact - the product generates profit for the organization","High customer satisfaction score - increase in Current Value(CV)"],
+          },
+
+          {
+            // Question 13
+            question: "A Scrum Team is constantly failing to achieve the Sprint Goals. They do 2-week long Sprints. You are a manager and you want to understand why that happens. It turns out that the team is interrupted by other Scrum Teams for various valid reasons. A point comes and the team asks you for help. How would you approach the situation? (Choose the best two answers)",
+            options: ["Advise the Scrum Team to take into account interruptions when they define the Sprint Goal during Sprint Planning", "Advise the Scrum Team to do 4-week Sprints, instead of 2-week Sprints. This will allow them to get more work done and interruptions would not matter that much", "Advise the Scrum Team to extend the Sprint timeboxes so they can finish the incomplete work","Talk to the HR department to add more people to the team","Collaborate with the teams in the organization and determine if it's possible to re-assign the interrupting work to people outside the Scrum Team"],
+            correctAnswer: ["Advise the Scrum Team to take into account interruptions when they define the Sprint Goal during Sprint Planning","Collaborate with the teams in the organization and determine if it's possible to re-assign the interrupting work to people outside the Scrum Team"],
+          },
+
+          {
+            // Question 14
+            question: "Which of the following is the most important objective for Agile Teams? (Choose the best answer)",
+            options: ["Improve the Ability to Innovate (A2I)","Reduce development costs", "Improve customer happiness","Increase Time To Market (T2M)","Decrease Technical Debt"],
+            correctAnswer: ["Improve customer happiness"],
+          },
+
+          {
+            // Question 15
+            question: "You are a manager in an organization with 2 Scrum Teams developing one Product. However, after a discussion with the members of the teams, you’ve concluded that there is a lack of motivation. What would you do about that? (Choose the best answer)",
+            options: ["Do team-building parties. Maybe if the teams get to know each other better, their motivation would increase", "Implement an 'Employee of the Month' program with some nice bonusses","Help the team members understand the why behind the product and collaborate on what success looks like"],
+            correctAnswer: ["Help the team members understand the why behind the product and collaborate on what success looks like"],
+          },
+
+          {
+            // Question 16
+            question: "Your competitor is releasing a few times faster than you. As a result, your (subscription-based) Product is losing market share. What would you do as a Product Owner? (Choose the best two answers)",
+            options: ["Improve your Time-To-Market (T2M)", "Lower the price of your Product so customers do not leave you","Increase your Ability to Innovate(A2I)","Have a discussion with the marketing team on implementing the latest, cutting-edge marketing strategies to attract new customers"],
+            correctAnswer: ["Improve your Time-To-Market (T2M)", "Increase your Ability to Innovate(A2I)"],
+          },
+
+          {
+            // Question 17
+            question: "Who tracks the progress toward the Sprint Goal during the Sprint? (Choose the best answer)",
+            options: ["The Development Team", "The Technical Team Leader","The Scrum Master","The Product Owner","The Developers","All members of the Scrum Team are responsible for tracking the progress"],
+            correctAnswer: ["The Developers"],
+          },
+
+          {
+            // Question 18
+            question: "What is true about the Scrum Master accountability in Scrum?(Choose the best answer)",
+            options: ["The SM maximizes the value the product delivers", "The SM helps the Scrum Team increase their effectiveness. The result is an improved ability to deliver value","The SM is considered a customer representative. They create weekly reports to keep the stakeholders informed","The SM assigns tasks to the Developers and tracks the progress at least once a day"],
+            correctAnswer: ["The SM helps the Scrum Team increase their effectiveness. The result is an improved ability to deliver value"],
+          },
+
+          {
+            // Question 19
+            question: "A Scrum Team seems to have difficulties delivering a usable product increment to the end-users. Sometimes a few Sprints go by, and not even a single feature is released. Who is accountable for resolving this? (Choose the best answer)",
+            options: ["The Scrum Team", "The Scrum Master","The Product Owner","The Project Manager","The Developers","The CEO"],
+            correctAnswer: ["The Scrum Team"],
+          },
+
+          {
+            // Question 20
+            question: "Which of the practices from Traditional Project Management can hinder the adoption of Agile. (Choose the best answer)",
+            options: ["Rewarding individual performance", "Measuring success based on scope,time, and budget","All of the options","Encouraging narrow specialization","Aiming for 100% utilization of the Developers"],
+            correctAnswer: ["All of the options"],
+          },
+
+          {
+            // Question 21
+            question: "Joshua, a Product Owner, has been tracking the progress of the Sprint every day. The Scrum Team does one-month Sprints. Now is day 15 and Joshua saw that only 40% of the items in the Sprint Backlog are done (based on the Definition of Done). He goes to the Scrum Master and shares that the team should be at around 50 or 60% done items. Joshua is concerned that the Developers didn’t do an accurate forecast and they won’t be able to meet it. You are a manager. What do you think the Scrum Master (SM) should do? (Choose the best answer)",
+            options: ["The SM should discuss with the HR department that Joshua does a great job as a Product Owner and would be even more succesful if we hire more developers. This would have a positive impact on speed and value delivery", "The SM is accountable for the team'seffectiveness. So, they must find a way to motivate the Developers to meet their forecast","The SM should coach the Developers on how to meet their Sprint forecasts. Explain the importance of considering their Past Performance and the definition of Done when they select items for the Sprint Backlog","The SM should coach Joshua that the team commits to the Sprint Goal and not the initial forecast. Explain that the primary objective is achieving the Sprint Goal."],
+            correctAnswer: ["The SM should coach Joshua that the team commits to the Sprint Goal and not the initial forecast. Explain that the primary objective is achieving the Sprint Goal."],
+          },
+
+          {
+            // Question 22
+            question: "Which of the following sentences best describe the Scrum Master (SM) accountability in Scrum? (Select the best three answers)",
+            options: ["The SM orders the product backlog", "The SM acts as a servant leader","The SM facilitates decesion-making","The SM hires people who are a great match with the team","The SM causes the removal of impediments","The SM causes the removal of impediments"],
+            correctAnswer: ["The SM acts as a servant leader","The SM facilitates decesion-making","The SM causes the removal of impediments","The SM causes the removal of impediments"],
+          },
+
+          {
+            // Question 23
+            question: "A member of the Scrum Team (A) is constantly being interrupted by another Scrum Team (B) due to his expertise in an old web application. The Scrum Team asks you for help because the interruptions hinder the achieving of the Sprint Goals. What would you do?(Choose the best answer)",
+            options: ["Consider knowledge transfer. Talk to both teams and see if it's possible", "Talk to the Scrum Master to remove the impediment","Transfer the experienced member to the Scrum Team (B) and add a new member to Scrum Team (A)","Do nothing, the Scrum Teams are self-managing, they will deal with the issue"],
+            correctAnswer: ["Consider knowledge transfer. Talk to both teams and see if it's possible"],
+          },
+
+          {
+            // Question 24
+            question: "What is true about the formation of Scrum Teams? (Choose the best answer)",
+            options: ["The Product Owner collaborates with the Scrum Master to assign people to teams depending on their experience and knowledge", "Senior Project Managers assign people to teams, depending on the needs of each team","The members of the teams should self-organize into Scrum Teams. All they need is to know the Scrum and Agile boundaries"],
+            correctAnswer: ["The members of the teams should self-organize into Scrum Teams. All they need is to know the Scrum and Agile boundaries"],
+          },
+
+          {
+            // Question 25
+            question: "Select the true sentence: (Choose the best answer)",
+            options: ["Releasing a small increment that provides value, inspecting the results and planning what to do next is the correct approach when working under conditions of uncertainty", "The best way to find complexity is by using detailed upfront plans","As long as a project is on time and on budget, success is guaranteed",""],
+            correctAnswer: ["Releasing a small increment that provides value, inspecting the results and planning what to do next is the correct approach when working under conditions of uncertainty"],
+          },
+
+          {
+            // Question 26
+            question: "You are a CEO (Chief Executive Officer - the highest level of corporate executive).Susan, the CMO (Chief Marketing Officer) insists on developing and delivering a set of features that would help the product reach a wider audience. Joe, the Product Owner argues that this is not the right time and there is more important work (related to reducing Technical Debt) to be done in the Product Backlog. If the company waits, the opportunity Susan saw would disappear because the competitors would have taken advantage. What would you do? (Choose the best answer)",
+            options: ["Support Susan and tell the Product Owner to prioritize the set of features", "Ask Susan to go straight to the Developers and have them start planning and executing the set of features. Otherwise, the value might get out of line with the marketplace","Support Joe, he is the Product Owner and he knows best what's good for the Product"],
+            correctAnswer: ["Support Joe, he is the Product Owner and he knows best what's good for the Product"],
+          },
+
+          {
+            // Question 27
+            question: "What information would be useful before starting the development of a new product? (Select three answers)",
+            options: ["Share the Story Point target per Sprint", "Share how reporting will be done","Share what success looks like","Share the business goal","Share the end-users and their needs","Share a one-year upfront plan, the team has to stick to"],
+            correctAnswer: ["Share what success looks like","Share the business goal","Share the end-users and their needs"],
+          },
+
+          {
+            // Question 28
+            question: "You have to make an investment decision between two products. Product #1 - “The Productivity Masterclass” has low Current Value and high Unrealized Value. Product #2 - “The Productivity Stars” has high Current Value and low Unrealized Value. In which product should you be investing more? (Choose the best answer)",
+            options: ["Invest in both equally", "Invest more in the Productivity Stars","Invest more in the Productivity Masterclass",],
+            correctAnswer: ["Invest more in the Productivity Masterclass"],
+          },
+
+          {
+            // Question 29
+            question: "Why is it beneficial for companies to use the adaptive approach to development - Agile? (Choose the best answer)",
+            options: ["Because Agile helps Agile teams meet deadlines more effectively", "Because Agile helps companies save money on product development","Bacause Agile supports upfront planning and a good initial plan is all that's needed for a product to succeed","Because of the three pillars - transparency, inspection, and adaptation. An agile team can create and deliver a small increment, gather feedback from the end-users and plan the next step"],
+            correctAnswer: ["Because of the three pillars - transparency, inspection, and adaptation. An agile team can create and deliver a small increment, gather feedback from the end-users and plan the next step"],
+          },
+
+          {
+            // Question 30
+            question: "he smallest release possible is one that… (finish the sentence) (Choose the best answer)",
+            options: ["Delivers at least one product feature to the users of the product", "Delivers at least some incremental improvement in value (customer outcome) to the users of the product","Delivers at least one PBI from the top of the Product Backlog to the users of the product"],
+            correctAnswer: ["Delivers at least some incremental improvement in value (customer outcome) to the users of the product"],
+          },
+
+          {
+            // Question 31
+            question: "Several Agile Teams are working on different products. You are the CEO and you want to know the progress of each team. What is the best way to gather that information? (Choose the best answer)",
+            options: ["Ask each team to present velocity trends for the past 6 months and compare. Obviously, the team with the highest number of Story Points made the most progress", "Tell each them to deliver a monthly report on the progress","Tell each to create a 1-year forevast then compare the actual work vs the forecast on a monthly basis","Ask each team to present the progress toward the Product Goals on a monthly basis"],
+            correctAnswer: ["Ask each team to present the progress toward the Product Goals on a monthly basis"],
+          },
+
+          {
+            // Question 32
+            question: "Scrum is about value delivery. Which of the following does NOT have a direct relation to the team’s ability to deliver value? (Choose the best answer)",
+            options: ["User happiness (the team uses the Net Promoter Score(NPS) to determine the trend)", "The average velocity of the Scrum Teams (Only done PBIs are included in the calculation)","Technical debt(new bugs vs closed bugs trend)","A good indication is if the team achieves its Sprint Goals consistently"],
+            correctAnswer: ["The average velocity of the Scrum Teams (Only done PBIs are included in the calculation)"],
+          },
+
+          {
+            // Question 33
+            question: "Scrum Teams are cross-functional and self-managing. Cross-functionality helps the members of the team to develop a narrow technical specialization.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 34
+            question: "Which Scrum Event has to do with work process improvement?(Choose the best answer)",
+            options: ["Daily Scrum", "Release Planning","Sprint Planning","Sprint Retrospective","Sprint Review","The Sprint"],
+            correctAnswer: ["Sprint Retrospective"],
+          },
+
+          {
+            // Question 35
+            question: "What is the core benefit of the adaptive approach to development - Agile.(Choose the best answer)",
+            options: ["100% utilization of the available resources", "Risk minimization","Value maximization","Delivering on time and under budget"],
+            correctAnswer: ["Value maximization"],
+          },
+
+          {
+            // Question 36
+            question: "A Scrum Team does 2-week long Sprints. During Sprint #6, the Developers come to you, the Product Owner, and ask you for 2 more days to finish the remaining work. If you extend the Sprint by 2 days, they would be able to achieve the Sprint Goal. The Stakeholders would be happy as a result.(Choose the best answer)",
+            options: ["Extend the Sprint, after all the Developers commit to the Sprint Goal, and to achieve it, they have to do whatever it takes", "Don't extend the Sprint but ask the Developers to work overtime","We should respect the timeboxes of the Scrum events. Extending a Sprint is not allowed","Extend the Sprint under the condition that this will not happen again"],
+            correctAnswer: ["We should respect the timeboxes of the Scrum events. Extending a Sprint is not allowed"],
+          },
+
+          // Add more quizzes as needed
+        ],
+
+        [
+          // QUIZ 05
+          {
+            // Question 01
+            question: "How may a Scrum Team best show their value to the organization",
+            options: ["During each Sprint Review, the Product Owner provides value reports to stakeholders in attendance", "By consistent delivery of a quality increment by the end of each Sprint","Through the continous reporting the Daily Scrum","By eliminating technical debt"],
+            correctAnswer: ["By consistent delivery of a quality increment by the end of each Sprint"],
+          },
+          {
+            // Question 02
+            question: "What is Agile",
+            options: ["A set of values & principles", "A methodology for software development","A set of rules to guide complex product development","A methodology for product development",],
+            correctAnswer: ["A set of values & principles"],
+          },
+
+          {
+            // Question 03
+            question: "Creating an environment where agility is supported and helping remove impediments blocking team is a critical responsibility of an Agile leader",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 04
+            question: "Scrum is only effective when the team is small and the project is limited in scope. Traditional processes are better suited for larger and more complex projects",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 05
+            question: "Which of the following statements support an agile way of thinking?",
+            options: ["Predictability is the most important factor in the success of a product", "Projects only fail because people lack motivation and engagement","The lack of upfront planning results in most failures in product development","A sign of a good project manager is the ability of the team to follow the plan","Working on complex problems is often unpredictable and unexpected things will occur. The best approach is to learn from them"],
+            correctAnswer: ["Working on complex problems is often unpredictable and unexpected things will occur. The best approach is to learn from them"],
+          },
+
+          {
+            // Question 06
+            question: "Having complete management decision-making freedom is a requirement for a self-managing team",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 07
+            question: "Which of the following is not a principle from the Manifesto for Agile Software Development?",
+            options: ["At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly", "The most efficient and effective method of conveying information to and within a development team is via comprehensive documentation","Business people and developers must work together daily throughout the project","Our highest priority is to satisfy the customer through early and continous delivery of valuable software"],
+            correctAnswer: ["The most efficient and effective method of conveying information to and within a development team is via comprehensive documentation"],
+          },
+
+          {
+            // Question 08
+            question: "Your Scrum team forecasted it would deliver 7 Product Backlog items (PBI's) in the current sprint. 3 days before the end of the Sprint they realize 2 of those PBIs will not be done in time. What should you do?",
+            options: ["Raise transparency over the incomplete PBI's and add them to the Sprint Backlog for the next Sprint", "Motivate the Scrum Team to work harder to get the PBI's done. Predictability is critical","Extend the sprint to allow extra time to complete the planned work","Raise transparency over the incomplete PBI's and return them to the Product Backlog at the end of the Sprint"],
+            correctAnswer: ["Raise transparency over the incomplete PBI's and return them to the Product Backlog at the end of the Sprint"],
+          },
+
+          {
+            // Question 09
+            question: "Agile Maturity is a result of Role Maturity",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 10
+            question: "Documentation is not required once we are Agile in our approach to product development",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 11
+            question: "Which of the following can be used as a measurement of business agility",
+            options: ["The time it takes to go from having an idea to the point where a customer experiences the benefit of that idea and customer feedback has been gathered", "The number of Scrum Teams working on the same product. Increasing the number of teams working on a product will produce more value","How much budget was used compared to how much was allocated. Agile teams will deliver projects more quickly with less budget than a traditional team","The number of change requests during an active Sprint. Reducing the changes to the scope of work helps the team focus on delivering Increments"],
+            correctAnswer: ["The time it takes to go from having an idea to the point where a customer experiences the benefit of that idea and customer feedback has been gathered"],
+          },
+
+          {
+            // Question 12
+            question: "Once an organization becomes Agile it does not need managers",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 13
+            question: "Which of the following is not a key value area from the Scrum.org Evidence Based Management framework",
+            options: ["Current Value (CV)","Time to Market (T2M)", "Unrealized Value (UV)","Desire to Innovate (D2I)"],
+            correctAnswer: ["Desire to Innovate (D2I)"],
+          },
+
+          {
+            // Question 14
+            question: "The Current Value (CV) Key value area from the Scrum.org Evidence Based Management framework reveals",
+            options: ["The value that the organization delivers to customers, today","The net worth of the organization","The profit and loss account of the organization for the past financial year","The market capitalization of the organization"],
+            correctAnswer: ["The value that the organization delivers to customers, today"],
+          },
+
+          {
+            // Question 15
+            question: "A good way for management to provide support is to attend the Sprint Retrospective",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 16
+            question: "The complex domain is where",
+            options: ["More is known than unknown","More is unknown than known","Very little is known","Almost everything is unknown"],
+            correctAnswer: ["More is unknown than known"],
+          },
+
+          {
+            // Question 17
+            question: "The build-up of technical debt can impact the delivery of value to the customer",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 18
+            question: "An Agile leader delegates responsibility dependant on the maturity ıf the team",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 19
+            question: "Cross-functional teams reduce external dependencies",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+
+          {
+            // Question 20
+            question: "The person who holds the Product Owner accountability",
+            options: ["should have the ability to work on multiple products at the same time. This promotes cross sharing between different Product Owners and allows teams to have different view points and perspectives","is someone from management as they are responsible for influencing the stakeholders and delegating the work according to the schedule","should have proficient Project Management experience. The Product Owner role is an extension of the Project Manager role","is a single person that is empowered by the organization to make product decisions"],
+            correctAnswer: ["is a single person that is empowered by the organization to make product decisions"],
+          },
+
+          {
+            // Question 21
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 22
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 23
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 24
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 25
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 26
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 27
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 28
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 29
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 30
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 31
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 32
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 33
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 34
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 35
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 36
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          // Add more quizzes as needed
+        ],
+
+        [
+          // QUIZ 06
+          {
+            // Question 01
+            question: "Involving the team in Planning and Estimating and providing early feedback on Delivery Velocity is BEST used to mitigate what kind of risk?",
+            options: ["Poor Productivity", "Requirements creep","Employee turnover","Schedule flaws"],
+            correctAnswer: ["Schedule flaws"],
+          },
+          {
+            // Question 02
+            question: "As a Product Owner is sitting through a demonstration meeting for his product, he realizes that if changed the release schedule of a newly identified feature he could immediately increase the business value of the project without increasing the cost of implementation. By realizing this value and making this last minute adjustment which of the following best describes what was done to the project?",
+            options: ["Improved the quality of a feature in the product", "Increase the ROI of the project","Increase the risk of project failure","Change the requirements' specification"],
+            correctAnswer: ["Increase the ROI of the project"],
+          },
+
+          {
+            // Question 03
+            question: "Once a project is underway, the approach to planning is:",
+            options: ["Plans are not required", "Plans should only be changed with full approval of all stakeholders","It is normal to need to plan and re-plan as the project progresses","Plans should never be changed"],
+            correctAnswer: ["It is normal to need to plan and re-plan as the project progresses"],
+          },
+
+          {
+            // Question 04
+            question: "An Agile project should have: ",
+            options: ["An irregular and unpredictable delivery of products", "A regular pattern of delivery of business-values increments","A regular pattern of delivery of developer-focused products","Occasional early deliveries, if the business is prepared to accept lower quality"],
+            correctAnswer: ["A regular pattern of delivery of business-values increments"],
+          },
+
+          {
+            // Question 05
+            question: "In Agile development, when a developer estimates a story point by gauging the amount of effort required to complete a task based on the amount of time she will have to focus exclusively on the task, with no interruprions, what estimate unit is she using?",
+            options: ["Time box", "Velocity","Alternative Time","Ideal Time"],
+            correctAnswer: ["Ideal Time"],
+          },
+
+          {
+            // Question 06
+            question: "What outcomes would you expect for a newly formed team or from a Team where the team members keep changing?(Choose two best answers)",
+            options: ["The team will likely have communication and knowledge sharing challenges that will require help to resolve", "Having the right collaboration tools can make a distributed team as productive","Cost of delivering the product will be significantly high","Changing Team members will always result into an increased productivity as they come with new energy and enthusiasm to work","Velocity of the team will decrease"],
+            correctAnswer: ["The team will likely have communication and knowledge sharing challenges that will require help to resolve","Velocity of the team will decrease"],
+          },
+
+          {
+            // Question 07
+            question: "Burndown chart represents ...",
+            options: ["The velocity of the team", "Project Progress","The capacity of the team members","Amount of remaining work with respect to time"],
+            correctAnswer: ["Amount of remaining work with respect to time"],
+          },
+
+          {
+            // Question 08
+            question: "How do you implement action items captured in retrospective meeting?",
+            options: ["As overhead items in the current release", "As overhead items in the upcoming release","Update the Product Backlog and prioritize in the next iteration planning meeting to implement in coming iteration","Utilize the project slack"],
+            correctAnswer: ["Update the Product Backlog and prioritize in the next iteration planning meeting to implement in coming iteration"],
+          },
+
+          {
+            // Question 09
+            question: "Whose responsibility is it to create an environment where agility is supported and also help remove impediments to delivering 'done' products?",
+            options: ["Scrum Master", "Product Owners","Project Managers","Agile Leader","Developers"],
+            correctAnswer: ["Agile Leader"],
+          },
+
+          {
+            // Question 10
+            question: "What two things should be completed before moving on to the next iteration planning begins?",
+            options: ["The commitment ceremony and an iteration demo", "An iteration demo and a retrospective","Emergency request and an iteration demo","A retrospective and the commitment ceremony"],
+            correctAnswer: ["An iteration demo and a retrospective"],
+          },
+
+          {
+            // Question 11
+            question: "Which of the following is not a key value area from the Scrum.org Evidence Based Management framework",
+            options: ["Desire to Innovate (D2I)", "Time to Market (T2M)","Unrealized Value(UV)","Current Value (CV)"],
+            correctAnswer: ["Desire to Innovate (D2I)"],
+          },
+
+          {
+            // Question 12
+            question: "When forming an Agile project team it is best to use:",
+            options: ["Generalized Specialists", "All of the above","Top management officials","Highly specialized developers"],
+            correctAnswer: ["Generalized Specialists"],
+          },
+
+          {
+            // Question 13
+            question: "A team that focuses on delivering increments of functionality and removal of defects while making orderly process toward completing a release with potentially shippable functionality can best be described as?",
+            options: ["Value driven development", "Iteration planning","Business case development","Incremental delivery"],
+            correctAnswer: ["Incremental delivery"],
+          },
+
+          {
+            // Question 14
+            question: "Which Agile methodology advocates the use of problem domain?",
+            options: ["Scrum", "Evo","Extreme Programming (XP)","Feature-Driven Development (FDD)"],
+            correctAnswer: ["Feature-Driven Development (FDD)"],
+          },
+
+          {
+            // Question 15
+            question: "Benefits of having a cross-functional team are:",
+            options: ["Team will have reduced external dependencies", "Increases the opportunity of delivering value to the users","Team Members step outside their comfort zone to do their best","Team Members will develop and grow their individual skills (Learning from others etc)","Team will have less dependency on individual members"],
+            correctAnswer: ["Team will have reduced external dependencies", "Increases the opportunity of delivering value to the users","Team Members step outside their comfort zone to do their best","Team Members will develop and grow their individual skills (Learning from others etc)","Team will have less dependency on individual members"],
+          },
+
+          {
+            // Question 16
+            question: "When using an agile approach, company leaders and the team developing the product have the final say on whether a product release delivers value or not",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 17
+            question: "When a team is succesful ...",
+            options: ["It should be encouraged to celebrate immediately", "It should never celebrate as this makes less succesful teams feel bad","It should never celebrate as this wastes company money","It should be encouraged to celebrate success only when the project is over"],
+            correctAnswer: ["It should be encouraged to celebrate immediately"],
+          },
+
+          {
+            // Question 18
+            question: "In Scrum, when is a Sprint over?",
+            options: ["After completing all the Sprint Backlog items", "After completing all the Sprint Backlog tasks","When the time box expires","After completing the final testing"],
+            correctAnswer: ["When the time box expires"],
+          },
+
+          {
+            // Question 19
+            question: "You are a leader in an Agile organization. You are trying to goin information regarding the future product and goals of the Scrum Team. How should you do this?",
+            options: ["Consult with the Scrum Master and ask about status changes made to the team's goals. The Scrum Master should be tracking all the work that the Scrum Team performs and should be able to provide regular updates", "Attend the Daily Scrum and ask the team each day to update you on the status of their tasks","Consult with the Product Owner and ask about the Product Backlog, as the Product Backlog should contain the current state and current intended order of all future tasks to be worked on","Ensure that you are attending the Sprint Retrospective each Sprint so that you can question the Scrum Team on their planned goals and improvement activities"],
+            correctAnswer: ["Consult with the Product Owner and ask about the Product Backlog, as the Product Backlog should contain the current state and current intended order of all future tasks to be worked on"],
+          },
+
+          {
+            // Question 20
+            question: "Select the option that suits the Manifesto for Agile Software Development",
+            options: ["Working software","Individuals and interactions","Customer collaboration","All of the given options"],
+            correctAnswer: ["All of the given options"],
+          },
+
+          {
+            // Question 21
+            question: "What type of report provides a bird's eye view of the project. It may be produced when the teams updates their release plan, and will allow them to show their progress and predict a completion date",
+            options: ["An Iteration Plan", "A Burn-up chart","A Timee Usage Chart","A Management Report"],
+            correctAnswer: ["A Burn-up chart"],
+          },
+
+          {
+            // Question 22
+            question: "The Unrealized Value (JVpalq)",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 23
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 24
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 25
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 26
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 27
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 28
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 29
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 30
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 31
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 32
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 33
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 34
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 35
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 36
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          // Add more quizzes as needed
+        ],
+
+        [
+          // QUIZ 07
+          {
+            // Question 01
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 02
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 03
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 04
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 05
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 06
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 07
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 08
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 09
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 10
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 11
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 12
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 13
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 14
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 15
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 16
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 17
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 18
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 19
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 20
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 21
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 22
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 23
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 24
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 25
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 26
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 27
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 28
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 29
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 30
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 31
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 32
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 33
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 34
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 35
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 36
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          // Add more quizzes as needed
+        ],
+
+        [
+          // QUIZ 08
+          {
+            // Question 01
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 02
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 03
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 04
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 05
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 06
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 07
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 08
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 09
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 10
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 11
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 12
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 13
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 14
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 15
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 16
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 17
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 18
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 19
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 20
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 21
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 22
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 23
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 24
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 25
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 26
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 27
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 28
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 29
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 30
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 31
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 32
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 33
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 34
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 35
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          {
+            // Question 36
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+
+          // Add more quizzes as needed
+        ],
+      ];
+
+      function startQuiz() {
+        document.getElementById("quiz-container").innerHTML = "";
+        displayQuestion();
+        updateQuestionStatus();
+      }
+
+      function updateQuestionStatus() {
+        const questionStatus = document.getElementById("question-status");
+        const totalQuestions = quizzes[selectedQuiz].length;
+        questionStatus.innerText = `Questions Answered: 0 / Total Questions: ${totalQuestions}`;
+      }
+
+      function displayQuestion() {
+        const quizContainer = document.getElementById("quiz-container");
+        const questionData = quizzes[selectedQuiz][currentQuestion];
+
+        if (testFinished) {
+          showResults();
+          return;
+        }
+
+        if (answeredQuestions.includes(currentQuestion)) {
+          quizContainer.innerHTML =
+            "<p>You have already answered this question.</p>";
+          return;
+        }
+
+        const questionBox = document.createElement("div");
+        questionBox.classList.add("question-box");
+
+        const questionNumber = document.createElement("div");
+        questionNumber.classList.add("question-number");
+        questionNumber.innerHTML = `<a class="question-number-top" href="javascript:void(0);" onclick="goToQuestion(${currentQuestion})">Question ${
+          currentQuestion + 1
+        }</a>`;
+
+        const questionText = document.createElement("div");
+        questionText.classList.add("question-text");
+        questionText.innerText = questionData.question;
+
+        const answerOptions = document.createElement("div");
+        answerOptions.classList.add("answer");
+        const checkboxes = [];
+        questionData.options.forEach((option) => {
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = option;
+          checkboxes.push(checkbox);
+          answerOptions.appendChild(checkbox);
+          answerOptions.appendChild(document.createTextNode(option));
+          answerOptions.appendChild(document.createElement("br"));
+        });
+
+        const submitBtn = document.createElement("button");
+        submitBtn.classList.add("btn", "btn-submit");
+        submitBtn.innerText = "Submit Answer";
+        submitBtn.onclick = submitAnswer;
+        submitBtn.disabled = true;
+
+        checkboxes.forEach((checkbox) => {
+          checkbox.addEventListener("change", () => {
+            submitBtn.disabled = !checkboxes.some(
+              (checkbox) => checkbox.checked
+            );
+          });
+        });
+
+        questionBox.appendChild(questionNumber);
+        questionBox.appendChild(questionText);
+        questionBox.appendChild(answerOptions);
+        questionBox.appendChild(submitBtn);
+
+        quizContainer.appendChild(questionBox);
+
+        displayQuestionNumbers();
+        addHomeButton();
+      }
+
+      function submitAnswer() {
+        if (answeredQuestions.includes(currentQuestion)) {
+          return;
+        }
+
+        const checkedCheckboxes = document.querySelectorAll(
+          ".question-box input:checked"
+        );
+        const userSelectedOptions = Array.from(checkedCheckboxes).map(
+          (checkbox) => checkbox.value
+        );
+
+        const correctAnswer =
+          quizzes[selectedQuiz][currentQuestion].correctAnswer;
+
+        const isCorrect = arraysEqual(userSelectedOptions, correctAnswer);
+        userAnswers.push({ question: currentQuestion + 1, correct: isCorrect });
+        answeredQuestions.push(currentQuestion);
+
+        displayFeedback(isCorrect);
+        addHomeButton();
+      }
+
+      function displayFeedback(isCorrect) {
+        const quizContainer = document.getElementById("quiz-container");
+        const feedbackMessage = document.createElement("div");
+
+        if (isCorrect) {
+          feedbackMessage.innerText = "Correct!";
+          feedbackMessage.style.color = "#28A745";
+        } else {
+          const correctAnswer =
+            quizzes[selectedQuiz][currentQuestion].correctAnswer.join(", ");
+          feedbackMessage.innerText = `Incorrect. Correct answer: ${correctAnswer}`;
+          feedbackMessage.style.color = "#DC3545";
+        }
+
+        quizContainer.appendChild(feedbackMessage);
+
+        if (currentQuestion === quizzes[selectedQuiz].length - 1) {
+          const finishBtn = document.createElement("button");
+          finishBtn.classList.add("btn", "btn-next");
+          finishBtn.innerText = "Finish Test";
+          finishBtn.onclick = finishTest;
+          quizContainer.appendChild(finishBtn);
+        } else {
+          const nextBtn = document.createElement("button");
+          nextBtn.classList.add("btn", "btn-next");
+          nextBtn.innerText = "Next Question";
+          nextBtn.onclick = nextQuestion;
+          quizContainer.appendChild(nextBtn);
+        }
+
+        displayQuestionNumbers();
+        addHomeButton();
+      }
+
+      function nextQuestion() {
+        const quizContainer = document.getElementById("quiz-container");
+        quizContainer.innerHTML = "";
+
+        currentQuestion++;
+
+        if (currentQuestion < quizzes[selectedQuiz].length) {
+          displayQuestion();
+        }
+      }
+
+      function finishTest() {
+        testFinished = true;
+        showResults();
+      }
+
+      function showResults() {
+        const quizContainer = document.getElementById("quiz-container");
+        quizContainer.innerHTML = "";
+
+        const resultsMessage = document.createElement("div");
+        resultsMessage.classList.add("results-message");
+        resultsMessage.innerText = "Test Completed";
+
+        const correctAnswers = userAnswers.filter(
+          (answer) => answer.correct
+        ).length;
+        const wrongAnswers = userAnswers.length - correctAnswers;
+
+        const resultsSummary = document.createElement("div");
+        resultsSummary.classList.add("results-summary");
+        resultsSummary.innerHTML = `Correct Answers: ${correctAnswers}<br>Wrong Answers: ${wrongAnswers}`;
+
+        const selectQuizBtn = document.createElement("button");
+        selectQuizBtn.classList.add("btn", "btn-next");
+        selectQuizBtn.innerText = "Select Quiz";
+        selectQuizBtn.onclick = selectQuiz;
+
+        quizContainer.appendChild(resultsMessage);
+        quizContainer.appendChild(resultsSummary);
+        quizContainer.appendChild(selectQuizBtn);
+
+        displayQuestionNumbers();
+        addHomeButton();
+      }
+
+      function displayQuestionNumbers() {
+        const questionNumbersContainer =
+          document.getElementById("question-numbers");
+        questionNumbersContainer.innerHTML = "";
+
+        for (let i = 0; i < quizzes[selectedQuiz].length; i++) {
+          const questionNumber = document.createElement("span");
+          questionNumber.classList.add("question-number-top");
+          questionNumber.innerHTML = `<a href="javascript:void(0);" onclick="goToQuestion(${i})">${
+            i + 1
+          }</a>`;
+          questionNumbersContainer.appendChild(questionNumber);
+        }
+      }
+
+      function goToQuestion(index) {
+        currentQuestion = index;
+        document.getElementById("quiz-container").innerHTML = "";
+        displayQuestion();
+      }
+
+      function goToHome() {
+        selectQuiz();
+      }
+
+      function addHomeButton() {
+        const homeButton = document.createElement("button");
+        homeButton.classList.add("btn", "btn-home");
+        homeButton.innerText = "Home";
+        homeButton.onclick = goToHome;
+
+        const navbar = document.getElementById("navbar");
+        navbar.innerHTML = ""; // Clear existing content
+        navbar.appendChild(homeButton);
+      }
+
+      function arraysEqual(arr1, arr2) {
+        return (
+          arr1.length === arr2.length &&
+          arr1.every((value, index) => value === arr2[index])
+        );
+      }
+    </script>
+  </body>
+</html>
