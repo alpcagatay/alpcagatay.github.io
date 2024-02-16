@@ -1,0 +1,3829 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        min-height: 100vh; /* Ensure at least 100% viewport height */
+      }
+
+      #navbar {
+        background-color: #f8f9fa; /* Set to match the background color */
+        color: #ffffff;
+        padding: 10px;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+      }
+
+      .btn-home {
+        cursor: pointer;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1em;
+        margin: 10px; /* Add margin to buttons for better spacing */
+      }
+
+      #quiz-container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        max-width: 600px;
+        width: 90%;
+        margin: 80px auto 20px; /* Adjusted margin for better spacing */
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.5em;
+      }
+
+      .start-button,
+      .btn,
+      .btn-quiz,
+      .btn-next,
+      .btn-home {
+        cursor: pointer;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1em;
+        margin: 10px; /* Add margin to buttons for better spacing */
+      }
+
+      .question-box {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin: 20px;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .question-number,
+      .question-number-top {
+        display: inline-block;
+        background-color: #007bff;
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .question-text {
+        margin-bottom: 20px;
+        font-size: 1.2em;
+      }
+
+      .answer {
+        margin-bottom: 10px;
+        text-align: left;
+      }
+
+      input[type="checkbox"] {
+        margin-right: 5px;
+      }
+
+      .feedback-message {
+        margin: 20px 0;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+
+      .results-message {
+        background-color: #28a745;
+        color: #ffffff;
+        margin: 0;
+        padding: 20px;
+        font-size: 1.5em;
+      }
+
+      .results-summary {
+        margin: 20px 0;
+        font-size: 1.2em;
+      }
+
+      .btn-quiz {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      @media (min-width: 768px) {
+        #quiz-container {
+          width: 70%;
+          margin-top: 120px; /* Adjusted margin for better spacing */
+        }
+      }
+    </style>
+    <title>Modern Quiz App</title>
+  </head>
+  <body>
+    <div id="navbar">
+      <button class="btn-home" onclick="selectQuiz()">Home</button>
+    </div>
+    <div id="quiz-container">
+      <h1>Quiz App</h1>
+      <div id="question-numbers" class="question-numbers"></div>
+      <p id="question-status"></p>
+      <button class="start-button" onclick="selectQuiz()">Select Quiz</button>
+    </div>
+
+    <script>
+      let selectedQuiz = null;
+      let currentQuestion = 0;
+      let userAnswers = [];
+      let answeredQuestions = [];
+      let testFinished = false;
+
+      function selectQuiz() {
+        // Reset variables
+        currentQuestion = 0;
+        userAnswers = [];
+        answeredQuestions = [];
+        testFinished = false;
+
+        const quizContainer = document.getElementById("quiz-container");
+        quizContainer.innerHTML = "";
+
+        const selectQuizMessage = document.createElement("div");
+        selectQuizMessage.innerText = "Select a Quiz:";
+
+        const quizButtons = [];
+
+        for (let i = 1; i <= 16; i++) {
+          const quizBtn = document.createElement("button");
+          quizBtn.classList.add("btn", "btn-quiz");
+          quizBtn.innerText = `Quiz ${i}`;
+          quizBtn.onclick = function () {
+            selectedQuiz = i - 1;
+            startQuiz();
+          };
+          quizButtons.push(quizBtn);
+        }
+
+        quizContainer.appendChild(selectQuizMessage);
+        quizButtons.forEach((btn) => quizContainer.appendChild(btn));
+      }
+
+      const quizzes = [
+        [
+          // QUIZ 01
+          {
+            // Question 01
+            question:
+              "In order to justify the price increase of a product, your primary objective should be to (choose the best answer)",
+            options: [
+              "Enhance the product by adding more features",
+              "Improve the value experienced by the customer",
+              "Reduce the number of features to improve ease of use",
+              "Lower the price temporarily before raising it higher than the original",
+            ],
+            correctAnswer: ["Improve the value experienced by the customer"],
+          },
+          {
+            // Question 02
+            question:
+              "Which two Scrum Values are primarily impacted when an individual or team switches tasks or encounters interruptions often? (choose the best two answers)",
+            options: ["Openness", "Respect", "Focus", "Commitment", "Courage"],
+            correctAnswer: ["Focus", "Commitment"],
+          },
+          {
+            // Question 03
+            question:
+              "The Sprint Backlog represents the Sprint forecast, but what is the best description of a Sprint forecast? (choose the best answer)",
+            options: [
+              "A commitment by the Developers to deliver a particular set of Product Backlog items",
+              "Useful for stakeholders to know what tasks individual Developers are responsible for",
+              "The amount of work the Developers believe they can complete in that Sprint",
+              "A tool for management to monitor team performance and capacity",
+            ],
+            correctAnswer: [
+              "The amount of work the Developers believe they can complete in that Sprint",
+            ],
+          },
+          {
+            // Question 04
+            question:
+              "Why does Agile insist on frequent product releases? (choose the best option)",
+            options: [
+              "They help teams better understand and meet customer needs",
+              "They enable teams to inspect and adapt more frequently",
+              "Smaller, more frequent releases are less risky",
+              "They help teams to learn how to correct and eliminate errors",
+              "All of the above",
+              "None of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+          {
+            // Question 05
+            question:
+              "When should the project plan be updated? (choose the best answer)",
+            options: [
+              "The project plan must be updated before to the Daily Scrum",
+              "Before the Sprint Planning to know how much work will have to be done in the Sprint",
+              "The Product Backlog is the plan in Scrum. It is updated as new information and insights emerge",
+              "After the Daily Scrum to ensure an accurate daily overview of project progress.",
+            ],
+            correctAnswer: [
+              "The Product Backlog is the plan in Scrum. It is updated as new information and insights emerge",
+            ],
+          },
+          {
+            // Question 06
+            question:
+              "Your organization has recently adopted Scrum. Management seeks to quantify the benefits gained by Scrum thus far. Which metrics are most useful in assessing if value is being delivered in terms of the features released and the organizations' adoption of Scrum. Which two metrics would be most suitable? (choose the best two options)",
+            options: [
+              "Time to market",
+              "Team velocity",
+              "Expenditure",
+              "Work efficiency",
+              "Customer satisfaction",
+            ],
+            correctAnswer: ["Time to market", "Customer satisfaction"],
+          },
+          {
+            // Question 07
+            question:
+              "If the Product Owner is struggling to find time to complete all of his/her work, what can he/she do to ensure the Product Owner accountabilities are met? (choose the best answer)",
+            options: [
+              "Divide the Product Owner role into Business Product Owner and Technical Product Owner roles to share the work",
+              "Delegate tasks to Developers, like detailing Product Backlog items, interviewing users, and analyzing data",
+              "Reduce the product into components, and assign a Product Owner to each, then assume the role of Chief Product Owner responsible for the integrated product.",
+              "All of the above",
+              "None of the above",
+            ],
+            correctAnswer: [
+              "Delegate tasks to Developers, like detailing Product Backlog items, interviewing users, and analyzing data",
+            ],
+          },
+          {
+            // Question 08
+            question:
+              "The smallest amount of progress that can still be considered valuable enough to be released is one that: (choose the best option)",
+            options: [
+              "Fixes at least one defect",
+              "Delivers all Sprint Backlog items",
+              "Adds a new feature",
+              "Delivers a single new or improved outcome",
+            ],
+            correctAnswer: ["Delivers a single new or improved outcome"],
+          },
+          {
+            // Question 09
+            question:
+              "A separate Product Owner and Product Backlog is needed for every: (choose the correct answer)",
+            options: ["Project", "Program", "Product", "Portfolio"],
+            correctAnswer: ["Product"],
+          },
+          {
+            // Question 10
+            question:
+              "Why would you consider reducing investment in a product? (choose the best option)",
+            options: [
+              "When the Current Value is extremely low",
+              "When the unrealized value is extremely high",
+              "When the Current Value is extremely high",
+              "When the unrealized value is extremely low",
+              "None of the above",
+            ],
+            correctAnswer: ["When the unrealized value is extremely low"],
+          },
+          {
+            // Question 11
+            question:
+              "Which two Key Value Areas are primarily impacted when an individual or team switches tasks or encounters interruptions often? (choose the best two answers)",
+            options: [
+              "Current Value",
+              "Ability to Innovate",
+              "Unrealized Value",
+              "Time to Market",
+              "All of the above",
+            ],
+            correctAnswer: ["Ability to Innovate", "Time to Market"],
+          },
+          {
+            // Question 12
+            question:
+              "After a recent big release, you as the Product Owner look at the usage data per feature, new and old. To your surprise the data reveals that several features you and your stakeholders deemed crucial are actually among the least used by your customers. What steps would you take to investigate this situation? (select all that apply)",
+            options: [
+              "Consider removing the features that have never been used",
+              "Design an experiment to identify the features users perceive as valuable",
+              "Immediately remove the least-used features",
+              "Conduct further analysis on the newly released features to determine if developers implemented them correctly",
+              "Engage with some of your users to gain a better understanding of their needs",
+            ],
+            correctAnswer: [
+              "Consider removing the features that have never been used",
+              "Design an experiment to identify the features users perceive as valuable",
+              "Conduct further analysis on the newly released features to determine if developers implemented them correctly",
+              "Engage with some of your users to gain a better understanding of their needs",
+            ],
+          },
+          {
+            // Question 13
+            question:
+              "Over the last few Sprints the Developers have struggled to get all their forecasted work done to meet the Sprint Goals. What should the Product Owner do to help the Developers to improve their forecasting for the next few Sprints? (choose all that apply)",
+            options: [
+              "The Product Owner should spend more time with the Developers",
+              "Change low performing Developers for high performers",
+              "Bring this up in the next Sprint Retrospective to discuss why this happens and what changes will help to fix it",
+              "Ask the Scrum Master to show the developers techniques for improve their ability to forecast work",
+              "Add more developers to the team so they can get more done",
+            ],
+            correctAnswer: [
+              "The Product Owner should spend more time with the Developers",
+              "Bring this up in the next Sprint Retrospective to discuss why this happens and what changes will help to fix it",
+              "Ask the Scrum Master to show the developers techniques for improve their ability to forecast work",
+            ],
+          },
+          {
+            // Question 14
+            question:
+              "Who is accountable for ensuring the Product Goal is communicated and maintained? (choose the best answer)",
+            options: [
+              "Stakeholders",
+              "Executive Sponsors",
+              "The Developers",
+              "The Product Owner",
+              "All of the above",
+            ],
+            correctAnswer: ["The Product Owner"],
+          },
+          {
+            // Question 15
+            question:
+              "When a user's expectations of a product are not met, meaning their desired experience does not meet their actual experience, this is described as... (choose the best answer)",
+            options: [
+              "Expectation experience drift",
+              "Unattainable user expectations",
+              "A product failure",
+              "The user satisfaction gap",
+            ],
+            correctAnswer: ["The user satisfaction gap"],
+          },
+          {
+            // Question 16
+            question:
+              "After examining your product's customer base, you discover that various customer types utilize your product in distinct ways. Given this insight, what is the best thing to do? (choose the best answer)",
+            options: [
+              "Maintain a single product but adopt different marketing strategies for each customer type",
+              "Consider developing seperate products tailored to the needs of each customer type",
+              "Take no action, focus on new features to attract new customers and boost sales",
+              "Retain a single product, ensuring that each release caters to every customer type",
+            ],
+            correctAnswer: [
+              "Consider developing seperate products tailored to the needs of each customer type",
+            ],
+          },
+          {
+            // Question 17
+            question:
+              "As a Product Owner, you are faced with multiple stakeholders, each with at least one feature they consider crucial for the next release. You have verified that these feature requests are valid and could enhance your product. What is the best course of action? (Choose the best answer)",
+            options: [
+              "Escalate the situation to the steering committee for a decision",
+              "Prioritize the needs of the two most influential stakeholders and release once their requirements are met",
+              "Release the product once you can deliver at least one valuable outcome, even if not all features have been implemented",
+              "Delay the release until all essential features are completed and integrated into the product",
+            ],
+            correctAnswer: [
+              "Release the product once you can deliver at least one valuable outcome, even if not all features have been implemented",
+            ],
+          },
+          {
+            // Question 18
+            question:
+              "If Product Backlog items are not clear during Sprint Planning what might happen? (choose the best 2 answers)",
+            options: [
+              "The team cancel the meeting so backlog refinement can be done first",
+              "The Scrum Master has failed, the Scrum Master is changed and the Sprint is re-started",
+              "Sprint Planning will take longer as the Product Owner needs to explain backlog items",
+              "The Developers will have difficulty creating a forecast of work for the Sprint without more clarity",
+              "Nothing, so long as the Product Owner gives the Developers a clear Sprint Goal",
+              "There will be no impact on Sprint Planning or the Sprint",
+            ],
+            correctAnswer: [
+              "Sprint Planning will take longer as the Product Owner needs to explain backlog items",
+              "The Developers will have difficulty creating a forecast of work for the Sprint without more clarity",
+            ],
+          },
+          {
+            // Question 19
+            question:
+              "The company you work for desperately needs to boost the market share of one of its key products. The sales department is urging for a price reduction to lure more customers with attractive prices, while the accounts department is worried about a potential loss of profitability with reduced prices. What are the top four sources of information to consider when evaluating the sales leader's proposal to reduce the price?",
+            options: [
+              "Competitor pricing analysis",
+              "Examination of customer satisfaction levels",
+              "Company's earning targets",
+              "Identification of unaddressed customer needs",
+              "Assessment of the channel sales strategy",
+              "Market share analysis",
+            ],
+            correctAnswer: [
+              "Competitor pricing analysis",
+              "Examination of customer satisfaction levels",
+              "Identification of unaddressed customer needs",
+              "Market share analysis",
+            ],
+          },
+          {
+            // Question 20
+            question:
+              "What are the key advantages of a Product Owner sharing a well-defined Product Vision and ensuring everyone understands it properly? (select the top three answers)",
+            options: [
+              "A Product Vision enables the Sprint Review to assess incremental progress effectively",
+              "A Product Vision helps the Scrum Team to commit to completing the remaining work in the Product Backlog",
+              "It keeps the Scrum Team focused and offers a reference point for their decisions",
+              "A Product Vision is not compulsory in Scrum, and it doesn't provide any direct advantages",
+              "A Product Vision offers a comprehensive direction, ensuring that Sprints deliver significant value",
+            ],
+            correctAnswer: [
+              "A Product Vision enables the Sprint Review to assess incremental progress effectively",
+              "It keeps the Scrum Team focused and offers a reference point for their decisions",
+              "A Product Vision offers a comprehensive direction, ensuring that Sprints deliver significant value",
+            ],
+          },
+          {
+            // Question 21
+            question:
+              "Your company is trying to raise venture capital. Your CEO has asked you to speak with a potential stakeholder investor. This person wants to see data to assess the value your product is delivering. Which measures might give insight into this? (choose all that apply)",
+            options: [
+              "The average selling price as compared to close competitors",
+              "Revenue per Employee",
+              "Market Share",
+              "Product profitability",
+              "The weekly velocity of the Developers",
+            ],
+            correctAnswer: [
+              "The average selling price as compared to close competitors",
+              "Revenue per Employee",
+              "Market Share",
+              "Product profitability",
+            ],
+          },
+          {
+            // Question 22
+            question:
+              "What will the Product Owner most likely be doing during the Sprint? (choose be best 3)",
+            options: [
+              "Updating the Sprint burndown chart",
+              "Gathering more information and opinions from stakeholders",
+              "Prioritizing the Developers tasks in the Sprint Backlog",
+              "Answer questions from the Developers about items in the current Sprint",
+              "Reordering items in the Product Backlog",
+              "Running the Daily Scrum",
+            ],
+            correctAnswer: [
+              "Gathering more information and opinions from stakeholders",
+              "Answer questions from the Developers about items in the current Sprint",
+              "Reordering items in the Product Backlog",
+            ],
+          },
+          {
+            // Question 23
+            question:
+              "You work for a bank that has many financial products such as investment funds, credit cards, high interest savings accounts and more. The issue is, when one of these products changes it impacts the return on investment (ROI) and this has a knock on effect to the other products the bank offers as investors compare ROI between the products. What can you do to reduce this issue?(choose the best answer)",
+            options: [
+              "Ensure that the Program Office manages all release of all products",
+              "From products that are as independent as possible and let each product determine their own release plans, but ensure coordination",
+              "Appoint one Product Owner to oversee all the product",
+              "To ensure consistency, create a centralized and coordinated multi-product development plan",
+              "All of the above",
+            ],
+            correctAnswer: [
+              "From products that are as independent as possible and let each product determine their own release plans, but ensure coordination",
+            ],
+          },
+          {
+            // Question 24
+            question:
+              "When should the Scrum Team do Product Backlog refinement? (choose the best 2 answers)",
+            options: [
+              "It must be done by Sprint 0",
+              "During any Sprint as needed, ideally in advance of the upcoming Sprint",
+              "The Product Owner takes the time between the Sprints to do it",
+              "In the current Sprint if they have been unable to do it in preceding Sprints",
+              "Business Analysts will do the refinement work for the Scrum Team, usually 1-2 sprints ahead of the development Sprints",
+            ],
+            correctAnswer: [
+              "During any Sprint as needed, ideally in advance of the upcoming Sprint",
+              "In the current Sprint if they have been unable to do it in preceding Sprints",
+            ],
+          },
+          {
+            // Question 25
+            question:
+              "Which of the below are mandatory in Scrum? (choose all that apply)",
+            options: [
+              "Refactoring",
+              "Burndown chart",
+              "Project Gannt chart",
+              "Critical Path Analysis",
+              "Feature burn-up",
+              "None of the above",
+            ],
+            correctAnswer: ["None of the above"],
+          },
+          {
+            // Question 26
+            question:
+              "Burndown charts are a visual aid to showing progress, what does it track? (choose the best option)",
+            options: [
+              "Accumulated business value delivered to the customer",
+              "Accumulated cost",
+              "Work remaining across time",
+              "Individual worker productivity",
+            ],
+            correctAnswer: ["Work remaining across time"],
+          },
+          {
+            // Question 27
+            question:
+              "In the context of Scrum, how should budgeting and financial forecasting be approached? (choose the best two options)",
+            options: [
+              "Budgeting is unnecessary since the only required funding pertains to the operational costs of Scrum Team",
+              "Fund a single release through multiple Sprints, with each Sprint delivering shippable increments",
+              "Establish a fixed budget and guarantee that the project is completed on schedule, within the defined scope, and adhering to the budget",
+              "Scrum is incompatible with traditional accounting practices, so the finance department should allocate a fixed cost per Sprint for each team",
+              "Regularly examine the results of delivered Sprint Increments to assess the value produced relative to the investment made",
+            ],
+            correctAnswer: [
+              "Fund a single release through multiple Sprints, with each Sprint delivering shippable increments",
+              "Regularly examine the results of delivered Sprint Increments to assess the value produced relative to the investment made",
+            ],
+          },
+          {
+            // Question 28
+            question:
+              "You are an experienced Product Owner and team leader. You want to ensure your vision inspires and creates motivation. Which of the below elements might you included in the Product Vision and strategy to maintain enthusiasm for the product among stakeholders? (choose all that apply)",
+            options: [
+              "A description of how the product will generate revenue",
+              "A description of how your product will be used to achieve outcomes",
+              "A description of how the product's users and what they want to achieve",
+              "A description of how the product competes agianst others in the market",
+              "A description of what value the product brings to the users and how it can be measured",
+            ],
+            correctAnswer: [
+              "A description of how the product will generate revenue",
+              "A description of how your product will be used to achieve outcomes",
+              "A description of how the product's users and what they want to achieve",
+              "A description of how the product competes agianst others in the market",
+              "A description of what value the product brings to the users and how it can be measured",
+            ],
+          },
+          {
+            // Question 29
+            question:
+              "You have a furniture company that manufactures multiple products. You are considering the allocation of new investment funds for 2 products in particular. Product A has a wider target audience but experiences lower customer satisfaction, and Product B currently generates higher revenue. Given this information, which of the below investment approaches would you pick?",
+            options: [
+              "Initially inves in both equally, regularly evaluating the effects of new investments and marketing campaigns for both products",
+              "Explore increasing marketing efforts for Product B to grow its market share",
+              "Invest in Product A to enhance its market share, customer satisfaction, and revenue generation",
+            ],
+            correctAnswer: [
+              "Invest in Product A to enhance its market share, customer satisfaction, and revenue generation",
+            ],
+          },
+          {
+            // Question 30
+            question:
+              "Managing the Product Backlog involves which of the following? (choose all that apply)",
+            options: [
+              "Ordering the items",
+              "Forecasting the effort required of Product Backlog items",
+              "Breaking large Product Backlog items into multiple smaller Product Backlog items",
+              "Reducing or ideally eliminating dependencies between items",
+              "Reviewing the Product Backlog items with stakeholders",
+            ],
+            correctAnswer: [
+              "Ordering the items",
+              "Forecasting the effort required of Product Backlog items",
+              "Breaking large Product Backlog items into multiple smaller Product Backlog items",
+              "Reducing or ideally eliminating dependencies between items",
+              "Reviewing the Product Backlog items with stakeholders",
+            ],
+          },
+        ],
+
+        [
+          // QUIZ 02
+          {
+            // Question 01
+            question:
+              "As a Product Owner in scaled Scrum with multiple Scrum teams, what approach would be most beneficial when you are unable to dedicate enough time to each team?(choose the best option)",
+            options: [
+              "Collaborate with the Program Management Office to receive the necessary support",
+              "Ensure all Scrum Teams have a thorough grasp of the Product Vision, so they can be guided by it if you delegate certain tasks to the Developes",
+              "Assemble a group of Proxy Product Owners from the current Scrum Team members",
+              "All the above options are valid, the decision depends on the specific situations",
+              "Hire additional Product Owners for every product component",
+            ],
+            correctAnswer: [
+              "Ensure all Scrum Teams have a thorough grasp of the Product Vision, so they can be guided by it if you delegate certain tasks to the Developes",
+            ],
+          },
+          {
+            // Question 02
+            question:
+              "You are put in a difficult position by the Executive team. Your product is losing paying customers. The CEO believes new features delivered at a quicker rate will bring customers back. The marketing executive thinks the loss of customers is down to a shrinking market and increasing new feature releases will not make much difference at this point. Which action might you take? (choose the best answer)",
+            options: [
+              "Acknowledge the views of the CEO but decline to add more features to the product",
+              "Agree with the CEO and add features to the Product Backlog as it might increase your customer base",
+              "Suggest voting to the stakeholders to decide which options should be considered",
+              "Collaborate with the Executive team to run a small experiment to make an informed decision",
+            ],
+            correctAnswer: [
+              "Collaborate with the Executive team to run a small experiment to make an informed decision",
+            ],
+          },
+          {
+            // Question 03
+            question:
+              "A new social media app has entered the market and is starting to steal customers away from your company's primary social media product. Your competition releases new and useful features quicker than you can and their customers are more satisfied. You realise you need to improve your T2M. How can you do this? (choose all that apply)",
+            options: [
+              "Removing internal communication bottlenecks",
+              "Removing activities that do not add value to the development and delivery process",
+              "Taking control of and improve the delivery pipeline",
+              "Use automation to improve speed",
+              "Reducing the number of features in each product release",
+            ],
+            correctAnswer: [
+              "Removing internal communication bottlenecks",
+              "Removing activities that do not add value to the development and delivery process",
+              "Taking control of and improve the delivery pipeline",
+              "Use automation to improve speed",
+              "Reducing the number of features in each product release",
+            ],
+          },
+          {
+            // Question 04
+            question:
+              "Managing the Product Backlog involves which of the following? (choose all that apply)",
+            options: [
+              "Reducing or ideally eliminating dependencies between items",
+              "Breaking large Product Backlog items into multiple smaller Product Backlog items",
+              "Forecasting the effort required of Product Backlog items",
+              "Reviewing the Product Backlog items with stakeholders",
+              "Ordering the items by priority",
+            ],
+            correctAnswer: [
+              "Reducing or ideally eliminating dependencies between items",
+              "Breaking large Product Backlog items into multiple smaller Product Backlog items",
+              "Forecasting the effort required of Product Backlog items",
+              "Reviewing the Product Backlog items with stakeholders",
+              "Ordering the items by priority",
+            ],
+          },
+          {
+            // Question 05
+            question:
+              "During Sprint Planning the Product Owner insists on a large scope for the Sprint Goal. The Backlog items chosen are getting greater than the Developers believe they can meet in the Sprint. Which actions should be taken? (choose all that apply)",
+            options: [
+              "The Developers ensure that the Product Owner is aware, start the Sprint and monitor progress",
+              "Change or remove selected Product Backlog items whilst considering Sprint Goal",
+              "Start the Sprint and recruit additional Developers to help",
+              "Ask the Developers to work overtime for this Sprint and promise that it will not happen again",
+              "Do not start the Sprint and take a pause between Sprints to work on backlog refinement",
+            ],
+            correctAnswer: [
+              "The Developers ensure that the Product Owner is aware, start the Sprint and monitor progress",
+              "Change or remove selected Product Backlog items whilst considering Sprint Goal",
+            ],
+          },
+          {
+            // Question 06
+            question:
+              "If Sprint Backlog items are not clear what might be the concerns? (choose the best 4 answers)",
+            options: [
+              "Development time might be wasted",
+              "The Scrum Master has failed, the Scrum Master is changed and the Sprint is re-started",
+              "Decisions made on those items may be bad decisions",
+              "There is no concern, the Developers do not need the items to be clear",
+              "The Developers will have difficulty creating a forecast of work for the Sprint without more clarity",
+              "The team might have different understandings and different basis for adaptation",
+            ],
+            correctAnswer: [
+              "Development time might be wasted",
+              "Decisions made on those items may be bad decisions",
+              "The Developers will have difficulty creating a forecast of work for the Sprint without more clarity",
+              "The team might have different understandings and different basis for adaptation",
+            ],
+          },
+          {
+            // Question 07
+            question:
+              "Why does Agile insist on frequent product releases? (choose the best option)",
+            options: [
+              "Smaller more frequent releases are less risky",
+              "They enable teams to inspect and adapt more frequently",
+              "They help teams better understand and meet customer needs",
+              "They help teams to learn how to correct and eliminate errors",
+              "All of the above",
+              "None of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+          {
+            // Question 08
+            question:
+              "During the Sprint, what will the Product Owner be doing? (choose the best 3)",
+            options: [
+              "Gathering more information and opinions from stakeholders",
+              "Reordering items in the Product Backlog",
+              "Running the Daily Scrum",
+              "Prioritizing the Developers' tasks in the Sprint Backlog",
+              "Updating the Sprint burndown chart",
+              "Answer questions from the Developers about items in the current Sprint",
+            ],
+            correctAnswer: [
+              "Answer questions from the Developers about items in the current Sprint",
+            ],
+          },
+          {
+            // Question 09
+            question:
+              "Who tells the Developers how to turn Product Backlog items into Increments of value?",
+            options: [
+              "The Lead Developer",
+              "The Product Owner",
+              "The Scrum Master",
+              "None of the above",
+            ],
+            correctAnswer: ["None of the above"],
+          },
+          {
+            // Question 10
+            question:
+              "A new social media app has entered the market and is starting to steal customers away from your company's primary social media product. After studying this competition you realize they release new and useful features quicker than you can and their app store star rating is higher than yours. What is your best course of action? (choose the best option)",
+            options: [
+              "Decrease your product price to make it more appealing",
+              "Shift your product to a market with less competition",
+              "Improve your time to market and ability to innovate to respond faster",
+              "Enhance your next release with new features to improve current value, retain users and attract new ones",
+            ],
+            correctAnswer: [
+              "Improve your time to market and ability to innovate to respond faster",
+            ],
+          },
+          {
+            // Question 11
+            question:
+              "Which of the following are true about Scrum? (Select all that apply).",
+            options: [
+              "Scrum is a framework designed to deliver value through adaptive solutions for complex problems",
+              "Scrum is a methodology that allows you to selectively implement components based on your organization's specific needs",
+              "Scrum is founded on the principles of empiricism",
+              "Scrum is similar to traditional processes, with the key difference being self-management replacing Project Managers",
+              "Each element of Scrum serves a distinct purpose and is crucial for the successful application of Scrum in building complex products",
+            ],
+            correctAnswer: [
+              "Scrum is a framework designed to deliver value through adaptive solutions for complex problems",
+              "Scrum is founded on the principles of empiricism",
+              "Each element of Scrum serves a distinct purpose and is crucial for the successful application of Scrum in building complex products",
+            ],
+          },
+          {
+            // Question 12
+            question:
+              "Which statement is the best description of the Sprint Review? (Choose the best answer)",
+            options: [
+              "A meeting to retrospectively analyze the team's performance during the Sprint",
+              "A showcase of the functionality accomplished in the Sprint",
+              "An examination of the work completed by the Developers during the Sprint",
+              "A planning session to decide on the scope of work for the next Sprint",
+              "A chance to evaluate the Sprint's outcome and decide on future adjustments",
+            ],
+            correctAnswer: [
+              "A chance to evaluate the Sprint's outcome and decide on future adjustments",
+            ],
+          },
+          {
+            // Question 13
+            question:
+              "How much information is actually needed to start a Sprint? (choose the best answer)",
+            options: [
+              "Just enough tasks for the Scrum Master and Product Owner to be confident in the Developer's understanding of the Sprint",
+              "Enough so the Developers can create a forecast of what they can do during the Sprint",
+              "All of the potential tasks. Sprint Planning cannot finish until all of the work is identified and estimated",
+              "Just enough to understand the design and architecture",
+            ],
+            correctAnswer: [
+              "Enough so the Developers can create a forecast of what they can do during the Sprint",
+            ],
+          },
+          {
+            // Question 14
+            question:
+              "As the Product Owner you monitor and share your product usage dashboard which shows usage rate by feature. The data shows a particular feature is seldom used. An influential stakeholder disputes the data, and insists that the particular feature is essential, despite indicated low usage rates. The stakeholder believes that measuring feature usage is a waste of time, as it is obvious that the feature should be useful. You have confirmed that the data is accurate. What should you do? (choose the best answer)",
+            options: [
+              "Remove the feature",
+              "Continue measuring feature usage and use it to inform your decisions, but do not publish it",
+              "Stop measuring feature usage to please the stakeholder",
+              "Keep measuring and openly share the data for transparency, and use it for decision-making",
+            ],
+            correctAnswer: [
+              "Keep measuring and openly share the data for transparency, and use it for decision-making",
+            ],
+          },
+          {
+            // Question 15
+            question:
+              "Upon discovering that several features considered important have low usage, what actions should a Product Owner take to investigate this issue? (choose all that apply)",
+            options: [
+              "Carry out experiments to gain a better understanding of what customers value",
+              "Examine whether underutilized features effectively address the intended problem",
+              "Disable seldom-used features and collect feedback",
+              "Spend more time communicating with users to sell the benefits of the features",
+            ],
+            correctAnswer: [
+              "Carry out experiments to gain a better understanding of what customers value",
+              "Examine whether underutilized features effectively address the intended problem",
+            ],
+          },
+          {
+            // Question 16
+            question:
+              "Scrum is about getting started, the right product will emerge eventually. True or False?",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 17
+            question:
+              "You release a feature that came from requirements provided to you from a key stakeholder. You find that the feature does not actually get used. You suspect the key stakeholder and other stakeholders do not understand the needs of the users as much as they think. Should you discuss this with them? (choose the correct answer)",
+            options: [
+              "Yes. If you share what you learned from the release, it may help them improve their understanding and ability to research what users actually need",
+              "No. Look for new users who need this feature",
+              "No. You should show that the feature hasn't been used yet, but suggest it might be used in the future",
+              "Yes. They should realize their association with wasted effort",
+            ],
+            correctAnswer: [
+              "Yes. If you share what you learned from the release, it may help them improve their understanding and ability to research what users actually need",
+            ],
+          },
+          {
+            // Question 18
+            question:
+              "Your organization has recently adopted Scrum. Management want to know which metrics are most useful in assessing how valuable the users find the product. Which two metrics would be most suitable?(choose the best two options)",
+            options: [
+              "Customer satisfaction",
+              "On-time release ratio",
+              "Frequency of use per feature",
+              "Team velocity",
+              "Number of features released per month",
+            ],
+            correctAnswer: [
+              "Customer satisfaction",
+              "Frequency of use per feature",
+            ],
+          },
+          {
+            // Question 19
+            question:
+              "If you are uncertain about customer needs and what the market wants, what should you do? (choose the best two answers)",
+            options: [
+              "Consider developing a different product",
+              "Spend more time on validating your customer need assumptions",
+              "Spend more time creating a risk management plan",
+              "Release often with smaller releases",
+            ],
+            correctAnswer: [
+              "Spend more time on validating your customer need assumptions",
+              "Release often with smaller releases",
+            ],
+          },
+          {
+            // Question 20
+            question:
+              "The user satisfaction gap is the difference between … (choose the best two answers)",
+            options: [
+              "The current market share of the product",
+              "The user's actual experience",
+              "The total market size",
+              "The user's desired experience",
+            ],
+            correctAnswer: [
+              "The user's actual experience",
+              "The user's desired experience",
+            ],
+          },
+          {
+            // Question 21
+            question:
+              "Which of the following would be wrong for a Product Owner to do? Select the best answer.",
+            options: [
+              "Approve the work completed during the Sprint",
+              "Set the Sprint Goal without consulting the team",
+              "Determine the timing for releasing the product Increment",
+              "Set a Product Goal",
+            ],
+            correctAnswer: ["Set the Sprint Goal without consulting the team"],
+          },
+          {
+            // Question 22
+            question:
+              "Who has accountability for clearly expressing the Product Backlog Items?(choose the best answer)",
+            options: [
+              "The Scrum Master, with the option to enlist the Developers' assistance",
+              "The Product Owner, who can designate a team member within the Scrum Team to handle the task",
+              "The Scrum Master, with the option to enlist the Product Owner's assistance",
+              "The Developers",
+              "The Scrum Master",
+            ],
+            correctAnswer: [
+              "The Product Owner, who can designate a team member within the Scrum Team to handle the task",
+            ],
+          },
+          {
+            // Question 23
+            question:
+              "A 'cone of uncertainty' can be used for? (choose the best answer)",
+            options: [
+              "Visualizing the uncertainty of the potential value that a Scrum Team delivers over time",
+              "Rapidly identifying and prioritizing all uncertainties",
+              "Determining whether to cut quality, similar to the 'Iron Triangle' of project management",
+              "Representing the relative level of difficulty for predicting the velocity of individual team members",
+            ],
+            correctAnswer: [
+              "Visualizing the uncertainty of the potential value that a Scrum Team delivers over time",
+            ],
+          },
+          {
+            // Question 24
+            question:
+              "In Scrum every .... needs a Product Owner. Choose from the below to fill in the blank.",
+            options: ["Product", "Project", "Program", "Portfolio"],
+            correctAnswer: ["Product"],
+          },
+          {
+            // Question 25
+            question:
+              "The Scrum Master is inexperienced and suggests that Developers with rare skills should be involved with multiple Scrum teams. Which are likely outcomes from such a decision? (choose all that apply)",
+            options: [
+              "Dependencies are created",
+              "Teams will not be cross-functional",
+              "Employee costs are lower since expensive skilled employees are shared",
+              "Teams may become bottlenecked waiting for key Developers",
+              "More work gets done since people with specializms are better utilized",
+            ],
+            correctAnswer: [
+              "Dependencies are created",
+              "Teams will not be cross-functional",
+              "Teams may become bottlenecked waiting for key Developers",
+            ],
+          },
+          {
+            // Question 26
+            question:
+              "Which of the below are true regarding the Product Backlog? (choose the best two answers)",
+            options: [
+              "The Product Backlog is ordered by the Product Owner",
+              "The Product Backlog should be visible to the Scrum Team and stakeholders",
+              "The Product Backlog represents the input of all stakeholders and eliminates any need for the Developers to speak to stakeholders",
+              "All Product Backlog items must be expressed as user stories",
+              "Only the Product Owner can place items on the Product Backlog",
+            ],
+            correctAnswer: [
+              "The Product Backlog is ordered by the Product Owner",
+              "The Product Backlog should be visible to the Scrum Team and stakeholders",
+            ],
+          },
+          {
+            // Question 27
+            question:
+              "As the Product Owner you realise the last increment did not meet the full Definition of Done and you are concerned about its quality. What is the likely result? (choose all that apply)",
+            options: [
+              "The Project Manager cannot effectively update the plan",
+              "The incomplete Sprint Backlog items should be returned to the Product Backlog",
+              "The next Sprints velocity may be interrupted when quality issues are encountered",
+              "The indication of progress on the Product Backlog is not transparent",
+              "The Increment should not be released",
+            ],
+            correctAnswer: [
+              "The incomplete Sprint Backlog items should be returned to the Product Backlog",
+              "The next Sprints velocity may be interrupted when quality issues are encountered",
+              "The indication of progress on the Product Backlog is not transparent",
+              "The Increment should not be released",
+            ],
+          },
+          {
+            // Question 28
+            question:
+              "Which is the best description of the Sprint Backlog as a result of Sprint Planning? (choose the best answer)",
+            options: [
+              "It must be ordered by the Product Owner",
+              "It is a list of the User Stories estimated in story points, and a list of corresponding tasks that are estimated in hours",
+              "It is a decomposition of Product Backlog items such that enough work is decomposed for at least the first days of the Sprint",
+              "It is an exhaustive list of all tasks for the Sprint",
+              "It is a task list where every Developer has signed up for all the tasks that they intend to do in the Sprint",
+            ],
+            correctAnswer: [
+              "It is a decomposition of Product Backlog items such that enough work is decomposed for at least the first days of the Sprint",
+            ],
+          },
+          {
+            // Question 29
+            question:
+              "A new Scrum team has been ineffective at forecasting the effort required for their Sprint Backlog items. Due to items taking longer than predicted, they fear they will not be able to meet the Sprint Goal and inform yourself as the Product Owner. What first action should you take? (choose the best first option)",
+            options: [
+              "Inform management that more resources are needed",
+              "Try to reduce the scope of the Sprint, if possible, to still meet the Sprint Goal",
+              "End the Sprint, since the goal cannot be achieved",
+              "Skip Product Backlog refinement activities, to gain more development time in the Sprint",
+              "Change the Sprint Goal to match what the Developers can deliver",
+            ],
+            correctAnswer: [
+              "Try to reduce the scope of the Sprint, if possible, to still meet the Sprint Goal",
+            ],
+          },
+          {
+            // Question 30
+            question:
+              "The Developers in the company you work at complain that they feel frustrated by constant interruptions and useless meetings, and much of their past work has resulted in being unneeded. You notice that some of your best Developers are leaving. What measurements should you consider for informing you on how to improve employee retention rates? (choose the best answer)",
+            options: [
+              "The On-Production Index, which measures the proportion of work related to the product to total work",
+              "The Innovation Rate, which is the ratio of new work to total work",
+              "Employee Net Promoter Scores, which measures the overall job satisfaction and company satisfaction of the developers",
+              "All of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+        ],
+
+        [
+          // QUIZ 03
+          {
+            // Question 01
+            question:
+              "You are a Product Owner and the most recent report is showing a downward trend in your product's users. A stakeholder (Subject Matter Expert) informs you that you need to release more features in order to win new customers. Based on the data you have collected, you have confirmed that the loss of customers is due to market changes rather than the lack of features. The stakeholder is afraid that if you don't increase the number of features in your next release, you risk missing the window of opportunity and losing the most valuable customers. As a Product Owner, which two actions are most appropriate? (choose the best two answers)",
+            options: [
+              "Acknowledge the stakeholder's viewpoint but decline to increase the number of features in the next release",
+              "Collaborate with other stakeholders to gather additional ideas and take a poll on which ideas you should pursue",
+              "Acknowledge the stakeholder's viewpoint and increase the number of features in the next release",
+              "Run a small experiment, in collaboration with the stakeholder, to validate their feedback",
+            ],
+            correctAnswer: [
+              "Acknowledge the stakeholder's viewpoint but decline to increase the number of features in the next release",
+              "Run a small experiment, in collaboration with the stakeholder, to validate their feedback",
+            ],
+          },
+          {
+            // Question 02
+            question:
+              "When value can be measured infrequently, it becomes a … (Choose the best answer)",
+            options: ["Leading indicator", "Lagging indicator"],
+            correctAnswer: ["Lagging indicator"],
+          },
+          {
+            // Question 03
+            question:
+              "During the Sprint Review, your stakeholders suggest temporarily delaying the start of the next Sprint in order to react more quickly to the expected user feedback after the latest release. As a Product Owner, what would be two acceptable approaches?(choose the best two answers)",
+            options: [
+              "Continue with the Sprints but shorten the Sprint time-boxes to allow for shorter feedback loops",
+              "Continue with the Sprints and include the customer feedback in the Product Backlog",
+              "Delay the next Sprint to allow the Scrum Team to work on new customer feedback",
+              "Continue with the Sprints but allow the Sprint Goal within the Sprint to change according to the customer feedback",
+            ],
+            correctAnswer: [
+              "Continue with the Sprints but shorten the Sprint time-boxes to allow for shorter feedback loops",
+              "Continue with the Sprints and include the customer feedback in the Product Backlog",
+            ],
+          },
+          {
+            // Question 04
+            question:
+              "Your product is currently meeting your targets and goals. The board members in your organization are convinced that there is still a large share of potential customers in your product's market. The Sales Director advises you to reduce your product's price in order to attract those customers but the Finance Director argues that this would have a negative impact on the product's profits. What sources of information can help you decide on your product's pricing strategy? (choose the best three answers)",
+            options: [
+              "Customer satisfaction",
+              "Competitor's pricing",
+              "Sales channel strategy",
+              "Market Share",
+              "Company earning reports",
+              "Unmet customer needs",
+            ],
+            correctAnswer: [
+              "Customer satisfaction",
+              "Market Share",
+              "Unmet customer needs",
+            ],
+          },
+          {
+            // Question 05
+            question:
+              "Experimentation can help a Product Owner to: (Select all that apply)",
+            options: [
+              "Have complete certainty as to the future success of a Product",
+              "Decide whether we should invest and build something",
+              "Understand Product/Market fit and if we can create a business around a Product",
+              "Reduce waste",
+            ],
+            correctAnswer: [
+              "Decide whether we should invest and build something",
+              "Understand Product/Market fit and if we can create a business around a Product",
+              "Reduce waste",
+            ],
+          },
+          {
+            // Question 06
+            question:
+              "What can be measures of internal value? (choose all that apply)",
+            options: [
+              "Cycle Time",
+              "On-Product Index",
+              "Employee satisfaction",
+              "Customer or user satisfaction gap",
+              "Time spent context-switching",
+            ],
+            correctAnswer: [
+              "Cycle Time",
+              "On-Product Index",
+              "Employee satisfaction",
+              "Time spent context-switching",
+            ],
+          },
+          {
+            // Question 07
+            question:
+              "As a Product Owner, what are two approaches that can help you manage your business's exposure to risk? (choose the best two answers)",
+            options: [
+              "Keep the releases as small as possible, and release when the increment can provide a single new or improved outcome",
+              "Create a risk management plan that identifies all future risks and solutions for addressing those risks",
+              "Conduct experiments so you can better understand customer needs",
+              "Ensure that the Product Backlog items committed to at Sprint Planning are completed by the end of the Sprint",
+              "Ensure that no changes are made to the Sprint plan during an active Sprint",
+            ],
+            correctAnswer: [
+              "Keep the releases as small as possible, and release when the increment can provide a single new or improved outcome",
+              "Conduct experiments so you can better understand customer needs",
+            ],
+          },
+          {
+            // Question 08
+            question:
+              "Which of the following are preferred stances of the Product Owner? (Select all that apply)",
+            options: [
+              "The Collaborator",
+              "The Decision Maker",
+              "The Visionary",
+              "The Business Analyst",
+              "The Founder",
+            ],
+            correctAnswer: [
+              "The Collaborator",
+              "The Decision Maker",
+              "The Visionary",
+            ],
+          },
+          {
+            // Question 09
+            question:
+              "Towards the end of the Sprint Planning, the Developers is NOT able to confidently forecast Product Backlog items for the Sprint. However, as the Product Owner, you are able to clearly define the business objective you hope to achieve in the Sprint. Which would be the best two approaches? (choose the best two answers)",
+            options: [
+              "They discuss in the upcoming Sprint Retrospective why this happened and what changes will make it less likely to occur again",
+              "Allow the Developers as much time as needed to review the Product Backlog items and reconvene when they are confident enough to make a forecast for the Sprint",
+              "The Developers forecast the most likely Product Backlog items to meet the business objective and create a Sprint Backlog based on a likely initial design and plan. Once the time-box for the Sprint Planning meeting is over, they start implementation and continue to analyze, decompose, and create additional functionality during the Sprint",
+              "If all agree they can extend the Sprint Planning until the Developers can forecast enough Product Backlog items before starting the implementation",
+            ],
+            correctAnswer: [
+              "They discuss in the upcoming Sprint Retrospective why this happened and what changes will make it less likely to occur again",
+              "The Developers forecast the most likely Product Backlog items to meet the business objective and create a Sprint Backlog based on a likely initial design and plan. Once the time-box for the Sprint Planning meeting is over, they start implementation and continue to analyze, decompose, and create additional functionality during the Sprint",
+            ],
+          },
+          {
+            // Question 10
+            question: "The Product Backlog: (choose the best two answers)",
+            options: [
+              "only contains items defined by the Product Owner",
+              "is ordered by the Product Owner",
+              "is managed by the Scrum Master",
+              "is visible to the Scrum Team and stakeholders",
+              "is only described through User Stories",
+              "must be finalized before the first Sprint can start",
+            ],
+            correctAnswer: [
+              "is ordered by the Product Owner",
+              "is visible to the Scrum Team and stakeholders",
+            ],
+          },
+          {
+            // Question 11
+            question:
+              "What can be included in the Product Vision and Strategy that will keep people motivated about the product? (choose all that apply)",
+            options: [
+              "How people will use the product to address their needs",
+              "How the product will generate revenue",
+              "What people will gain by using the product",
+              "The advantages the product has over competitors",
+            ],
+            correctAnswer: [
+              "How people will use the product to address their needs",
+              "How the product will generate revenue",
+              "What people will gain by using the product",
+              "The advantages the product has over competitors",
+            ],
+          },
+          {
+            // Question 12
+            question:
+              "When should refining of the Product Backlog occur? (choose the best two answers)",
+            options: [
+              "The Product Owner does this between the end of the previous Sprint and the start of the next",
+              "The Product Owner and the Developers can refine the Product Backlog during any Sprint as needed, ideally in advance of the upcoming Sprint",
+              "The Product Owner must do this as essential work in Sprint 0",
+              "The Product Owner and the Developers do it in current Sprint if they have been unable to do it in preceding Sprints",
+              "The Business Analysts prepare items to be worked on at least 1 Sprint ahead of development",
+            ],
+            correctAnswer: [
+              "The Product Owner and the Developers can refine the Product Backlog during any Sprint as needed, ideally in advance of the upcoming Sprint",
+              "The Product Owner and the Developers do it in current Sprint if they have been unable to do it in preceding Sprints",
+            ],
+          },
+          {
+            // Question 13
+            question:
+              "What would be two boundaries, defined in Scrum, that gives guidance for teams to effectively self-manage? (choose the best two answers)",
+            options: [
+              "Having a mixture of different levels of skills and experience to promote domain knowledge sharing",
+              "Creating an integrated and potentially shippable Increment by the end of each Sprint",
+              "Time-boxing the events in Scrum to allow for regular inspection and adaptation creating opportunities to adjust course in any given path",
+              "Clearly defined functional teams within the Scrum Team to define handoff phases during development",
+            ],
+            correctAnswer: [
+              "Creating an integrated and potentially shippable Increment by the end of each Sprint",
+              "Time-boxing the events in Scrum to allow for regular inspection and adaptation creating opportunities to adjust course in any given path",
+            ],
+          },
+          {
+            // Question 14
+            question:
+              "Which of the following are true when it comes to scaling the Product Owner accountability? (Select all that apply)",
+            options: [
+              "A large Product should have a Chief Product Owner",
+              "There should be as many Product Owner as is necessary",
+              "Each Product has one Product Owner",
+              "Each Product has a Product Owner",
+              "The Product Owner can be assisted by the Developers",
+              "There is only 1 Product Backlog per Product",
+            ],
+            correctAnswer: [
+              "Each Product has one Product Owner",
+              "Each Product has a Product Owner",
+              "The Product Owner can be assisted by the Developers",
+              "There is only 1 Product Backlog per Product",
+            ],
+          },
+          {
+            // Question 15
+            question:
+              "Which best describes testing responsibilities for the Developers? (choose the best two answers)",
+            options: [
+              "Ensuring all test cases created at Sprint Planning have been passed",
+              "Scrum recognizes no Tester titles for Developers",
+              "Increments must be approved by the Tester before they can be deemed releasable",
+              "Everyone of the Developers is responsible for the quality of the product",
+              "There should be a testing phase at the end of each Sprint",
+            ],
+            correctAnswer: [
+              "Scrum recognizes no Tester titles for Developers",
+              "Everyone of the Developers is responsible for the quality of the product",
+            ],
+          },
+          {
+            // Question 16
+            question:
+              "Experimentation can help a Product Owner to: (select all that apply)",
+            options: [
+              "Reduce waste",
+              "Understand the Product/Market fit and business viability of a product",
+              "Have complete certainty as to the future success of a product",
+              "Make decisions on whether to invest and build something",
+            ],
+            correctAnswer: [
+              "Reduce waste",
+              "Understand the Product/Market fit and business viability of a product",
+              "Make decisions on whether to invest and build something",
+            ],
+          },
+          {
+            // Question 17
+            question:
+              "Which two statements are the most accurate in regards to scaling Scrum for large projects that require multiple Scrum Teams? (choose the best two answers)",
+            options: [
+              "Customizing the core Scrum framework is necessary to be successful with Scrum at a large scale",
+              "A person focusing on the Sprint Backlog of a single Scrum Team is often more productive that that same person working on multiple Scrum Teams at the same time",
+              "A well-structured Product Backlog can minimize and often eliminate Scrum Team members working on multiple Scrum Teams during a Sprint",
+              "A Product Owner must work full time on a single Scrum Team",
+            ],
+            correctAnswer: [
+              "A person focusing on the Sprint Backlog of a single Scrum Team is often more productive that that same person working on multiple Scrum Teams at the same time",
+              "A well-structured Product Backlog can minimize and often eliminate Scrum Team members working on multiple Scrum Teams during a Sprint",
+            ],
+          },
+          {
+            // Question 18
+            question:
+              "TheDISCis a model that divides behavior into four personality types: - Dominance - People with the D style tend to be direct, firm, or even forceful. They value taking action and getting results and generally are competitive. - Influence - People with the I style tend to be outgoing, enthusiastic, and generally are optimistic in nature. Like the D style, they like to take action and are more collaborative than competitive. - Steadiness - People with the S style tend to be patient and accommodating. They enjoy stability and much like the i style tend to be collaborative and enjoy being helpful. - Conscientiousness - People with the C style are usually analytical and reserved. Similar to the S style, they prefer stability, but their priority on accuracy will cause them to challenge assumptions. What would be the best way when approaching a stakeholder with a mostly Dominant trait? (choose the best two answers)",
+            options: [
+              "Convince him/her to escalate the problems",
+              "Providing him/her with options",
+              "Offering him/her solutions",
+              "Build empathy and ask him/her for advice",
+            ],
+            correctAnswer: [
+              "Providing him/her with options",
+              "Offering him/her solutions",
+            ],
+          },
+          {
+            // Question 19
+            question:
+              "What best describes a GO product roadmap? (choose the best two answers)",
+            options: [
+              "It focuses more on the goals you want to achieve rather than the actual work to be done (the features)",
+              "It enables value steering",
+              "It provides an overview of all the user activities that need to be covered by the system",
+              "It focuses on what is being worked on 'now', what will be worked on 'next', and work to be done 'later'.",
+            ],
+            correctAnswer: [
+              "It focuses more on the goals you want to achieve rather than the actual work to be done (the features)",
+              "It enables value steering",
+            ],
+          },
+          {
+            // Question 20
+            question:
+              "You have a Scrum Team that has been working together for over a year. The Scrum Team consists of 11 members who rarely collaborate and work within their functional boundaries. There are no Sprint Goals and most of the items in the Sprint Backlog are unrelated. The Scrum Team has concluded that it is not possible to create Sprint Goals based on the items in the Product Backlog. What might explain why the Scrum Team is finding it difficult to craft Sprint Goals? (choose all that apply)",
+            options: [
+              "The Product Owner doesn't set objectives that he/she wants to achieve with upcoming Sprints",
+              "The Sprints are too long",
+              "The Product Owner is not empowered to make decisions about items in the Product Backlog nor how they are ordered",
+              "The Scrum Team is too big",
+              "Scrum might not be the best framework for this team",
+            ],
+            correctAnswer: [
+              "The Product Owner doesn't set objectives that he/she wants to achieve with upcoming Sprints",
+              "The Product Owner is not empowered to make decisions about items in the Product Backlog nor how they are ordered",
+              "Scrum might not be the best framework for this team",
+            ],
+          },
+          {
+            // Question 21
+            question:
+              "You are a Product Owner at a company that is new to Scrum. The stakeholders are coming to you to requesting functionality to be added to the product and defining the priorities of their requests. As a result, your decision making is slow and time-consuming. Which three approaches are the most appropriate to take? (choose the best three answers)",
+            options: [
+              "Add stakeholder requests to a seperate list. Synchronize the list with the Product Backlog to ensure every Sprint includes the item(s) from the stakeholder list",
+              "Ensure there are transparency and alignment with the Product Owner decision-making areas and help everyone understand what you're responsible and accountable for",
+              "Work with your Scrum Master to help the company understanding product ownership and improve the environment to support Scrum",
+              "Request to hire a Business Analyst to the team in order to help you work with the stakeholders and breakdown their requirements into User Stories in the Product Backlog",
+              "Create a value stream map to demonstrate how long it is taking you to make decisions as a Product Owner and the impact it has on delivering value to the users",
+            ],
+            correctAnswer: [
+              "Ensure there are transparency and alignment with the Product Owner decision-making areas and help everyone understand what you're responsible and accountable for",
+              "Work with your Scrum Master to help the company understanding product ownership and improve the environment to support Scrum",
+              "Create a value stream map to demonstrate how long it is taking you to make decisions as a Product Owner and the impact it has on delivering value to the users",
+            ],
+          },
+          {
+            // Question 22
+            question:
+              "The Product Owner should talk to customers?(Choose the best answer)",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+          {
+            // Question 23
+            question:
+              "Which of the following activities should a Product Owner never do?(Choose the best answer)",
+            options: [
+              "Show the Increment to Stakeholders outside of the Sprint Review",
+              "Allow Stakeholders to talk directly with the Developers",
+              "Order the Product Backlog",
+              "Set the Sprint Goal for the Developers without consulting them",
+            ],
+            correctAnswer: [
+              "Set the Sprint Goal for the Developers without consulting them",
+            ],
+          },
+          {
+            // Question 24
+            question:
+              "Which statement best describes the Sprint Review?(Choose the best answer)",
+            options: [
+              "A demonstration of functionality completed in the Sprint",
+              "An opportunity to inspect the outcome of the Sprint and determine future adaptations",
+              "An inspection of the work completed by the Developers in the Sprint",
+            ],
+            correctAnswer: [
+              "An opportunity to inspect the outcome of the Sprint and determine future adaptations",
+            ],
+          },
+          {
+            // Question 25
+            question:
+              "Scrum addresses which of the following four risks in software development?(choose the best four answers)",
+            options: [
+              "The clear definition of stages and gateways in the overall governance model",
+              "The skills and working relationships of the people on the teams",
+              "The stability and complexity of the technology",
+              "The definition of incentive and bonus strategies by HR for all team members",
+              "The complexity and unpredictability of the requirements",
+              "The timescale of the planned work",
+            ],
+            correctAnswer: [
+              "The skills and working relationships of the people on the teams",
+              "The stability and complexity of the technology",
+              "The complexity and unpredictability of the requirements",
+              "The timescale of the planned work",
+            ],
+          },
+          {
+            // Question 26
+            question:
+              "The Product Owner is responsible for deciding when to deliver product releases to customers. The Developers are responsible for creating an increment that is potentially shippable. As a Product Owner, how can you help improve the release cycle?(choose all that apply)",
+            options: [
+              "Involve the Release Department as they are the ones responsible for deploying product increments to the customers",
+              "Raise awareness about the release process with your stakeholders and work with your company to remove organizational impediments hindering the Developers",
+              "Support the Developers in getting ownership over the release process",
+              "Collaborate with your Developers to automate the release process, automate tests, automate deployments,etc",
+              "Plan at least one release Sprint every month",
+            ],
+            correctAnswer: [
+              "Raise awareness about the release process with your stakeholders and work with your company to remove organizational impediments hindering the Developers",
+              "Support the Developers in getting ownership over the release process",
+              "Collaborate with your Developers to automate the release process, automate tests, automate deployments,etc",
+            ],
+          },
+          {
+            // Question 27
+            question:
+              "Which two measures can help a Product Owner evaluate how much impact is being delivered? (choose the best two answers)",
+            options: [
+              "How many Story Points is completed per Sprint",
+              "How satisfied the customers are",
+              "How many items the team is delivering per Sprint",
+              "How frequently your deliveries are being used",
+              "How much of the scope has been delivered versus what was planned",
+            ],
+            correctAnswer: [
+              "How satisfied the customers are",
+              "How frequently your deliveries are being used",
+            ],
+          },
+          {
+            // Question 28
+            question:
+              "What is the value of a Product Owner having a clear and inspiring Product vision? (choose the best three answers)",
+            options: [
+              "It is not defined in Scrum and therefore optional",
+              "It provides a direction and purpose for the product",
+              "It provides a focus when making decisions",
+              "It makes it easier to inspect progress",
+              "It ensures that the Scrum Team is committed to delivering all of the Product Backlog items",
+            ],
+            correctAnswer: [
+              "It provides a direction and purpose for the product",
+              "It provides a focus when making decisions",
+              "It makes it easier to inspect progress",
+            ],
+          },
+          {
+            // Question 29
+            question:
+              "The Product Owner has the final say on if an Increment is Done.(Choose the best answer)",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 30
+            question:
+              "What three attributes help build an effective User Story? (choose the three best answers)",
+            options: [
+              "Compliance",
+              "Completeness",
+              "Conversation",
+              "Card",
+              "Confirmation",
+            ],
+            correctAnswer: ["Conversation", "Card", "Confirmation"],
+          },
+          {
+            // Question 31
+            question:
+              "Which of the following is true for the Current Value - Key Value Area in Evidence-Based Management from Scrum.org? (Choose the best answer)",
+            options: [
+              "It reveals the value that the product delivers to customers, today",
+              "It expresses the ability of a product development organization to deliver new capabilities that might better meet customer needs",
+              "It suggests the potential future value that could be realized if the organization could perfectly meet the needs of all potential customers",
+              "It expresses the organization's ability to quickly deliver new capabilities, services, or products",
+            ],
+            correctAnswer: [
+              "It reveals the value that the product delivers to customers, today",
+            ],
+          },
+          {
+            // Question 32
+            question:
+              "Agile approaches help organizations rapidly respond to market changes. Which measurements would be helpful in identifying improvement areas to an organization's ability to respond to change? (choose all that apply)",
+            options: [
+              "On product index",
+              "Revenue per employee",
+              "Technical Debt",
+              "Cycle Time",
+              "Velocity",
+            ],
+            correctAnswer: [
+              "On product index",
+              "Technical Debt",
+              "Cycle Time",
+              "Velocity",
+            ],
+          },
+          {
+            // Question 33
+            question:
+              "As a Product Owner, understanding the Developers' velocity will help you measure the time to market and innovation rate. How does technical debt relate to velocity? (choose the best two answers)",
+            options: [
+              "The Developers can artificially inflate velocity by allowing the technical debt to be incurred",
+              "They are not related because technical debt is non-functional and velocity is calculated based on end-user functionality",
+              "Adding estimates to technical debt will allow the Developers to maintain a constant velocity, therefore, ensuring predictability",
+              "As the Developers are working on new Product Backlog items, they can run into technical debt resulting in an unexpected slow down in velocity",
+            ],
+            correctAnswer: [
+              "The Developers can artificially inflate velocity by allowing the technical debt to be incurred",
+              "As the Developers are working on new Product Backlog items, they can run into technical debt resulting in an unexpected slow down in velocity",
+            ],
+          },
+          {
+            // Question 34
+            question:
+              "You are a Product Owner joining an existing Scrum Team that has been working together for eight Sprints. The Developers of the Scrum Team has grown to have a good understanding of the functionality and business for the product they have been building. As the new Product Owner, what are the two most effective ways for you to onboard? (choose the best two answers)",
+            options: [
+              "You make sure that there are no ambiguities or possible misunderstandings in the items on the Product Backlog when they are handed over to the Developers. This is best done by capturing the functional requirements during an analysis phase, resulting in documents that are considered as the working product of such analysis Sprints",
+              "You have the Developers send you daily updates on changing business priorities. The Daily Scrum allows the Developers to adapt to the changes in scope without delay",
+              "You rely on the Developers and the stakeholders to formulate the Product Backlog, as they are the ones most knowledgeable. By asking them questions and working with them you will quickly be up to speed",
+              "You start building a good relationship with the stakeholders of the product. Ongoing interaction with them is important to regularly align with changing organizational or market expectations. You also invite the right stakeholders to the Sprint Review meeting",
+            ],
+            correctAnswer: [
+              "You rely on the Developers and the stakeholders to formulate the Product Backlog, as they are the ones most knowledgeable. By asking them questions and working with them you will quickly be up to speed",
+              "You start building a good relationship with the stakeholders of the product. Ongoing interaction with them is important to regularly align with changing organizational or market expectations. You also invite the right stakeholders to the Sprint Review meeting",
+            ],
+          },
+          {
+            // Question 35
+            question:
+              "As a Product Owner, you have sufficient data showing the outcome of the last release. The information shows that very few people are utilizing the new functionality and a number of features are never being used. Which of the following actions could you take to further evaluate this unexpected result? (choose all that apply)",
+            options: [
+              "Run experiments to increase your understanding of your customer needs",
+              "Spend more time talking with your users to understand their needs",
+              "Turn off the features that are never used and seek more user feedback",
+              "Evaluate whether the features are solving the intended problems.",
+            ],
+            correctAnswer: [
+              "Run experiments to increase your understanding of your customer needs",
+              "Spend more time talking with your users to understand their needs",
+              "Turn off the features that are never used and seek more user feedback",
+              "Evaluate whether the features are solving the intended problems.",
+            ],
+          },
+          {
+            // Question 36
+            question:
+              "Which of the following are the correct Key Value Areas in Evidence-Based Management from Scrum . org? (Select all that apply)",
+            options: [
+              "Customer Value",
+              "Current Value",
+              "Unrealized Value",
+              "Time to Market",
+              "Product Quality",
+              "Ability to Innovate",
+            ],
+            correctAnswer: [
+              "Current Value",
+              "Unrealized Value",
+              "Time to Market",
+              "Ability to Innovate",
+            ],
+          },
+          {
+            // Question 37
+            question:
+              "Product Backlog management includes which of the following activities?(choose all that apply)",
+            options: [
+              "Breaking down larger Product Backlog items into smaller items",
+              "Reviewing the Product Backlog with key stakeholders",
+              "Ordering the items in the Product Backlog",
+              "Adding estimates to Product Backlog items",
+              "Identifying and reducing dependencies between Product Backlog items",
+            ],
+            correctAnswer: [
+              "Breaking down larger Product Backlog items into smaller items",
+              "Reviewing the Product Backlog with key stakeholders",
+              "Ordering the items in the Product Backlog",
+              "Adding estimates to Product Backlog items",
+              "Identifying and reducing dependencies between Product Backlog items",
+            ],
+          },
+          {
+            // Question 38
+            question:
+              "Mary, a Product Owner, notices that the Developers have been struggling to get the forecasted work done in the last few Sprints. What can Mary do to help the Developers? (choose the best two answers)",
+            options: [
+              "Do not end the Sprint until the work is done",
+              "Mary can spend more time with the Developers",
+              "Inform the Scrum Master so he/she can help the Developers learn techniques for improving their ability to forecast work",
+              "Make the Definition of Done less stringent",
+            ],
+            correctAnswer: [
+              "Mary can spend more time with the Developers",
+              "Inform the Scrum Master so he/she can help the Developers learn techniques for improving their ability to forecast work",
+            ],
+          },
+          {
+            // Question 39
+            question:
+              "Peter, a Product Owner, sees that sales for his product are declining whereas competitors are increasing. Which Key Value Areas (KVA) can help Peter analyze and decide what to do next? (choose the best two answers)",
+            options: [
+              "Time to Market",
+              "Ability to Innovate",
+              "Unrealized Value",
+              "Current Value",
+            ],
+            correctAnswer: ["Unrealized Value", "Current Value"],
+          },
+          {
+            // Question 40
+            question:
+              "How can Scrum help with making funding and investment decisions? (choose the best two answers)",
+            options: [
+              "By releasing to the customers and users early and often",
+              "The only financial decisions required is the funding necessary for the operational costs of the Scrum Teams",
+              "Setting a fixed budget will ensure that the project is delivered on-time, within scope, and on-budget",
+              "By frequently inspecting the outcomes of the delivered Sprint Increments to understand how much value is being produced per investment spent",
+            ],
+            correctAnswer: [
+              "By releasing to the customers and users early and often",
+              "By frequently inspecting the outcomes of the delivered Sprint Increments to understand how much value is being produced per investment spent",
+            ],
+          },
+        ],
+
+        [
+          // QUIZ 04
+          {
+            // Question 01
+            question:
+              "You are releasing new versions of your product every week. Most of what's being delivered are only minor changes or bug fixes which is not improving your product's current low customer satisfaction measurements. What two Key Value Areas should be your focus in order to improve your product? (choose the best two answers)",
+            options: [
+              "Unrealized Value",
+              "Time to Market",
+              "Current Value",
+              "Ability to Innovate",
+            ],
+            correctAnswer: ["Unrealized Value", "Ability to Innovate"],
+          },
+          {
+            // Question 02
+            question:
+              "What is TRUE about the Stakeholder's role in Scrum? (choose the best answer)",
+            options: [
+              "The Product Owner is responsible for engaging with the Stakeholders but can be delegated",
+              "The Business Analyst (Subject Matter Expert) is responsible for engaging with the Stakeholders and collecting requirements for the Product Owner",
+              "The Scrum Master schedules all stakeholder interactions",
+              "Only the Developers can engage with the Stakeholders",
+              "The Head of Product represents the Stakeholder needs and is the point of contact for product requirements",
+            ],
+            correctAnswer: [
+              "The Product Owner is responsible for engaging with the Stakeholders but can be delegated",
+            ],
+          },
+          {
+            // Question 03
+            question:
+              "Which would be the desired outcome of using an agile approach? (choose the best answer)",
+            options: [
+              "Eliminating business risk exposure",
+              "Maximizing productivity",
+              "Decreasing non-value-added waste",
+              "Maximize predictability",
+              "All of the above",
+            ],
+            correctAnswer: ["Decreasing non-value-added waste"],
+          },
+          {
+            // Question 04
+            question:
+              "John is a Product Owner of a scaled product development effort with multiple Scrum Teams involved. He is stretched thin and is unable to spend enough time with all of the teams. Which of the following strategies would be the most helpful? (choose the best answer)",
+            options: [
+              "Split the Product Backlog and add a Product Owner to each in order to spread the work",
+              "Hire Business Analysts to assist the Product Owner",
+              "Delegate some of the Product Owner's work to the Scrum Team members",
+              "Move towards a scaled Scrum framework",
+              "All of the above",
+            ],
+            correctAnswer: [
+              "Delegate some of the Product Owner's work to the Scrum Team members",
+            ],
+          },
+          {
+            // Question 05
+            question:
+              "You are a Product Owner hired to take the lead on a new company initiative. As the one responsible for the success of the Product, you are responsible for creating, managing, and owning the Product Vision. Which is the best approach for defining the Product Vision? (choose the best answer)",
+            options: [
+              "Collaborate with your stakeholders, Scrum Team, customers, and users to develop an initial Product Vision that clear and inspiring. Iterate and improve it over time.",
+              "Take some time alone to focus on what the vision should look like and present it to the steering committee for approval",
+              "Fully formulate the Product Backlog first and define the Product Vision based on the 'must have' features",
+              "Have your stakeholders, Scrum Team, customers, and users submit different Product Visions. When enough suggestions have been collected, facilitate a session to vote on the best one. This creates a formal agreement to protect the Product Vision from changing during development",
+            ],
+            correctAnswer: [
+              "Collaborate with your stakeholders, Scrum Team, customers, and users to develop an initial Product Vision that clear and inspiring. Iterate and improve it over time.",
+            ],
+          },
+          {
+            // Question 06
+            question:
+              "You are a Product Owner of a new product that will require a large development effort. Five teams will be working on the product. You discuss with them the high level of integration that the product Increment will require by the end of their first Sprint. The future team members have provided various suggestions on how to work together. As a Product Owner, which option would you support? (choose the best answer)",
+            options: [
+              "Wait until enough of the infrastructure and architecture is in place before starting the first Sprints. This will increase the success of delivering integrated Increments in Sprint 1",
+              "Each Scrum Team delivers functionality at the end of each Sprint. New Product Backlog items will then be added to the next Sprint Backlog to integrate their functionality with the other teams to create a unified Increment",
+              "Each Scrum Team delivers Increments in its own code branch. After UAT is performed at the Sprint Review, the code branch is isolated until enough Increments are considered acceptable. All code branches will then be merged during the release phase",
+              "All Scrum Teams agree on a mutual understanding of 'done' that defines all work necessary to deliver a potentially shippable Increment that includes all previous Increments delivered for the product",
+            ],
+            correctAnswer: [
+              "All Scrum Teams agree on a mutual understanding of 'done' that defines all work necessary to deliver a potentially shippable Increment that includes all previous Increments delivered for the product",
+            ],
+          },
+          {
+            // Question 07
+            question:
+              "You are a Product Owner that has been building a product for a specific user group in mind. As your product's customer base grows, you begin to notice that different user groups have been using the product in different ways. Which of the following would be the best action to take? (choose the best answer)",
+            options: [
+              "Evaluate whether you could provide better business value by building different products to serve each user group",
+              "Ensure that every release provides something that satisfies all groups of users",
+              "No action needed. Focus on delivering the features that were committed to at the steering committee",
+              "Create separate marketing campaigns for each group to attract more users and drive revenue",
+            ],
+            correctAnswer: [
+              "Evaluate whether you could provide better business value by building different products to serve each user group",
+            ],
+          },
+          {
+            // Question 08
+            question:
+              "What questions would an organization ask in order to evaluate Current Value? (choose all that apply)",
+            options: [
+              "How happy are your employees? Is their happiness improving or declining?",
+              "How happy are users and customers today? Is their happiness improving or declining?",
+              "How fast can you deliver new value to customers?",
+              "How happy are your investors and other stakeholders? Is their happiness improving or declining?",
+              "What prevents customers or users from benefiting from that innovation?",
+            ],
+            correctAnswer: [
+              "How happy are users and customers today? Is their happiness improving or declining?",
+              "How happy are your investors and other stakeholders? Is their happiness improving or declining?",
+            ],
+          },
+          {
+            // Question 09
+            question:
+              "As a Product Owner, you've gathered a lot of ideas and suggestions. Based on the limited budget and time, you will not be able to pursue all of them. Which would be the best approach? (choose the best answer)",
+            options: [
+              "Fund small experiments to test the proposed ideas and assumptions, then evaluate outcomes",
+              "Distribute the budget evenly across all items in order to accurately compare the ROI between items",
+              "Invest in the items that can potentially return the highest revenue for the upcoming year",
+              "Rank the items by Unrealized Value and invest fully in as many as possible",
+            ],
+            correctAnswer: [
+              "Fund small experiments to test the proposed ideas and assumptions, then evaluate outcomes",
+            ],
+          },
+          {
+            // Question 10
+            question:
+              "As a Scrum Product Owner, what should be your most important activity? (choose the best answer)",
+            options: [
+              "Ensuring the maximum value is delivered by the product",
+              "Making sure that all the needs of the stakeholders are satisfied",
+              "Planning release schedules and roadmaps",
+              "Being the primary contact point for all product details",
+            ],
+            correctAnswer: [
+              "Ensuring the maximum value is delivered by the product",
+            ],
+          },
+          {
+            // Question 11
+            question:
+              "Which of the following is NOT true about a Product Owner? (choose the best answer)",
+            options: [
+              "The Product Owner defines the Sprint Goal for the Scrum Team",
+              "The Product Owner decides on when to release Product Increments",
+              "The Product Owner establishes a Product Vision",
+              "The Product Owner accepts work done during the Sprint",
+            ],
+            correctAnswer: [
+              "The Product Owner defines the Sprint Goal for the Scrum Team",
+            ],
+          },
+          {
+            // Question 12
+            question:
+              "Which of the following would be the best reason for reducing investment in a product? (choose the best answer)",
+            options: [
+              "When the Current Value is very low",
+              "When the Current Value is very high",
+              "When the Unrealized Value is very low",
+              "When the Unrealized value is very high",
+              "None of the above",
+            ],
+            correctAnswer: ["When the Unrealized Value is very low"],
+          },
+          {
+            // Question 13
+            question:
+              "You are a Product Owner on a Scrum Team that has been working on a product for several iterations and has an average velocity of 55 units of 'done' work per Sprint. A second Scrum Team will be added to work on the same product. What might be the impact on the original team? (choose the best answer)",
+            options: [
+              "Their velocity is likely not affected and will remain at 55",
+              "Their velocity is likely to drop and be less than 55",
+              "Their velocity is likely to rise and be more than 55",
+            ],
+            correctAnswer: [
+              "Their velocity is likely to drop and be less than 55",
+            ],
+          },
+          {
+            // Question 14
+            question:
+              "Each __________ has a separate Product Backlog. (choose the best answer)",
+            options: [
+              "portfolio",
+              "Scrum Team",
+              "Testing Team",
+              "Product",
+              "All of the above",
+            ],
+            correctAnswer: ["Product"],
+          },
+          {
+            // Question 15
+            question:
+              "Which of the following would help you evaluate how much value is being delivered? (choose the best answer)",
+            options: [
+              "The number of Product Backlog items in a release",
+              "The cycle-time cost of the product release",
+              "The number of story points delivered by the Developers",
+              "How frequently your product is used by your customers",
+              "All of the above",
+              "None of the above",
+            ],
+            correctAnswer: [
+              "How frequently your product is used by your customers",
+            ],
+          },
+          {
+            // Question 16
+            question:
+              "Which of the following is a benefit of using Scrum as an agile approach? (choose the best answer)",
+            options: [
+              "Increasing team velocity",
+              "On-time delivery of fixed scope",
+              "Managing team member utilization",
+              "Managing the business' exposure to risk",
+              "All of the above",
+            ],
+            correctAnswer: ["Managing the business' exposure to risk"],
+          },
+          {
+            // Question 17
+            question:
+              "As a Product Owner, you plan to increase the price of your product. Which would be the best approach to support the higher price?(choose the best answer)",
+            options: [
+              "Improve the value your product delivers to the users",
+              "Temporarily reduce the price to acquire more customers and gradually increase the price until the target price is achieved",
+              "Remove low value or wasteful features",
+              "Increase the number of features",
+            ],
+            correctAnswer: [
+              "Improve the value your product delivers to the users",
+            ],
+          },
+          {
+            // Question 18
+            question:
+              "Your organization's portfolio consists of several products. Management has decided to place the lead revenue-generating product into maintenance mode, taper off its investment, and seek other opportunities for future growth. What may have lead to this? (choose the best answer)",
+            options: [
+              "The product has been losing customers, revenues are down, and the Unrealized Value is low (even though the Current Value is high)",
+              "The innovation rate for the product is low",
+              "The organization has decided to reduce operational overhead and to focus on products that generate better Product cost Ratios",
+              "Your organization has stopped using Scrum",
+            ],
+            correctAnswer: [
+              "The product has been losing customers, revenues are down, and the Unrealized Value is low (even though the Current Value is high)",
+            ],
+          },
+          {
+            // Question 19
+            question:
+              "Management has asked you for advice on which product to fund. Each product is focusing on different markets. Given the following information:- Product A is the main driver of both revenue and profit for your company.- Product A has very happy customers (high Current Value) and low Unrealized Value.- Product B is relatively new.- Product B has low Current Value and high Unrealized Value.Both Product Owners of the two products are requesting significant additional funding to improve their products. What funding advise would you give management? (choose the best answer)",
+            options: [
+              "Invest funding in Product A because your company's success depends on its continued success",
+              "Split funding proportionally based on product revenues",
+              "Split funding equally between both products",
+              "Invest funding in Product B because it has more future potential for the company",
+            ],
+            correctAnswer: [
+              "Invest funding in Product B because it has more future potential for the company",
+            ],
+          },
+          {
+            // Question 20
+            question:
+              "You work for a large financial organization that has many existing products. The products are interdependent. There is a high level of effort to synchronize releases as changes in one product will also affect the other products. This creates challenges in maintaining consistency and adds complexity. What would be the best way to reduce this problem? (choose the best answer)",
+            options: [
+              "Apply Release Planning to coordinate cross-platform releases to ensure consistency",
+              "Make the products as independent as possible and have each product determine their own release plans",
+              "Appoint a Product Owner to lead to oversee all products",
+              "Ensure that Dev-Ops manages the interdependencies",
+            ],
+            correctAnswer: [
+              "Make the products as independent as possible and have each product determine their own release plans",
+            ],
+          },
+          {
+            // Question 21
+            question:
+              "What is the stance of the Product Owner during the Sprint Retrospective? (choose the best answer)",
+            options: [
+              "A peer Scrum Team member",
+              "A Manager",
+              "He/she does not have to be there",
+              "A Scribe",
+            ],
+            correctAnswer: ["A peer Scrum Team member"],
+          },
+          {
+            // Question 22
+            question:
+              "In Scrum, every product needs a ___________. (choose the best answer)",
+            options: [
+              "Product Owner",
+              "Finalized requirements documentation",
+              "deadline",
+              "comprehensive business plan",
+              "All of the above",
+            ],
+            correctAnswer: ["Product Owner"],
+          },
+          {
+            // Question 23
+            question:
+              "Anna, a Product Owner, does not have enough time to do all of the things that are needed to be done as she is overloaded and stretched too thin.  What can Anna do? (choose the best answer)",
+            options: [
+              "Split the product into different units, each unit will have its own Product Owner and a delivery manager who will be responsible for integrating releases",
+              "Ask the developers to help with some of the responsibilities",
+              "Assign some of the work to Business Analysts in order to spread the workload",
+              "All of the above",
+              "None of the above",
+            ],
+            correctAnswer: [
+              "Ask the developers to help with some of the responsibilities",
+            ],
+          },
+          {
+            // Question 24
+            question:
+              "You are a new Product Owner brought in to fix an existing product. The product is integral to the organization's long-term vision. When examining the issues you were able to learn that: - The last three releases have had no positive impact on product value.- The costs to build and maintain a release is high compared to the revenue it generates. ie Product Cost Ratio.- The time from which the team starts working on a release to having it shipped to users is long. ie Time-to-Market.As the Product Owner, which strategy would you pursue? (choose the best answer)",
+            options: [
+              "Focus on identifying and delivering high-value features that will gain more customers and increase revenue",
+              "Suggest cancelling the product and focus on other opportunities as the Unrealized Value is low",
+              "Improve the team's Ability to Innovate by identifying and eliminating the waste that is creating the high-cost ratios and long release cycles",
+            ],
+            correctAnswer: [
+              "Improve the team's Ability to Innovate by identifying and eliminating the waste that is creating the high-cost ratios and long release cycles",
+            ],
+          },
+          {
+            // Question 25
+            question:
+              "A desirable Product Vision _________ (choose the best answer)",
+            options: [
+              "is approved by all stakeholders",
+              "reminds the team of the direction so they understand how their roles and daily activities contribute to the bigger picture",
+              "is a formal agreement with the business",
+              "All of the above",
+            ],
+            correctAnswer: [
+              "reminds the team of the direction so they understand how their roles and daily activities contribute to the bigger picture",
+            ],
+          },
+          {
+            // Question 26
+            question:
+              "Which of the following is the most effective way of improving the Time-to-Market of a product? (choose the best answer)",
+            options: [
+              "Removing low performing people",
+              "Hiring more team members",
+              "Working harder to go faster",
+              "Understanding and removing impediments to faster delivery",
+              "Increasing project funding",
+              "All of the above",
+            ],
+            correctAnswer: [
+              "Understanding and removing impediments to faster delivery",
+            ],
+          },
+          {
+            // Question 27
+            question:
+              "According to the Scrum Guide, when is a Product Increment released? (choose the best answer)",
+            options: [
+              "When the Increment satisfies the Definition of Done",
+              "When all of the planned items for the release are completed",
+              "After the tester has confirmed there are no defects",
+              "When the Product Owner decides is best",
+            ],
+            correctAnswer: ["When the Product Owner decides is best"],
+          },
+          {
+            // Question 28
+            question:
+              "A Visionary Product Owner tends to: (choose the best answer)",
+            options: [
+              "focus on the future, on changing the status quo, and helping people to see what could be, instead of what is",
+              "know all about the details and about every bug in the software or system",
+              "know all about the Developers' velocity and predictability and maximizing output in order to deliver all features",
+              "support people in their own discovery process, whether it's about defining goals, clarifying PBIs, or analyzing customer needs",
+            ],
+            correctAnswer: [
+              "focus on the future, on changing the status quo, and helping people to see what could be, instead of what is",
+            ],
+          },
+          {
+            // Question 29
+            question:
+              "Measuring the number of times team members switch tasks and the frequency of interruptions can help identify improvements to which two Key Value Areas? (choose the best two answers)",
+            options: [
+              "Ability to Innovate",
+              "Current Value",
+              "Time to Market",
+              "Unrealized Value",
+            ],
+            correctAnswer: ["Ability to Innovate", "Time to Market"],
+          },
+          {
+            // Question 30
+            question:
+              "The ability of a product development organization to deliver new capabilities that might meet customer needs can be expressed through which measure? (choose the best answer)",
+            options: [
+              "Ability to Innovate (A2I)",
+              "Current Value (CV)",
+              "Time to Market (T2M)",
+              "Unrealized Value (UV)",
+            ],
+            correctAnswer: ["Ability to Innovate (A2I)"],
+          },
+          {
+            // Question 31
+            question:
+              "As an experienced Product Owner, your organization has asked you for your advice on investment strategies for two products. Given the following information:- Product B generates more revenue than Product A - Product B has higher user satisfaction rates than Product A - Product A has bigger potential market opportunities than Product B Which of the following strategies would you advise?(choose the best answer)",
+            options: [
+              "For both products, continually measure the impact of any new investments or marketing",
+              "Increase marketing for Product B to grow its market share",
+              "Invest in Product A to increase its market share, user satisfaction, and revenue",
+              "All of the above",
+            ],
+            correctAnswer: [
+              "Invest in Product A to increase its market share, user satisfaction, and revenue",
+            ],
+          },
+          {
+            // Question 32
+            question:
+              "Successful use of Scrum depends on how well people behave and act in ways that reflect the Scrum values. What can the value of openness affect? (choose the best answer)",
+            options: [
+              "Level of product quality",
+              "Collaboration efforts",
+              "Time to market",
+              "Team member happiness",
+              "Trust from stakeholders",
+              "All of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+          {
+            // Question 33
+            question:
+              "A new competitor has arrived in your market and has been quickly gaining traction. They are able to release much faster than you and they are able to create better customer engagement and satisfaction rates with each release. What is the best first response? (choose the best answer)",
+            options: [
+              "Add features to your next release that you think will keep current customers as well as attract new customers",
+              "Reduce your product's price to make it more attractive",
+              "Move your product to a different market that is less competitive",
+              "Improve your Time-to-Market and Ability to Innovate in order to respond faster",
+            ],
+            correctAnswer: [
+              "Improve your Time-to-Market and Ability to Innovate in order to respond faster",
+            ],
+          },
+          {
+            // Question 34
+            question:
+              "What is the benefit of having short release cycles? (choose the best answer)",
+            options: [
+              "Teams are able to receive user feedback earlier to better understand and meet customer needs",
+              "It helps teams to better manage defects",
+              "It provides teams with more opportunities to inspect and adapt",
+              "Smaller, more frequent releases are less risky",
+              "All of the above",
+              "None of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+          {
+            // Question 35
+            question:
+              "In Scrum, how would budgeting and financial forecasting be performed? (choose the best two answers)",
+            options: [
+              "Frequently inspect the outcomes of the delivered Sprint Increments to understang how much value is being produced per investment spent",
+              "Budgeting is not necessary as the only funding necessary is the operational costs of the Scrum Teams",
+              "A single release may be funded with several Sprints where every Sprint is producing shippable Increments",
+              "Fixed budgets are not allowed in Scrum",
+            ],
+            correctAnswer: [
+              "Frequently inspect the outcomes of the delivered Sprint Increments to understang how much value is being produced per investment spent",
+              "A single release may be funded with several Sprints where every Sprint is producing shippable Increments",
+            ],
+          },
+          {
+            // Question 36
+            question:
+              "Personas is a technique used to describe the users and customers of a product. How can it help to make the right product decisions? (choose the best answer)",
+            options: [
+              "Helping to understand the needs of a set of users",
+              "Helping to formulate hypotheses about product value",
+              "Helping to discover what triggers customers",
+              "Helping to understand the market potential",
+              "All of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+          {
+            // Question 37
+            question:
+              "During the Sprint Review, the Product Owner is sharing the latest product user analytics. A couple of the features have not been received well by the end-users. One of the stakeholders feels that the product is not at the stage where it's useful to measure data yet. The Product Owner has validated that the measures are accurate, a good representation of user satisfaction, and valuable to help you and your team. What should the Product Owner do? (choose the best answer)",
+            options: [
+              "Stop measuring user data until the product has matured enough",
+              "Continue measuring and sharing the outcomes to provide transparency and openness, and continue to use the data to help with decision making",
+              "Continue measuring user data but only share it when needed in order to avoid conflict with stakeholders",
+            ],
+            correctAnswer: [
+              "Continue measuring and sharing the outcomes to provide transparency and openness, and continue to use the data to help with decision making",
+            ],
+          },
+          {
+            // Question 38
+            question:
+              "Evidence-Based Management consists of which Key Value Areas (KVA)? (choose all that apply)",
+            options: [
+              "Time to Market",
+              "Customer Value",
+              "Product Quality",
+              "Unrealized Value",
+              "Ability to Innovate",
+              "Current Value",
+            ],
+            correctAnswer: [
+              "Time to Market",
+              "Unrealized Value",
+              "Ability to Innovate",
+              "Current Value",
+            ],
+          },
+          {
+            // Question 39
+            question:
+              "Which preferred Product Owner stance helps people to align around the product vision and get people excited to join the case? (choose the best answer)",
+            options: [
+              "The Influencer",
+              "The Visionary",
+              "The Manager",
+              "The Subject Matter Expert",
+            ],
+            correctAnswer: ["The Influencer"],
+          },
+          {
+            // Question 40
+            question:
+              "Which of the following is the Product Owner accountable for maintaining and communicating? (choose the best answer)",
+            options: [
+              "The Sprint burndown chart",
+              "Scrum Team utilization",
+              "The Product Vision",
+              "The Definition of Done",
+              "All of the above",
+            ],
+            correctAnswer: ["The Product Vision"],
+          },
+        ],
+
+        [
+          // QUIZ 05
+          {
+            // Question 01
+            question:
+              "When there are multiple Scrum Teams working on the same product, each team should demonstrate its individual Increment in a separate branch of the code.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 02
+            question:
+              "What can be used to help you understand the potential market for your product? (choose the best answer)",
+            options: [
+              "Market share trends",
+              "Revenue Trends",
+              "Usage Index",
+              "Net Promoter Score (NPS)",
+              "All of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+          {
+            // Question 03
+            question:
+              "The Scrum Guide 2020 version introduced commitments for each artifact to ensure it provides information that enhances transparency and focus against which progress can be measured. Select these 3 commitments.",
+            options: [
+              "For the Sprint it is the Sprint length",
+              "For the Product Backlog it is the Product Goal",
+              "For the Increment it is the Definition of Done",
+              "For the Increment it is the Sprint Backlog",
+              "For the Sprint Backlog it is the Sprint Goal",
+            ],
+            correctAnswer: [
+              "For the Product Backlog it is the Product Goal",
+              "For the Increment it is the Definition of Done",
+              "For the Sprint Backlog it is the Sprint Goal",
+            ],
+          },
+          {
+            // Question 04
+            question:
+              "A Product Owner has decided to remove a product feature that's currently on production. Which measure could have led to this decision? (choose the best answer)",
+            options: [
+              "Long Cycle Times",
+              "Too much time spent context-switching",
+              "Increasing Defect trend",
+              "Low Customer Usage Index",
+            ],
+            correctAnswer: ["Low Customer Usage Index"],
+          },
+          {
+            // Question 05
+            question:
+              "During the development effort of your product, you have been frequently approached by various stakeholders asking for new features. You feel that a lot of the requests are either not aligned with the Product's vision or do not contribute to the Product's forward progress. As a Product Owner, which tool can help stakeholders steer on the outcome (value steering) rather than steer on output (steering on features)?(choose the best answer)",
+            options: [
+              "GANTT chart",
+              "Release plans",
+              "Story maps",
+              "Goal-Oriented product roadmap",
+              "Now-Next-Later product roadmap",
+            ],
+            correctAnswer: ["Goal-Oriented product roadmap"],
+          },
+          {
+            // Question 06
+            question:
+              "What can help you improve product viability and business value? (choose the best answer)",
+            options: [
+              "Improving the predictability of Developer's velocity",
+              "Ensuring no changes are made after project plan approval",
+              "Using Evidence-Based Management",
+              "Tracking team member utilization",
+            ],
+            correctAnswer: ["Using Evidence-Based Management"],
+          },
+          {
+            // Question 07
+            question:
+              "As a Product Owner, which of the following measures would you consider important? (choose the best answer)",
+            options: [
+              "Measures that reflect changes that impact your business",
+              "Measurements that reflect the number of features delivered",
+              "Measurements that reflect on-time delivery of commitments",
+              "Measurements that reflect the Scrum Team utilization rates",
+            ],
+            correctAnswer: [
+              "Measures that reflect changes that impact your business",
+            ],
+          },
+          {
+            // Question 08
+            question:
+              "What are the artifacts in Scrum? (choose all that apply)",
+            options: [
+              "Sprint Backlog",
+              "Increment",
+              "The list of removed impediments",
+              "Product Backlog",
+              "The Sprint Goal",
+              "Commitments",
+            ],
+            correctAnswer: ["Sprint Backlog", "Increment", "Product Backlog"],
+          },
+          {
+            // Question 09
+            question:
+              "What is the desired outcome of using the Evidence-Based Management (EBM) approach? (choose the best answer)",
+            options: [
+              "Measuring team progress against the predefined project plan",
+              "Continously improve product viability and business value by ways of measuring delivered value and the ability to deliver value",
+              "Identifying low performing teams and decide on training strategies",
+              "Improving the Developer's velocity and predictability",
+            ],
+            correctAnswer: [
+              "Continously improve product viability and business value by ways of measuring delivered value and the ability to deliver value",
+            ],
+          },
+          {
+            // Question 10
+            question:
+              "The Developers have the final say on when to release an increment. (choose the best answer)",
+            options: [
+              "True. The Developers deploy to production when the Increment is shippable",
+              "True. The Developers are accountable for doing the work and owning the release process",
+              "False. The Product Owner decides when it is best to release",
+              "False. The increment is released after it has passed UAT",
+            ],
+            correctAnswer: [
+              "False. The Product Owner decides when it is best to release",
+            ],
+          },
+          {
+            // Question 11
+            question:
+              "Improved business value is the desired outcome of using the Scrum framework as an agile approach.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+          {
+            // Question 12
+            question:
+              "Evidence-Based Management (EBM) consists of four Key Value Areas (KVAs). One of which is Ability to Innovate (A2I). The goal of looking at the A2I is to maximize the organization’s ability to deliver new capabilities and innovative solutions. Which action can improve your A2I? (choose the best answer)",
+            options: [
+              "Increasing the level of your team's cross-functionality skills",
+              "Setting days where there are no meetings outside of the Scrum events in order to increase focus",
+              "Co-locating the team members",
+              "All of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+          {
+            // Question 13
+            question:
+              "How does the Scrum Master help the Product Owner? (choose the best three answers)",
+            options: [
+              "Helping find techniques for effective Product Goal definition and Product Backlog management",
+              "Helping establish empirical product planning for a complex environment",
+              "Leading and coaching the organization in its Scrum adoption",
+              "Introducing cutting edge development practices",
+              "Helping the Scrum Team understand the need for clear and concise Product Backlo items",
+            ],
+            correctAnswer: [
+              "Helping find techniques for effective Product Goal definition and Product Backlog management",
+              "Helping establish empirical product planning for a complex environment",
+              "Helping the Scrum Team understand the need for clear and concise Product Backlo items",
+            ],
+          },
+          {
+            // Question 14
+            question:
+              "Who is allowed to make changes in the Product Backlog? (choose the best two answers)",
+            options: [
+              "Scrum Master",
+              "The Key Stakeholders",
+              "The Product Owner",
+              "Program Manager",
+              "The Scrum Team, in agreement with the Product Owner",
+              "Project Manager",
+            ],
+            correctAnswer: [
+              "The Product Owner",
+              "The Scrum Team, in agreement with the Product Owner",
+            ],
+          },
+          {
+            // Question 15
+            question:
+              "Evidence-Based Management (EBM) consists of four Key Value Areas (KVAs). Which of the following best describes the Key-Value Area of Current Value (CV)? (choose the best answer)",
+            options: [
+              "It reveals the value that the product delivers to customers, today",
+              "It suggests the potential future value that could be realized if the organization could perfectly meet the needs of all potential customers",
+              "It expresses the organization's ability to quickly deliver new capabilities, services, or products",
+              "It expresses the ability of a product development organization to deliver new capabilities that might better meet customer needs",
+            ],
+            correctAnswer: [
+              "It reveals the value that the product delivers to customers, today",
+            ],
+          },
+          {
+            // Question 16
+            question:
+              "Your product has several internal stakeholders. You've gathered the following feedback related to product direction:- The Marketing leader tells you that there's a new market opportunity and believes that in order to reach it, the product will need a new feature. - The Developers estimate that this new feature will require high effort. - The CEO thinks the feature is too expensive and suggests staying focused on the market you're currently serving. As the Product Owner, you have full ownership of final product decisions. How should you proceed? (choose the best answer)",
+            options: [
+              "Gather additional feedback and needs of the other stakeholders",
+              "Develop an experiment that will help the business to better understand the new market, market opportunities, and its potential",
+              "Focus on the current market as you do not want to risk losing customers",
+              "Follow the Head of Marketing's suggestion as he/she is the expert in understanding market opportunities",
+              "Follow the CEO's suggestion as he/she is ultimately responsible for the success of the organization",
+            ],
+            correctAnswer: [
+              "Develop an experiment that will help the business to better understand the new market, market opportunities, and its potential",
+            ],
+          },
+          {
+            // Question 17
+            question:
+              "Your organization multiple versions of the same product. The different versions are needed for older and various devices. You're spending almost all of your effort fixing and supporting the different variations and this leaves you no time to improve the product and your ability to deliver value. Which Key-Value Area does this impact? (choose the best answer)",
+            options: [
+              "Cycle Time",
+              "Velocity",
+              "Ability to Innovation",
+              "Revenue per Employee",
+              "All of the above",
+            ],
+            correctAnswer: ["Ability to Innovation"],
+          },
+          {
+            // Question 18
+            question:
+              "Your organization requires all Increments to pass user acceptance testing (UAT) before it is allowed to be released to production.  Is it a good idea to postpone UAT until the end of the project to prevent the Scrum Team from being disrupted during the Sprints? (choose the best answer)",
+            options: [
+              "It depends on the team's Definition of Done",
+              "Yes, because UAT is done in a hardening Sprint before the release of Sprint",
+              "Yes, because the Scrum Team is a self-managing team and should not be disrupted during development",
+              "No, because the state of the Product Increment won't be transparent and the feedback loop would be too long",
+            ],
+            correctAnswer: [
+              "No, because the state of the Product Increment won't be transparent and the feedback loop would be too long",
+            ],
+          },
+          {
+            // Question 19
+            question:
+              "Choose the 2 best activities that can be the responsibilities of the Product Owner.",
+            options: [
+              "Volunteer for tasks",
+              "Break down Product Backlog items into smaller ones",
+              "Design product specifications",
+              "Orders the Product Backlog items",
+              "Provide estimates",
+              "Communicating the Product Goal",
+              "Make technical decisions",
+            ],
+            correctAnswer: [
+              "Orders the Product Backlog items",
+              "Communicating the Product Goal",
+            ],
+          },
+          {
+            // Question 20
+            question:
+              "You are a Product Owner for a new product that has many stakeholders. You currently have a large unordered list of features. Consider the following: - You have a limited time-box where all stakeholders can gather at the same time. - You need to quickly gather their feedback regarding the importance of several features. This information will be used to help you formulate an initial product roadmap. Which of the following tools would help you quickly gather their feedback? (choose the best answer)",
+            options: [
+              "Value Stream roadmap",
+              "A Story Map",
+              "A GANTT chart",
+              "A Now-Next-Later product roadmap",
+              "A Goal Oriented product roadmap",
+            ],
+            correctAnswer: ["A Now-Next-Later product roadmap"],
+          },
+          {
+            // Question 21
+            question:
+              "Which statement is TRUE about 'the cone of uncertainty'? (choose the best answer)",
+            options: [
+              "It is a tool that can identify and help eliminate all uncertainties",
+              "It can help individual team members adhere to commitments",
+              "It is designed to manage non-technical requirements in order to meet feature delivery commitments",
+              "It can be used in complex environments to help forecast when a scope of work might likely to be done",
+            ],
+            correctAnswer: [
+              "It can be used in complex environments to help forecast when a scope of work might likely to be done",
+            ],
+          },
+          {
+            // Question 22
+            question:
+              "Considering the following: - Team A is averaging a velocity of 25 units of work per Sprint. - Team B is averaging a velocity of 30 units of work per Sprint. Which team is delivering more value? (choose the best answer)",
+            options: [
+              "Team A",
+              "Neither A nor B; velocity is not a measurement of value",
+              "Team B",
+            ],
+            correctAnswer: [
+              "Neither A nor B; velocity is not a measurement of value",
+            ],
+          },
+          {
+            // Question 23
+            question:
+              "Peter is new to the Product Owner role and is asking you for advice on what he should be doing to be an effective Product Owner. Which of the following would be the most appropriate advice to give him? (choose the best answer)",
+            options: [
+              "Maximize the productivity of the team",
+              "Have an understanding of all items in the Product Backlog to the level needed to maximize the flow of value",
+              "Ensure that all of the stakeholder needs are met",
+              "Be the only point of contact for all stakeholders",
+              "All of the above",
+              "None of the above",
+            ],
+            correctAnswer: [
+              "Have an understanding of all items in the Product Backlog to the level needed to maximize the flow of value",
+            ],
+          },
+          {
+            // Question 24
+            question:
+              "Your job as a Product Owner includes sharing the Product Vision. What is the most effective way for a Product Owner to share your vision? (choose the best answer)",
+            options: [
+              "Request the marketing department to formulate a single vision that is approved by all stakeholders",
+              "Focus your pitch around the technology and features as it displays domain expertise",
+              "Create a Vision Board and share it on the Scrum board as it is the most visible information radiator",
+              "Make a tailor-made pitch for your different stakeholder groups and adapt your vision pitch, based upon your target audience",
+              "Create a Vision statement general enough to be interpreted in different ways",
+            ],
+            correctAnswer: [
+              "Make a tailor-made pitch for your different stakeholder groups and adapt your vision pitch, based upon your target audience",
+            ],
+          },
+          {
+            // Question 25
+            question:
+              "Management has asked you for advice on which product to fund. Each product is focusing on different markets. Given the following information: - Product A has very high user satisfaction scores and a high market share. - Product B has low user satisfaction scores, low market share, but is in a growing market in which no other competitor has a significant market share.Which product would you suggest funding? (choose the best answer)",
+            options: ["Product A", "Product B"],
+            correctAnswer: ["Product B"],
+          },
+          {
+            // Question 26
+            question:
+              "A new market opportunity has appeared and your organization will need to react quickly. In order to capture this valuable opportunity, you must accelerate your deliveries.  Some managers are proposing extending work hours, some recommend hiring more resources, the Developers suggests automating both testing and releasing efforts. What would help guide you in solving this problem and where to focus improvements?(choose the best answer)",
+            options: [
+              "Create a visualization of the whole process and identify any bottlen ecks affecting the flow using Value Stream Mapping (VSM)",
+              "Analyze utilization rates of the team members in order to optimize the work effort",
+              "Ask the employees what their biggest struggles are",
+              "Work with HR to hire additional members while also including automation in the development effort",
+              "All of the above",
+            ],
+            correctAnswer: [
+              "Create a visualization of the whole process and identify any bottlen ecks affecting the flow using Value Stream Mapping (VSM)",
+            ],
+          },
+          {
+            // Question 27
+            question:
+              "Your product releases are failing to generate the revenue you had expected. Which action would help you understand the problem? (choose the best answer)",
+            options: [
+              "Measuring Innovation Rate",
+              "Measuring Release Frequency",
+              "Measuring Usage Index",
+              "Measuring Lead Time",
+            ],
+            correctAnswer: ["Measuring Usage Index"],
+          },
+          {
+            // Question 28
+            question:
+              "Mary is a Product Owner of a product with a variety of stakeholders. The stakeholders are pressing Mary to add all of their feature requests into the next release. Each one says that their feature is urgent. As Product Owner, Mary has confirmed that their requests are indeed important. What should Mary do? (choose the best answer)",
+            options: [
+              "Hire additional team members in order to manage the extra work",
+              "Release only when all features have been completed",
+              "Delegate prioritization to the Product Director in order to protect the Product Backlog",
+              "Iteratively and incrementally release when single outcomes are fulfilled, even though not all features are done",
+            ],
+            correctAnswer: [
+              "Iteratively and incrementally release when single outcomes are fulfilled, even though not all features are done",
+            ],
+          },
+          {
+            // Question 29
+            question:
+              "Which statement best describes a Sprint forecast? (choose the best answer)",
+            options: [
+              "Sprint forecast is a tool for measuring the performance of the team",
+              "Sprint forecasts allow stakeholders to know what the Scrum Team has committed to deliver in future releases",
+              "A Sprint forecast is the amount of work the Developers believes it can complete in the current Sprint",
+              "A Sprint forecast is the Developers' commitment to making done before the Sprint time-box ends",
+            ],
+            correctAnswer: [
+              "A Sprint forecast is the amount of work the Developers believes it can complete in the current Sprint",
+            ],
+          },
+          {
+            // Question 30
+            question:
+              "The Product Owner has the final say on if an Increment is 'Done'.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 31
+            question:
+              "Your company has invested in a large agile transformation initiative. Management does not have experience in 'agile' environments and wants to know how to measure whether the transformation is succeeding or not. Which measure would help evaluate agile transformation effectiveness? (choose the best answer)",
+            options: [
+              "The number of Scrum Teams",
+              "Average team velocity",
+              "The number of on-time, on-budget, and on-scope projects",
+              "Customer outcomes",
+              "All of the above",
+            ],
+            correctAnswer: ["Customer outcomes"],
+          },
+          {
+            // Question 32
+            question:
+              "During the product's development effort, the market for which the product is being built has changed and evolved. What should you do? (choose the best answer)",
+            options: [
+              "Replace the current Product Backlog with a new Product Backlog that fits the updated market",
+              "The Product Backlog should remain unchanged. Move the product to a more suitable market as you have already made investments in product development",
+              "Make changes to the Product Backlog to reflect what is needed to deliver the most value",
+              "There is no impact as the commitment is to deliver on the approved project plan",
+            ],
+            correctAnswer: [
+              "Make changes to the Product Backlog to reflect what is needed to deliver the most value",
+            ],
+          },
+          {
+            // Question 33
+            question:
+              "What type of indicator does value become if it is measured infrequently? (choose the best answer)",
+            options: [
+              "A Lagging indicator",
+              "A Leading Indicator",
+              "None of the above",
+            ],
+            correctAnswer: ["A Lagging indicator"],
+          },
+          {
+            // Question 34
+            question:
+              "- Product A produces high revenue. - Product B is a new product. Using those two data points, the information provided, and taking a long-term view, which of the options below should you pursue? (choose the best answer)",
+            options: [
+              "Weight your investment toward Product B, since it has more future potential",
+              "Invest in both products equally",
+              "Weight your investment toward Product A, as it is the lead revenue generator and you do not want to risk losing customers",
+            ],
+            correctAnswer: [
+              "Weight your investment toward Product B, since it has more future potential",
+            ],
+          },
+          {
+            // Question 35
+            question:
+              "The Product Vision can evolve as the Scrum Team learns more about the customers and their desires.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+          {
+            // Question 36
+            question:
+              "A Scrum Team has just completed Sprint 5. The average velocity is 25 points per Sprint. The remaining items in the Product Backlog total 110 points. The Product Owner forecasts that the remaining items can be completed in the next 5 sprints. Will this project deliver the desired impact by the end of Sprint 10? (choose the best answer)",
+            options: ["Yes", "No", "We do not know"],
+            correctAnswer: ["We do not know"],
+          },
+          {
+            // Question 37
+            question:
+              "As a Product Owner, who can you invite to the Sprint Review? (choose the best answer)",
+            options: [
+              "Your clients/customers",
+              "Your end-users",
+              "Your internal stakeholders",
+              "Your product's investors/sponsors",
+              "All of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+          {
+            // Question 38
+            question:
+              "Interacting directly with the product's customers is an effective way for the Product Owner to assess value.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+          {
+            // Question 39
+            question:
+              "What best describes a user satisfaction gap? (choose the best answer)",
+            options: [
+              "The difference between the market share of the product and the total market size",
+              "The difference between the time to market and ability to innovate",
+              "The difference between the costs to release and revenue generated",
+              "The difference between the user's desired outcome and the user's actual experience",
+            ],
+            correctAnswer: [
+              "The difference between the user's desired outcome and the user's actual experience",
+            ],
+          },
+          {
+            // Question 40
+            question:
+              "Your product is the market leader in your segment. Your team is continuously releasing new features. The rate that you're releasing features is higher than the rate that the customers can adopt the features. Customers complain that while they are still getting used to a release, a new release will appear. The Developers of your Scrum Team has also made you aware that technical debt is accumulating with each release. As a Product Owner, which would be the best approach? (choose the best answer)",
+            options: [
+              "Add customer support staff to help customers with their upgrade challenges",
+              "Start focusing on how to improve the system in order to make releasing better and less risky, even if it means releasing fewer features",
+              "Slow down the release cycles so customers have more time to catch-up",
+            ],
+            correctAnswer: [
+              "Start focusing on how to improve the system in order to make releasing better and less risky, even if it means releasing fewer features",
+            ],
+          },
+        ],
+
+        [
+          // QUIZ 06 scrumorg16
+          {
+            // Question 01
+            question:
+              "Which statement describes the best way to learn from experiments? (choose the best answer)",
+            options: [
+              "Running multiple experiments on the same product at the same time is the best way to reduce the time and complexity of testing new ideas",
+              "Running one experiment on the product that is open-ended is the best way to gather the most sufficient and accurate data",
+              "Running one experiment on the product at a time is the best way for you to understand how the results you observed affect your desired outcomes",
+              "Running multiple experiments on the same product at the same time is the best way to reduce the cost of testing new ideas",
+            ],
+            correctAnswer: [
+              "Running one experiment on the product at a time is the best way for you to understand how the results you observed affect your desired outcomes",
+            ],
+          },
+          {
+            // Question 02
+            question:
+              "Which of the following measures would help you understand the potential market for your product? (choose the best answer)",
+            options: [
+              "Net Promoter Score (NPS)",
+              "Market share trends",
+              "Quarterly revenue trends",
+              "Usage index",
+              "All of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+          {
+            // Question 03
+            question:
+              "Your product’s sales are falling behind competitors, but you don’t know why.  Which Key Value Areas would give you the best insight into what to do next?(choose the best two answers)",
+            options: [
+              "Current Value",
+              "Unrealized Value",
+              "Time to Market",
+              "Ability to Innovate",
+            ],
+            correctAnswer: ["Current Value", "Unrealized Value"],
+          },
+          {
+            // Question 04
+            question:
+              "You release your product to customers once every month, which is better than any competitor. Most of the features you deliver are simply minor changes or corrections to existing features, but customer satisfaction remains low. To improve the competitiveness of your product, what Key Value Areas should be your focus? (choose the best two answers)",
+            options: [
+              "Current Value",
+              "Unrealized Value",
+              "Time to Market",
+              "Ability to Innovate",
+            ],
+            correctAnswer: ["Unrealized Value", "Ability to Innovate"],
+          },
+          {
+            // Question 05
+            question:
+              "You want to improve your team’s Ability to Innovate. Which of the following actions might help? (choose the best answer)",
+            options: [
+              "Set a time of day to be out of meetings to increase focus",
+              "Improve the cross-functional skills of your team",
+              "Reduce the number of product variants",
+              "All of the above",
+            ],
+            correctAnswer: ["All of the above"],
+          },
+          {
+            // Question 06
+            question:
+              "Your company is considering investing in a large agile transformation. What should you measure to know if your initiative is successful? (choose the best answer)",
+            options: [
+              "The number of teams doing Scrum",
+              "Average team velocity",
+              "The number of on-time, on-budget, and on-scope projects",
+              "Customer outcomes",
+              "All of the above",
+            ],
+            correctAnswer: ["Customer outcomes"],
+          },
+          {
+            // Question 07
+            question:
+              "Your CEO thinks your organization needs to deliver more quickly. There is no shortage of opinions about how you should go about this. Some managers think they need to hire more people, some engineers think the answer is automation. You can’t pursue every idea, and some ideas may not be worth pursuing. What could best help you understand the problem and where to improve? (choose the best answer)",
+            options: [
+              "Conduct a customer satisfaction survey to find areas of dissatisfaction",
+              "Create a Value Stream Map to understand the current process and its bottlenecks",
+              "Analyze employee utilization rates to understand where efficiency needs to be improved",
+              "Hire more people to handle the workload while also working to improve automation",
+              "All of the above",
+            ],
+            correctAnswer: [
+              "Create a Value Stream Map to understand the current process and its bottlenecks",
+            ],
+          },
+          {
+            // Question 08
+            question:
+              "Product A is the main driver of both revenue and profit for your company; it has very happy customers (high Current Value) and low Unrealized Value. Product B is relatively new; it has low Current Value and high Unrealized Value. Both Product Owners of the two products are requesting significant additional funding to improve their products. What do you do? (choose the best answer)",
+            options: [
+              "Invest funding in Product B, because it has more future potential for the company",
+              "Split funding equally between both products",
+              "Invest funding in Product A, because your company's success depends on its continued success",
+              "Split funding proportionally based on product revenues",
+            ],
+            correctAnswer: [
+              "Invest funding in Product B, because it has more future potential for the company",
+            ],
+          },
+          {
+            // Question 09
+            question:
+              "The Evidence-Based Management framework helps you to: (choose the best answer)",
+            options: [
+              "Understand whether your PMO is efficient",
+              "Better track your progress against plans",
+              "Improve the predictability of Scrum Team velocity",
+              "Improve your ability to deliver value",
+            ],
+            correctAnswer: ["Improve your ability to deliver value"],
+          },
+          {
+            // Question 10
+            question:
+              "You have many customers on older releases who express frustration that they cannot adopt your latest releases as fast as you release them.  At the same time, you are in a competitive market and you feel that you need to stay ahead of competitors.  With every new release, you are spread more thin because you also have to fix defects and make enhancements to older releases.  What should you do in response? (choose the best answer)",
+            options: [
+              "Add customer support staff to help customers with their upgrade challenges",
+              "Pause the addition of new features and focus on making the upgrade process easier and less risky",
+              "Slow down the release cycles so customers have more time to catch-up",
+            ],
+            correctAnswer: [
+              "Pause the addition of new features and focus on making the upgrade process easier and less risky",
+            ],
+          },
+          {
+            // Question 11
+            question:
+              "Measuring the number of times per day a team switches tasks or is interrupted will help you to better understand which Key Value Areas? (choose the best two answers)",
+            options: [
+              "Current Value",
+              "Unrealized Value",
+              "Time to Market",
+              "Ability to Innovate",
+            ],
+            correctAnswer: ["Time to Market", "Ability to Innovate"],
+          },
+          {
+            // Question 12
+            question:
+              "True or False: A good strategic goal must be specific, measurable, actionable, realistic, and time-bound.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 13
+            question:
+              "True or False: A benefit of using an agile approach is managing business risk more effectively.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+          {
+            // Question 14
+            question:
+              "Your company has many unique variations of the same product that it sells to different customers. Maintaining all these versions leaves you no time to improve the product. What measure(s) should you examine to help you to improve your ability to deliver value? (choose the best answer)",
+            options: [
+              "Velocity",
+              "Innovation Rate",
+              "Cycle Time",
+              "Revenue per Employee",
+              "All of the above",
+            ],
+            correctAnswer: ["Innovation Rate"],
+          },
+          {
+            // Question 15
+            question:
+              "True or False: The main benefit of following an agile approach is to deliver solutions more quickly.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 16
+            question:
+              "Team A has a velocity of 30 with a Product Backlog of 120 points ordered by business value as perceived by stakeholders.  Delivery is expected in 5 Sprints. Will this project deliver the anticipated impact?",
+            options: ["We do not know", "No", "Yes"],
+            correctAnswer: ["We do not know"],
+          },
+          {
+            // Question 17
+            question:
+              "Your executive sponsor visits the executives of an important customer. During the visit, they communicate to her what they believe is an important feature for your next product release, and your sponsor promises it will be in the release. Your team builds and delivers the feature as promised. Over the next three months, your measures of the usage of the feature show that it has not been used. When you ask users from this important customer “why?”, they indicate that they did not need the feature and their executives don’t really understand the needs of their users. Do you communicate this to your executive sponsor? (choose the best answer)",
+            options: [
+              "Yes. They should take accountability and blame associated with the wasted effort",
+              "No. It is only necessary for you to indicate that the feature hasn't been used yet, but might be used in the future",
+              "No. The work has been done. Look for other customers who need this feature",
+              "Yes. If you share what you learned from the release with the sponsor, it may help them improve their ability to ask probing questions with customers",
+            ],
+            correctAnswer: [
+              "Yes. If you share what you learned from the release with the sponsor, it may help them improve their ability to ask probing questions with customers",
+            ],
+          },
+          {
+            // Question 18
+            question:
+              "Your company's product has been through multiple releases. It is not meeting revenue expectations. What measure will help you understand the problem?(choose the best answer)",
+            options: [
+              "Innovation Rate",
+              "Lead Time",
+              "Release Frequency",
+              "Usage Index",
+            ],
+            correctAnswer: ["Usage Index"],
+          },
+          {
+            // Question 19
+            question:
+              "True or False: A product release is successful if it meets all Stakeholder requirements.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 20
+            question:
+              "True or False: One benefit of using an agile approach is increased ability to deliver business value.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+          {
+            // Question 21
+            question:
+              "Team A has an average velocity of 30. Team B has an average velocity of 42. Which team is delivering more value?(choose the best answer)",
+            options: [
+              "Team A",
+              "Team B",
+              "We do not know; velocity is not a measure of value",
+            ],
+            correctAnswer: [
+              "We do not know; velocity is not a measure of value",
+            ],
+          },
+          {
+            // Question 22
+            question:
+              "True or False: A  benefit of using an agile approach is decreasing non-value-added waste.",
+            options: ["True", "False"],
+            correctAnswer: ["True"],
+          },
+          {
+            // Question 23
+            question:
+              "You would like to improve your ability to respond to new market opportunities. Which measure would NOT help you to understand how to improve your responsiveness?(choose the best answer)",
+            options: [
+              "On product index",
+              "Velocity",
+              "Cycle time",
+              "Technical Debt",
+              "Revenue per employee",
+            ],
+            correctAnswer: ["Revenue per employee"],
+          },
+          {
+            // Question 24
+            question:
+              "True or False: When many agile teams are working on different products, they should create a common status reporting dashboard of work performed in order for management to understand the status of each team.",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 25
+            question:
+              "Product A has a very high Net Promoter Score (NPS) and high market share. Product B has low NPS, low market share, but is in a growing market in which no other competitor has significant market share. Which product should you prioritize in funding?(choose the best answer)",
+            options: ["Product A", "Product B"],
+            correctAnswer: ["Product B"],
+          },
+          {
+            // Question 26
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 27
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 28
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 29
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 30
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 31
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 32
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 33
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 34
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 35
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 36
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 37
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 38
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 39
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 40
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+        ],
+
+        [
+          // QUIZ 07
+          {
+            // Question 01
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 02
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 03
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 04
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 05
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 06
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 07
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 08
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 09
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 10
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 11
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 12
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 13
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 14
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 15
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 16
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 17
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 18
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 19
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 20
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 21
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 22
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 23
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 24
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 25
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 26
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 27
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 28
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 29
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 30
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 31
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 32
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 33
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 34
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 35
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 36
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 37
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 38
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 39
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 40
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+        ],
+
+        [
+          // QUIZ 08
+          {
+            // Question 01
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 02
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 03
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 04
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 05
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 06
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 07
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 08
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 09
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 10
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 11
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 12
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 13
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 14
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 15
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 16
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 17
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 18
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 19
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 20
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 21
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 22
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 23
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 24
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 25
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 26
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 27
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 28
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 29
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 30
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 31
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 32
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 33
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 34
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 35
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 36
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 37
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 38
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 39
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+          {
+            // Question 40
+            question: "",
+            options: ["True", "False"],
+            correctAnswer: ["False"],
+          },
+        ],
+      ];
+
+      function startQuiz() {
+        document.getElementById("quiz-container").innerHTML = "";
+        displayQuestion();
+        updateQuestionStatus();
+      }
+
+      function updateQuestionStatus() {
+        const questionStatus = document.getElementById("question-status");
+        const totalQuestions = quizzes[selectedQuiz].length;
+        questionStatus.innerText = `Questions Answered: 0 / Total Questions: ${totalQuestions}`;
+      }
+
+      function displayQuestion() {
+        const quizContainer = document.getElementById("quiz-container");
+        const questionData = quizzes[selectedQuiz][currentQuestion];
+
+        if (testFinished) {
+          showResults();
+          return;
+        }
+
+        if (answeredQuestions.includes(currentQuestion)) {
+          quizContainer.innerHTML =
+            "<p>You have already answered this question.</p>";
+          return;
+        }
+
+        const questionBox = document.createElement("div");
+        questionBox.classList.add("question-box");
+
+        const questionNumber = document.createElement("div");
+        questionNumber.classList.add("question-number");
+        questionNumber.innerHTML = `<a class="question-number-top" href="javascript:void(0);" onclick="goToQuestion(${currentQuestion})">Question ${
+          currentQuestion + 1
+        }</a>`;
+
+        const questionText = document.createElement("div");
+        questionText.classList.add("question-text");
+        questionText.innerText = questionData.question;
+
+        const answerOptions = document.createElement("div");
+        answerOptions.classList.add("answer");
+        const checkboxes = [];
+        questionData.options.forEach((option) => {
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = option;
+          checkboxes.push(checkbox);
+          answerOptions.appendChild(checkbox);
+          answerOptions.appendChild(document.createTextNode(option));
+          answerOptions.appendChild(document.createElement("br"));
+        });
+
+        const submitBtn = document.createElement("button");
+        submitBtn.classList.add("btn", "btn-submit");
+        submitBtn.innerText = "Submit Answer";
+        submitBtn.onclick = submitAnswer;
+        submitBtn.disabled = true;
+
+        checkboxes.forEach((checkbox) => {
+          checkbox.addEventListener("change", () => {
+            submitBtn.disabled = !checkboxes.some(
+              (checkbox) => checkbox.checked
+            );
+          });
+        });
+
+        questionBox.appendChild(questionNumber);
+        questionBox.appendChild(questionText);
+        questionBox.appendChild(answerOptions);
+        questionBox.appendChild(submitBtn);
+
+        quizContainer.appendChild(questionBox);
+
+        displayQuestionNumbers();
+        addHomeButton();
+      }
+
+      function submitAnswer() {
+        if (answeredQuestions.includes(currentQuestion)) {
+          return;
+        }
+
+        const checkedCheckboxes = document.querySelectorAll(
+          ".question-box input:checked"
+        );
+        const userSelectedOptions = Array.from(checkedCheckboxes).map(
+          (checkbox) => checkbox.value
+        );
+
+        const correctAnswer =
+          quizzes[selectedQuiz][currentQuestion].correctAnswer;
+
+        const isCorrect = arraysEqual(userSelectedOptions, correctAnswer);
+        userAnswers.push({ question: currentQuestion + 1, correct: isCorrect });
+        answeredQuestions.push(currentQuestion);
+
+        displayFeedback(isCorrect);
+        addHomeButton();
+      }
+
+      function displayFeedback(isCorrect) {
+        const quizContainer = document.getElementById("quiz-container");
+        const feedbackMessage = document.createElement("div");
+
+        if (isCorrect) {
+          feedbackMessage.innerText = "Correct!";
+          feedbackMessage.style.color = "#28A745";
+        } else {
+          const correctAnswer =
+            quizzes[selectedQuiz][currentQuestion].correctAnswer.join(", ");
+          feedbackMessage.innerText = `Incorrect. Correct answer: ${correctAnswer}`;
+          feedbackMessage.style.color = "#DC3545";
+        }
+
+        quizContainer.appendChild(feedbackMessage);
+
+        if (currentQuestion === quizzes[selectedQuiz].length - 1) {
+          const finishBtn = document.createElement("button");
+          finishBtn.classList.add("btn", "btn-next");
+          finishBtn.innerText = "Finish Test";
+          finishBtn.onclick = finishTest;
+          quizContainer.appendChild(finishBtn);
+        } else {
+          const nextBtn = document.createElement("button");
+          nextBtn.classList.add("btn", "btn-next");
+          nextBtn.innerText = "Next Question";
+          nextBtn.onclick = nextQuestion;
+          quizContainer.appendChild(nextBtn);
+        }
+
+        displayQuestionNumbers();
+        addHomeButton();
+      }
+
+      function nextQuestion() {
+        const quizContainer = document.getElementById("quiz-container");
+        quizContainer.innerHTML = "";
+
+        currentQuestion++;
+
+        if (currentQuestion < quizzes[selectedQuiz].length) {
+          displayQuestion();
+        }
+      }
+
+      function finishTest() {
+        testFinished = true;
+        showResults();
+      }
+
+      function showResults() {
+        const quizContainer = document.getElementById("quiz-container");
+        quizContainer.innerHTML = "";
+
+        const resultsMessage = document.createElement("div");
+        resultsMessage.classList.add("results-message");
+        resultsMessage.innerText = "Test Completed";
+
+        const correctAnswers = userAnswers.filter(
+          (answer) => answer.correct
+        ).length;
+        const wrongAnswers = userAnswers.length - correctAnswers;
+
+        const resultsSummary = document.createElement("div");
+        resultsSummary.classList.add("results-summary");
+        resultsSummary.innerHTML = `Correct Answers: ${correctAnswers}<br>Wrong Answers: ${wrongAnswers}`;
+
+        const selectQuizBtn = document.createElement("button");
+        selectQuizBtn.classList.add("btn", "btn-next");
+        selectQuizBtn.innerText = "Select Quiz";
+        selectQuizBtn.onclick = selectQuiz;
+
+        quizContainer.appendChild(resultsMessage);
+        quizContainer.appendChild(resultsSummary);
+        quizContainer.appendChild(selectQuizBtn);
+
+        displayQuestionNumbers();
+        addHomeButton();
+      }
+
+      function displayQuestionNumbers() {
+        const questionNumbersContainer =
+          document.getElementById("question-numbers");
+        questionNumbersContainer.innerHTML = "";
+
+        for (let i = 0; i < quizzes[selectedQuiz].length; i++) {
+          const questionNumber = document.createElement("span");
+          questionNumber.classList.add("question-number-top");
+          questionNumber.innerHTML = `<a href="javascript:void(0);" onclick="goToQuestion(${i})">${
+            i + 1
+          }</a>`;
+          questionNumbersContainer.appendChild(questionNumber);
+        }
+      }
+
+      function goToQuestion(index) {
+        currentQuestion = index;
+        document.getElementById("quiz-container").innerHTML = "";
+        displayQuestion();
+      }
+
+      function goToHome() {
+        selectQuiz();
+      }
+
+      function addHomeButton() {
+        const homeButton = document.createElement("button");
+        homeButton.classList.add("btn", "btn-home");
+        homeButton.innerText = "Home";
+        homeButton.onclick = goToHome;
+
+        const navbar = document.getElementById("navbar");
+        navbar.innerHTML = ""; // Clear existing content
+        navbar.appendChild(homeButton);
+      }
+
+      function arraysEqual(arr1, arr2) {
+        return (
+          arr1.length === arr2.length &&
+          arr1.every((value, index) => value === arr2[index])
+        );
+      }
+    </script>
+  </body>
+</html>
