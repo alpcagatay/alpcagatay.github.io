@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="image/jpg" href="favicon/favicon.png" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style/style.css" />
+    <title>BABOK</title>
+    <style>
+      /* New CSS for adjusting image */
+      .image-container {
+        text-align: center;
+        margin-top: 60px; /* Adjust the margin as needed */
+      }
+      .image-container img {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--Navbar  -->
+    <header class="header">
+      <a style="color: ffffff" href="./" class="logo">Alp Cagatay Batuhan</a>
+
+      <input type="checkbox" id="check" />
+      <label for="check" class="icons">
+        <i class="bx bx-menu" id="menu-icon"></i>
+        <i class="bx bx-x" id="close-icon"></i>
+      </label>
+      <nav class="navbar">
+        <a href="./sqlnotes" style="--i: 0" ;>SQL</a>
+        <a href="./htmlnotes" style="--i: 0">html</a>
+        <a href="./cssnotes" style="--i: 1" ;>css</a>
+        <a href="./jsnotes" style="--i: 2" ;>js</a>
+        <a href="./pythonnotes" style="--i: 3" ;>python</a>
+        <a href="./gitnotes" style="--i: 4" ;>git</a>
+        <a href="./googlepmnotes" style="--i: 4" ;>Google PM</a>
+      </nav>
+    </header>
+
+    <!--Navbar End  -->
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <!-- Added container for the image -->
+    <div class="image-container">
+      <img src="babok notes/General Flow.png" alt="General Flow" />
+    </div>
+
+    <br />
+    <br />
+
+    <div class="image-container">
+      <img src="babok notes/Requirements.png" alt="Requirements" />
+    </div>
+
+    <br />
+    <br />
+
+    <div class="image-container">
+      <img src="babok notes/Stakeholders.png" alt="Stakeholders" />
+    </div>
+
+    <!--Tab Animation  -->
+    <script>
+      var character = 2;
+      var msg = "👋 Hello, I'm Alp";
+      var currentTitle = document.title;
+      function counter() {
+        counter.timer = setInterval(function () {
+          document.title =
+            msg.substring(character, msg.length) + msg.substring(0, character);
+          character++;
+          if (character > message.length) {
+            character = 0;
+          }
+        }, 500);
+      }
+      function stop() {
+        clearInterval(counter.timer);
+      }
+      window.onblur = function () {
+        counter();
+      };
+      window.onfocus = function () {
+        stop();
+        document.title = currentTitle;
+      };
+    </script>
+    <!--TypeScript Animation  -->
+  </body>
+</html>
