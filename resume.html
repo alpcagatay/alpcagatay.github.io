@@ -5,14 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" type="image/jpg" href="favicon/favicon.png"/>
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="style/style.css" />
     <title>Resume</title>
     <style>
-      /* Resume Container */
       .resume-container {
         display: flex;
         flex-direction: column;
@@ -20,15 +16,13 @@
         padding: 2rem;
         max-width: 1200px;
         margin: 0 auto;
+        position: relative;
       }
-
       .resume-container h1 {
         margin-bottom: 1rem;
         font-size: 2rem;
         text-align: center;
       }
-
-      /* PDF Viewer */
       .pdf-viewer {
         width: 100%;
         height: 80vh;
@@ -37,7 +31,6 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
       }
-
       .fullscreen {
         position: fixed;
         top: 0;
@@ -48,8 +41,6 @@
         border-radius: 0;
         box-shadow: none;
       }
-
-      /* Buttons */
       .button-group {
         display: flex;
         flex-wrap: wrap;
@@ -57,7 +48,6 @@
         margin-top: 1rem;
         justify-content: center;
       }
-
       .btn {
         padding: 0.75rem 1.5rem;
         font-size: 1rem;
@@ -68,41 +58,45 @@
         text-decoration: none;
         transition: background-color 0.3s ease;
       }
-
       .btn-download {
         background-color: #0077cc;
       }
-
       .btn-download:hover {
         background-color: #005fa3;
       }
-
       .btn-fullscreen {
         background-color: #28a745;
+        display: none;
       }
-
       .btn-fullscreen:hover {
         background-color: #1e7e34;
       }
-
-      /* Mobile Adjustments */
+      .fullscreen-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 1.5rem;
+        color: white;
+        background: rgba(0,0,0,0.5);
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10000;
+      }
       @media (max-width: 768px) {
-        .pdf-viewer {
-          height: 60vh;
-        }
-
-        .resume-container h1 {
-          font-size: 1.5rem;
-        }
+        .pdf-viewer { height: 60vh; }
+        .resume-container h1 { font-size: 1.5rem; }
       }
     </style>
   </head>
-
   <body>
-    <!--Navbar  -->
     <header class="header">
       <a style="color: #ffffff" href="./" class="logo">Alp Cagatay Batuhan</a>
-
       <input type="checkbox" id="check" />
       <label for="check" class="icons">
         <i class="bx bx-menu" id="menu-icon"></i>
@@ -118,50 +112,45 @@
         <a href="mailto:alpcbatuhan@gmail.com" style="--i: 4">alpcbatuhan@gmail.com</a>
       </nav>
     </header>
-    <!--Navbar End  -->
-
-    <!-- Resume Section -->
     <div class="resume-container">
       <h1>My Resume</h1>
-      <iframe
-        src="resume.pdf"
-        class="pdf-viewer"
-        id="pdfViewer"
-        title="Alp Cagatay Batuhan Resume"
-      ></iframe>
+      <iframe src="resume.pdf" class="pdf-viewer" id="pdfViewer" title="Alp Cagatay Batuhan Resume"></iframe>
+      <button class="fullscreen-close" id="closeFullscreen" style="display:none;">✖</button>
       <div class="button-group">
         <a href="resume.pdf" download="AlpCagatayBatuhan_Resume.pdf" class="btn btn-download">Download Resume</a>
-        <button class="btn btn-fullscreen" id="fullscreenBtn">Toggle Fullscreen</button>
+        <button class="btn btn-fullscreen" id="fullscreenBtn">Fullscreen</button>
       </div>
     </div>
-
-    <!--Tab Animation  -->
     <script>
       var character = 2;
       var msg = "👋 Hello, I'm Alp";
       var currentTitle = document.title;
       function counter() {
         counter.timer = setInterval(function () {
-          document.title =
-            msg.substring(character, msg.length) + msg.substring(0, character);
+          document.title = msg.substring(character, msg.length) + msg.substring(0, character);
           character++;
-          if (character > msg.length) {
-            character = 0;
-          }
+          if (character > msg.length) character = 0;
         }, 500);
       }
-      function stop() {
-        clearInterval(counter.timer);
-      }
+      function stop() { clearInterval(counter.timer); }
       window.onblur = function () { counter(); };
       window.onfocus = function () { stop(); document.title = currentTitle; };
 
-      // Fullscreen Toggle
       const pdfViewer = document.getElementById('pdfViewer');
       const fullscreenBtn = document.getElementById('fullscreenBtn');
+      const closeFullscreen = document.getElementById('closeFullscreen');
+      const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+
+      if (isMobile) fullscreenBtn.style.display = 'inline-block';
 
       fullscreenBtn.addEventListener('click', () => {
-        pdfViewer.classList.toggle('fullscreen');
+        pdfViewer.classList.add('fullscreen');
+        closeFullscreen.style.display = 'flex';
+      });
+
+      closeFullscreen.addEventListener('click', () => {
+        pdfViewer.classList.remove('fullscreen');
+        closeFullscreen.style.display = 'none';
       });
     </script>
   </body>
