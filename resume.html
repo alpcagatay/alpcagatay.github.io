@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,14 +11,97 @@
     />
     <link rel="stylesheet" href="style/style.css" />
     <title>Resume</title>
-  
+    <style>
+      /* Resume Container */
+      .resume-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .resume-container h1 {
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      /* PDF Viewer */
+      .pdf-viewer {
+        width: 100%;
+        height: 80vh;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+      }
+
+      .fullscreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      /* Buttons */
+      .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+        justify-content: center;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-download {
+        background-color: #0077cc;
+      }
+
+      .btn-download:hover {
+        background-color: #005fa3;
+      }
+
+      .btn-fullscreen {
+        background-color: #28a745;
+      }
+
+      .btn-fullscreen:hover {
+        background-color: #1e7e34;
+      }
+
+      /* Mobile Adjustments */
+      @media (max-width: 768px) {
+        .pdf-viewer {
+          height: 60vh;
+        }
+
+        .resume-container h1 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
   </head>
 
   <body>
-   <!--Navbar  -->
+    <!--Navbar  -->
     <header class="header">
-      <a style="color: ffffff" href="./" class="logo"
-        >Alp Cagatay Batuhan</a>
+      <a style="color: #ffffff" href="./" class="logo">Alp Cagatay Batuhan</a>
 
       <input type="checkbox" id="check" />
       <label for="check" class="icons">
@@ -27,24 +109,31 @@
         <i class="bx bx-x" id="close-icon"></i>
       </label>
       <nav class="navbar">
-        <a
-          href="https://www.linkedin.com/in/alpcagataybatuhan/"
-          style="--i: 0"
-          ;
-          >LinkedIn</a
-        >
+        <a href="https://www.linkedin.com/in/alpcagataybatuhan/" style="--i: 0">LinkedIn</a>
         <a href="https://github.com/alpcagatay" style="--i: 0">Github</a>
-        <a href="./experience" style="--i: 1" ;>Experience</a>
-        <a href="./accomplishments" style="--i: 2" ;>Accomplishments</a>
-        <a href="./skills" style="--i: 3" ;>Skills</a>
-        <a href="./resume" style="--i: 3" ;>Resume</a>
-        <a href="mailto:alpcbatuhan@gmail.com" style="--i: 4" ;
-          >alpcbatuhan@gmail.com</a>
-        
+        <a href="./experience" style="--i: 1">Experience</a>
+        <a href="./accomplishments" style="--i: 2">Accomplishments</a>
+        <a href="./skills" style="--i: 3">Skills</a>
+        <a href="./resume" style="--i: 3">Resume</a>
+        <a href="mailto:alpcbatuhan@gmail.com" style="--i: 4">alpcbatuhan@gmail.com</a>
       </nav>
     </header>
-
     <!--Navbar End  -->
+
+    <!-- Resume Section -->
+    <div class="resume-container">
+      <h1>My Resume</h1>
+      <iframe
+        src="resume.pdf"
+        class="pdf-viewer"
+        id="pdfViewer"
+        title="Alp Cagatay Batuhan Resume"
+      ></iframe>
+      <div class="button-group">
+        <a href="resume.pdf" download="AlpCagatayBatuhan_Resume.pdf" class="btn btn-download">Download Resume</a>
+        <button class="btn btn-fullscreen" id="fullscreenBtn">Toggle Fullscreen</button>
+      </div>
+    </div>
 
     <!--Tab Animation  -->
     <script>
@@ -56,7 +145,7 @@
           document.title =
             msg.substring(character, msg.length) + msg.substring(0, character);
           character++;
-          if (character > message.length) {
+          if (character > msg.length) {
             character = 0;
           }
         }, 500);
@@ -64,15 +153,16 @@
       function stop() {
         clearInterval(counter.timer);
       }
-      window.onblur = function () {
-        counter();
-      };
-      window.onfocus = function () {
-        stop();
-        document.title = currentTitle;
-      };
+      window.onblur = function () { counter(); };
+      window.onfocus = function () { stop(); document.title = currentTitle; };
+
+      // Fullscreen Toggle
+      const pdfViewer = document.getElementById('pdfViewer');
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+      fullscreenBtn.addEventListener('click', () => {
+        pdfViewer.classList.toggle('fullscreen');
+      });
     </script>
-    <!--TypeScript Animation  -->
   </body>
 </html>
-
