@@ -9,6 +9,16 @@
     <link rel="stylesheet" href="style/style.css" />
     <title>Resume</title>
     <style>
+      /* Keep header intact and make it fixed on top */
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 10000; /* Ensures header is above PDF */
+        background: inherit; /* Keeps original color */
+      }
+
       .resume-container {
         display: flex;
         flex-direction: column;
@@ -16,7 +26,7 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 2rem;
-        padding-top: 80px; /* Offset for header */
+        padding-top: 100px; /* Offset for fixed header */
         position: relative;
       }
 
@@ -89,7 +99,7 @@
 
       .btn-fullscreen {
         background-color: #28a745;
-        display: inline-block; /* Now visible on all devices */
+        display: inline-block; /* Visible on all devices */
       }
 
       .btn-fullscreen:hover {
@@ -103,7 +113,7 @@
     </style>
   </head>
   <body>
-    <!-- Original header kept exactly as it was -->
+    <!-- Original header untouched -->
     <header class="header">
       <a style="color: #ffffff" href="./" class="logo">Alp Cagatay Batuhan</a>
       <input type="checkbox" id="check" />
@@ -123,7 +133,6 @@
     </header>
 
     <div class="resume-container">
-      <h1>My Resume</h1>
       <div class="pdf-wrapper" id="pdfWrapper">
         <iframe src="Alp Cagatay Batuhan - Resume.pdf" class="pdf-viewer" id="pdfViewer" title="Alp Cagatay Batuhan Resume"></iframe>
       </div>
