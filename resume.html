@@ -9,26 +9,64 @@
     <link rel="stylesheet" href="style/style.css" />
     <title>Resume</title>
     <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        color: white;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        padding: 1rem 2rem;
+        box-sizing: border-box;
+      }
+
+      .header .logo {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-right: auto;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        margin-left: 1.5rem;
+      }
+
       .resume-container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 2rem;
         max-width: 1200px;
         margin: 0 auto;
+        padding: 2rem;
+        padding-top: 100px; /* Offset for fixed header */
+        box-sizing: border-box;
         position: relative;
       }
+
       .resume-container h1 {
         margin-bottom: 1rem;
         font-size: 2rem;
         text-align: center;
       }
+
       .pdf-wrapper {
         width: 100%;
         height: 80vh;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
       }
+
       .pdf-viewer {
         width: 100%;
         height: 100%;
@@ -37,6 +75,7 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
       }
+
       .fullscreen-close {
         position: absolute;
         top: 10px;
@@ -54,6 +93,7 @@
         cursor: pointer;
         z-index: 10000;
       }
+
       .button-group {
         display: flex;
         flex-wrap: wrap;
@@ -61,6 +101,7 @@
         margin-top: 1rem;
         justify-content: center;
       }
+
       .btn {
         padding: 0.75rem 1.5rem;
         font-size: 1rem;
@@ -71,19 +112,24 @@
         text-decoration: none;
         transition: background-color 0.3s ease;
       }
+
       .btn-download {
         background-color: #0077cc;
       }
+
       .btn-download:hover {
         background-color: #005fa3;
       }
+
       .btn-fullscreen {
         background-color: #28a745;
         display: none;
       }
+
       .btn-fullscreen:hover {
         background-color: #1e7e34;
       }
+
       @media (max-width: 768px) {
         .pdf-wrapper { height: 60vh; }
         .resume-container h1 { font-size: 1.5rem; }
@@ -92,22 +138,18 @@
   </head>
   <body>
     <header class="header">
-      <a style="color: #ffffff" href="./" class="logo">Alp Cagatay Batuhan</a>
-      <input type="checkbox" id="check" />
-      <label for="check" class="icons">
-        <i class="bx bx-menu" id="menu-icon"></i>
-        <i class="bx bx-x" id="close-icon"></i>
-      </label>
+      <a class="logo" href="./">Alp Cagatay Batuhan</a>
       <nav class="navbar">
-        <a href="https://www.linkedin.com/in/alpcagataybatuhan/" style="--i: 0">LinkedIn</a>
-        <a href="https://github.com/alpcagatay" style="--i: 0">Github</a>
-        <a href="./experience" style="--i: 1">Experience</a>
-        <a href="./accomplishments" style="--i: 2">Accomplishments</a>
-        <a href="./skills" style="--i: 3">Skills</a>
-        <a href="./resume" style="--i: 3">Resume</a>
-        <a href="mailto:alpcbatuhan@gmail.com" style="--i: 4">alpcbatuhan@gmail.com</a>
+        <a href="https://www.linkedin.com/in/alpcagataybatuhan/">LinkedIn</a>
+        <a href="https://github.com/alpcagatay">Github</a>
+        <a href="./experience">Experience</a>
+        <a href="./accomplishments">Accomplishments</a>
+        <a href="./skills">Skills</a>
+        <a href="./resume">Resume</a>
+        <a href="mailto:alpcbatuhan@gmail.com">alpcbatuhan@gmail.com</a>
       </nav>
     </header>
+
     <div class="resume-container">
       <div class="pdf-wrapper" id="pdfWrapper">
         <iframe src="Alp Cagatay Batuhan - Resume.pdf" class="pdf-viewer" id="pdfViewer" title="Alp Cagatay Batuhan Resume"></iframe>
@@ -118,35 +160,47 @@
         <button class="btn btn-fullscreen" id="fullscreenBtn">Fullscreen</button>
       </div>
     </div>
+
     <script>
-      var character = 2;
-      var msg = "👋 Hello, I'm Alp";
-      var currentTitle = document.title;
+      // Title animation
+      let character = 2;
+      const msg = "👋 Hello, I'm Alp";
+      const currentTitle = document.title;
+
       function counter() {
         counter.timer = setInterval(function () {
-          document.title = msg.substring(character, msg.length) + msg.substring(0, character);
+          document.title = msg.substring(character) + msg.substring(0, character);
           character++;
           if (character > msg.length) character = 0;
         }, 500);
       }
-      function stop() { clearInterval(counter.timer); }
-      window.onblur = function () { counter(); };
-      window.onfocus = function () { stop(); document.title = currentTitle; };
 
+      function stop() {
+        clearInterval(counter.timer);
+      }
+
+      window.onblur = counter;
+      window.onfocus = () => { stop(); document.title = currentTitle; };
+
+      // PDF Fullscreen
       const pdfWrapper = document.getElementById('pdfWrapper');
       const fullscreenBtn = document.getElementById('fullscreenBtn');
       const closeFullscreen = document.getElementById('closeFullscreen');
-      const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+      const header = document.querySelector('.header');
+      const isMobile = /Android|iPhone|iPad|IPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 
       if (isMobile) fullscreenBtn.style.display = 'inline-block';
 
       fullscreenBtn.addEventListener('click', () => {
+        const headerHeight = header.offsetHeight;
+
         pdfWrapper.style.position = 'fixed';
-        pdfWrapper.style.top = 0;
+        pdfWrapper.style.top = headerHeight + 'px';
         pdfWrapper.style.left = 0;
         pdfWrapper.style.width = '100%';
-        pdfWrapper.style.height = '100%';
+        pdfWrapper.style.height = `calc(100% - ${headerHeight}px)`;
         pdfWrapper.style.zIndex = 9999;
+
         closeFullscreen.style.display = 'flex';
       });
 
