@@ -16,7 +16,7 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 2rem;
-        padding-top: 100px; /* Offset for header */
+        padding-top: 80px; /* Offset for header */
         position: relative;
       }
 
@@ -89,7 +89,7 @@
 
       .btn-fullscreen {
         background-color: #28a745;
-        display: none;
+        display: inline-block; /* Now visible on all devices */
       }
 
       .btn-fullscreen:hover {
@@ -103,6 +103,7 @@
     </style>
   </head>
   <body>
+    <!-- Original header kept exactly as it was -->
     <header class="header">
       <a style="color: #ffffff" href="./" class="logo">Alp Cagatay Batuhan</a>
       <input type="checkbox" id="check" />
@@ -122,6 +123,7 @@
     </header>
 
     <div class="resume-container">
+      <h1>My Resume</h1>
       <div class="pdf-wrapper" id="pdfWrapper">
         <iframe src="Alp Cagatay Batuhan - Resume.pdf" class="pdf-viewer" id="pdfViewer" title="Alp Cagatay Batuhan Resume"></iframe>
       </div>
@@ -158,9 +160,6 @@
       const fullscreenBtn = document.getElementById('fullscreenBtn');
       const closeFullscreen = document.getElementById('closeFullscreen');
       const header = document.querySelector('.header');
-      const isMobile = /Android|iPhone|iPad|IPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
-
-      if (isMobile) fullscreenBtn.style.display = 'inline-block';
 
       fullscreenBtn.addEventListener('click', () => {
         const headerHeight = header.offsetHeight;
