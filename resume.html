@@ -4,19 +4,19 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" type="image/jpg" href="favicon/favicon.png"/>
+    <link rel="shortcut icon" type="image/jpg" href="favicon/favicon.png" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="style/style.css" />
     <title>Resume</title>
     <style>
-      /* Keep header intact and make it fixed on top */
+      /* Header style from Accomplishments page */
       .header {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        z-index: 10000; /* Ensures header is above PDF */
-        background: inherit; /* Keeps original color */
+        z-index: 10000;
+        background: inherit;
       }
 
       .resume-container {
@@ -113,7 +113,7 @@
     </style>
   </head>
   <body>
-    <!-- Original header untouched -->
+    <!-- Navbar exactly like Accomplishments page -->
     <header class="header">
       <a style="color: #ffffff" href="./" class="logo">Alp Cagatay Batuhan</a>
       <input type="checkbox" id="check" />
@@ -127,11 +127,12 @@
         <a href="./experience" style="--i: 1">Experience</a>
         <a href="./accomplishments" style="--i: 2">Accomplishments</a>
         <a href="./skills" style="--i: 3">Skills</a>
-        <a href="./resume" style="--i: 3">Resume</a>
-        <a href="mailto:alpcbatuhan@gmail.com" style="--i: 4">alpcbatuhan@gmail.com</a>
+        <a href="./resume" style="--i: 4">Resume</a>
+        <a href="mailto:alpcbatuhan@gmail.com" style="--i: 5">alpcbatuhan@gmail.com</a>
       </nav>
     </header>
 
+    <!-- Resume PDF Section -->
     <div class="resume-container">
       <div class="pdf-wrapper" id="pdfWrapper">
         <iframe src="Alp Cagatay Batuhan - Resume.pdf" class="pdf-viewer" id="pdfViewer" title="Alp Cagatay Batuhan Resume"></iframe>
