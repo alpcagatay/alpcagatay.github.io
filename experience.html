@@ -13,11 +13,10 @@
   <title>Experience</title>
 
   <style>
-    /* ===== LINKS (soft blue) ===== */
+    /* ===== LINKS ===== */
     .timeline-content a {
       color: #4a78c2;
       text-decoration: none;
-      transition: 0.2s ease;
     }
 
     .timeline-content a:hover {
@@ -25,18 +24,15 @@
       text-decoration: underline;
     }
 
-    /* ===== COLLAPSIBLE WRAPPER ===== */
+    /* ===== ACCORDION ===== */
     .accordion {
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .accordion-item {
-      border-radius: 6px;
-      overflow: hidden;
       margin-bottom: 10px;
     }
 
-    /* HEADER (clickable) */
     .accordion-header {
       display: flex;
       justify-content: space-between;
@@ -44,15 +40,10 @@
       cursor: pointer;
       font-weight: 500;
       color: #353535;
-      padding: 5px 0;
+      padding: 8px 0;
       user-select: none;
     }
 
-    .accordion-header:hover {
-      color: #000;
-    }
-
-    /* ARROW */
     .accordion-icon {
       transition: transform 0.3s ease;
     }
@@ -61,20 +52,28 @@
       transform: rotate(180deg);
     }
 
-    /* CONTENT (animated) */
     .accordion-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.4s ease;
-      padding: 0 0;
+      transition: max-height 0.45s ease, padding 0.3s ease;
+      padding: 0;
     }
 
     .accordion-item.active .accordion-content {
-      padding: 10px 0 0;
+      padding: 5px 0 10px;
     }
 
+    /* ===== BULLETS FIX ===== */
     .accordion-content ul {
       margin-left: 18px;
+      padding-left: 10px;
+    }
+
+    .accordion-content li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+      color: #353535;
+      font-size: 15px;
     }
   </style>
 </head>
@@ -122,13 +121,11 @@
         </h3>
 
         <div class="accordion">
-
           <div class="accordion-item">
             <div class="accordion-header">
               Key Responsibilities & Impact
               <i class="bx bx-chevron-down accordion-icon"></i>
             </div>
-
             <div class="accordion-content">
               <ul>
                 <li>Elicited requirements from 10+ stakeholders; managed 120+ backlog items.</li>
@@ -136,11 +133,14 @@
                 <li>Built Python UAT automation; increased coverage 3x.</li>
                 <li>Reduced post-production incidents by 20%.</li>
                 <li>Improved onboarding time by 50% via documentation.</li>
+                <li>Designed system flows using Figma and UML diagrams.</li>
+                <li>Led integration analysis across multiple systems.</li>
+                <li>Maintained end-to-end traceability for audit readiness.</li>
               </ul>
             </div>
           </div>
-
         </div>
+
       </div>
     </div>
 
@@ -161,24 +161,98 @@
         </h3>
 
         <div class="accordion">
-
           <div class="accordion-item">
             <div class="accordion-header">
               Key Responsibilities & Impact
               <i class="bx bx-chevron-down accordion-icon"></i>
             </div>
-
             <div class="accordion-content">
               <ul>
                 <li>Managed EFT & SWIFT flows; reduced errors by 15%.</li>
                 <li>Delivered 95%+ on-time across 4–6 projects.</li>
                 <li>Led 30+ stakeholder sessions.</li>
                 <li>Improved sprint velocity by 25%.</li>
+                <li>Owned 100+ item backlog as Product Owner.</li>
+                <li>Coached Scrum teams and facilitated Agile ceremonies.</li>
+                <li>Led Payments Chapter across multiple squads.</li>
               </ul>
             </div>
           </div>
-
         </div>
+
+      </div>
+    </div>
+
+    <!-- LF GLOBAL TECH -->
+    <div class="timeline-item">
+      <div class="timeline-dot">
+        <div class="logo-container">
+          <img src="icons/lf.png" style="width: 16px;" />
+        </div>
+      </div>
+
+      <div class="timeline-date">January 2022 - June 2022</div>
+
+      <div class="timeline-content">
+        <h3>
+          Business Analyst - Scrum Master <br />
+          <a href="https://www.linkedin.com/company/lf-global-tech-pte-ltd/people/">LF Global Tech | Istanbul, Turkey</a>
+        </h3>
+
+        <div class="accordion">
+          <div class="accordion-item">
+            <div class="accordion-header">
+              Key Responsibilities & Impact
+              <i class="bx bx-chevron-down accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+              <ul>
+                <li>Reduced requirement misalignment by 20%.</li>
+                <li>Improved sprint velocity by 20%.</li>
+                <li>Created 15+ process diagrams.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GARANTI BBVA -->
+    <div class="timeline-item">
+      <div class="timeline-dot">
+        <div class="logo-container">
+          <img src="icons/bbva.png" style="height: 20px;" />
+        </div>
+      </div>
+
+      <div class="timeline-date">August 2017 - December 2021</div>
+
+      <div class="timeline-content">
+        <h3>
+          Internal Auditor - Data Specialist <br />
+          <a href="https://www.garantibbva.com.tr/en">Garanti BBVA | Istanbul, Turkey</a>
+        </h3>
+
+        <div class="accordion">
+          <div class="accordion-item">
+            <div class="accordion-header">
+              Key Responsibilities & Impact
+              <i class="bx bx-chevron-down accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+              <ul>
+                <li>Reduced audit findings by 20% across 10+ units.</li>
+                <li>Completed 30+ audit reports under GAAS compliance.</li>
+                <li>Delivered analytics-based audit insights to leadership.</li>
+                <li>Improved audit pass rates by 25%.</li>
+                <li>Saved 30+ person-days via automation.</li>
+                <li>Improved audit efficiency by 15% via Agile adoption.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
