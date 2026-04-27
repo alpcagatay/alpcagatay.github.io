@@ -1,30 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <link rel="shortcut icon" type="image/jpg" href="favicon/favicon.png" />
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="style/style.css" />
-  <title>Accomplishments</title>
+
+  <title>Experience</title>
 
   <style>
-    .icon {
-      display: inline-block;
-      vertical-align: middle;
+    /* ===== LINKS (soft blue) ===== */
+    .timeline-content a {
+      color: #4a78c2;
+      text-decoration: none;
+      transition: 0.2s ease;
     }
 
-    .icon img {
-      width: 75px;
-      margin-right: 10px;
+    .timeline-content a:hover {
+      color: #2f5ea8;
+      text-decoration: underline;
     }
 
-    @media (max-width: 1100px) {
-      .icon img {
-        width: 75px;
-        margin-left: 10px;
-      }
+    /* ===== COLLAPSIBLE WRAPPER ===== */
+    .accordion {
+      margin-top: 10px;
+    }
+
+    .accordion-item {
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    /* HEADER (clickable) */
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 500;
+      color: #353535;
+      padding: 5px 0;
+      user-select: none;
+    }
+
+    .accordion-header:hover {
+      color: #000;
+    }
+
+    /* ARROW */
+    .accordion-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    /* CONTENT (animated) */
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      padding: 0 0;
+    }
+
+    .accordion-item.active .accordion-content {
+      padding: 10px 0 0;
+    }
+
+    .accordion-content ul {
+      margin-left: 18px;
     }
   </style>
 </head>
@@ -33,7 +83,7 @@
 
 <!-- Navbar -->
 <header class="header">
-  <a style="color: ffffff" href="./" class="logo">Alp Cagatay Batuhan</a>
+  <a href="./" class="logo">Alp Cagatay Batuhan</a>
 
   <input type="checkbox" id="check" />
   <label for="check" class="icons">
@@ -47,7 +97,7 @@
     <a href="./experience">Experience</a>
     <a href="./accomplishments">Accomplishments</a>
     <a href="./skills">Skills</a>
-    <a href="mailto:alpcbatuhan@gmail.com">alpcbatuhan@gmail.com</a>
+    <a href="mailto:alpcbatuhan@gmail.com">Email</a>
   </nav>
 </header>
 
@@ -55,33 +105,41 @@
 <section class="timeline-section">
   <div class="timeline-items">
 
-    <!-- Nexent -->
+    <!-- NEXENT -->
     <div class="timeline-item left">
       <div class="timeline-dot">
         <div class="logo-container">
-          <img src="icons/nexent.png" alt="nexent" style="width: 20px;" />
+          <img src="icons/nexent.png" style="width: 20px;" />
         </div>
       </div>
 
       <div class="timeline-date">November 2024 - Present</div>
 
       <div class="timeline-content">
-        <div class="contentdetails">
-          <h3>
-            Senior Business Analyst <br />
-            <a href="https://www.nexentbank.com/">Nexent Bank | Bucharest, Romania</a>
-          </h3>
+        <h3>
+          Senior Business Analyst <br />
+          <a href="https://www.nexentbank.com/">Nexent Bank | Bucharest, Romania</a>
+        </h3>
 
-          <ul>
-            <li>Elicited and analyzed requirements from 10+ stakeholders, translating them into user stories and specifications; managed a 120+ item backlog, improving delivery predictability and reducing sprint spillover.</li>
-            <li>Analyzed regulatory releases across SWIFT (CBPR+), SEPA, T2, and SIC; defined 50+ requirements per cycle and ensured 100% on-time compliance delivery.</li>
-            <li>Built Python-based UAT automation generating ISO 20022 XML messages; increased test coverage 3x and reduced manual testing effort by 40%.</li>
-            <li>Supported UAT and production by troubleshooting defects and payment failures; reduced post-production incidents by 20% and improved system stability.</li>
-            <li>Developed Jira dashboards and Confluence documentation with workflows and system guides; reduced onboarding time by 50% and improved knowledge sharing.</li>
-            <li>Defined product features using Figma and UML diagrams (sequence, activity, ERD); reduced requirement rework and accelerated development readiness.</li>
-            <li>Led system integration analysis across multiple applications; minimized defects and ensured smooth cross-system deployments.</li>
-            <li>Maintained end-to-end traceability from requirements to delivery; improved audit readiness and ensured regulatory alignment.</li>
-          </ul>
+        <div class="accordion">
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              Key Responsibilities & Impact
+              <i class="bx bx-chevron-down accordion-icon"></i>
+            </div>
+
+            <div class="accordion-content">
+              <ul>
+                <li>Elicited requirements from 10+ stakeholders; managed 120+ backlog items.</li>
+                <li>Ensured 100% compliance delivery across SWIFT, SEPA, T2, SIC.</li>
+                <li>Built Python UAT automation; increased coverage 3x.</li>
+                <li>Reduced post-production incidents by 20%.</li>
+                <li>Improved onboarding time by 50% via documentation.</li>
+              </ul>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -90,90 +148,60 @@
     <div class="timeline-item right">
       <div class="timeline-dot">
         <div class="logo-container">
-          <img src="icons/hsbc.png" alt="hsbc" style="width: 20px;" />
+          <img src="icons/hsbc.png" style="width: 20px;" />
         </div>
       </div>
 
       <div class="timeline-date">July 2022 - November 2024</div>
 
       <div class="timeline-content">
-        <div class="contentdetails">
-          <h3>
-            Senior Business Analyst - Scrum Master <br />
-            <a href="https://www.hsbc.com.tr/en/">HSBC | Istanbul, Turkey</a>
-          </h3>
+        <h3>
+          Senior Business Analyst - Scrum Master <br />
+          <a href="https://www.hsbc.com.tr/en/">HSBC | Istanbul, Turkey</a>
+        </h3>
 
-          <ul>
-            <li>Managed EFT, money transfers, and SWIFT flows; reduced processing errors by 15% through improved exception handling and compliance tracking.</li>
-            <li>Oversaw project budgets and timelines across 4-6 concurrent initiatives; achieved 95%+ on-time delivery.</li>
-            <li>Elicited requirements using BABOK techniques across 30+ stakeholder sessions; reduced rework by 20% and improved clarity across 5+ teams.</li>
-            <li>Acted as liaison between internal teams and vendors; reduced cross-party misalignment issues by 25%.</li>
-            <li>Produced documentation for 10+ major releases (flows, circulars, release notes); ensured 100% audit and compliance readiness.</li>
-            <li>Acted as Product Owner managing a 100+ item backlog; improved sprint predictability by 22% across 6-8 cycles per quarter.</li>
-            <li>Coached Scrum teams and facilitated Agile ceremonies; increased sprint velocity by 25% and reduced delivery delays.</li>
-            <li>Led Payments Chapter across 4-6 squads; improved cross-team coordination and delivery alignment for strategic initiatives.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+        <div class="accordion">
 
-    <!-- LF Global Tech -->
-    <div class="timeline-item">
-      <div class="timeline-dot">
-        <div class="logo-container">
-          <img src="icons/lf.png" alt="lf" style="width: 16px;" />
-        </div>
-      </div>
+          <div class="accordion-item">
+            <div class="accordion-header">
+              Key Responsibilities & Impact
+              <i class="bx bx-chevron-down accordion-icon"></i>
+            </div>
 
-      <div class="timeline-date">January 2022 - June 2022</div>
+            <div class="accordion-content">
+              <ul>
+                <li>Managed EFT & SWIFT flows; reduced errors by 15%.</li>
+                <li>Delivered 95%+ on-time across 4–6 projects.</li>
+                <li>Led 30+ stakeholder sessions.</li>
+                <li>Improved sprint velocity by 25%.</li>
+              </ul>
+            </div>
+          </div>
 
-      <div class="timeline-content">
-        <div class="contentdetails">
-          <h3>
-            Business Analyst - Scrum Master <br />
-            <a href="https://www.linkedin.com/company/lf-global-tech-pte-ltd/people/">LF Global Tech | Istanbul, Turkey</a>
-          </h3>
-
-          <ul>
-            <li>Acted as liaison between 5+ stakeholders and development teams; reduced requirement misalignment and rework by 20%.</li>
-            <li>Facilitated Scrum ceremonies for a team of 6-8 members; improved sprint velocity by 20% and delivery consistency.</li>
-            <li>Created process and data flow diagrams (15+ artifacts); identified gaps and reduced operational inefficiencies by 15%.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Garanti BBVA -->
-    <div class="timeline-item">
-      <div class="timeline-dot">
-        <div class="logo-container">
-          <img src="icons/bbva.png" alt="bbva" style="height: 20px;" />
-        </div>
-      </div>
-
-      <div class="timeline-date">August 2017 - December 2021</div>
-
-      <div class="timeline-content">
-        <div class="contentdetails">
-          <h3>
-            Internal Auditor - Data Specialist <br />
-            <a href="https://www.garantibbva.com.tr/en">Garanti BBVA | Istanbul, Turkey</a>
-          </h3>
-
-          <ul>
-            <li>Conducted risk-based audits across 10+ business units; reduced unresolved audit findings by 20% and improved control effectiveness.</li>
-            <li>Executed branch audits and fraud investigations; produced 30+ audit documents ensuring full compliance with GAAS standards.</li>
-            <li>Led end-to-end audit engagements using data analytics; identified control gaps and delivered insights to senior management.</li>
-            <li>Advised on remediation strategies; reduced repeat findings by 25% and improved audit pass rates.</li>
-            <li>Developed Excel and Access automation tools; saved 30+ person-days annually and eliminated manual errors.</li>
-            <li>Supported Agile transformation in audit processes; improved cycle efficiency by 15% and responsiveness to risks.</li>
-          </ul>
         </div>
       </div>
     </div>
 
   </div>
 </section>
+
+<!-- SCRIPT -->
+<script>
+  document.querySelectorAll(".accordion-header").forEach(header => {
+    header.addEventListener("click", () => {
+      const item = header.parentElement;
+      const content = item.querySelector(".accordion-content");
+
+      item.classList.toggle("active");
+
+      if (item.classList.contains("active")) {
+        content.style.maxHeight = content.scrollHeight + "px";
+      } else {
+        content.style.maxHeight = null;
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
