@@ -11,13 +11,77 @@
   <link rel="stylesheet" href="style/style.css" />
 
   <title>Skills</title>
+
+  <style>
+    /* ===== NAV RESET (optional visual polish) ===== */
+    .header a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* ===== SKILL MATRIX ===== */
+    .skills-matrix {
+      max-width: 1000px;
+      margin: 120px auto 60px;
+      padding: 0 20px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .skills-title {
+      font-size: 32px;
+      margin-bottom: 30px;
+      color: #222;
+    }
+
+    .skill-group {
+      margin-bottom: 35px;
+    }
+
+    .skill-group h2 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #444;
+    }
+
+    .skill-group.primary h2 {
+      color: #000;
+      font-weight: 600;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tags span {
+      padding: 8px 14px;
+      background: #f2f2f2;
+      border-radius: 20px;
+      font-size: 14px;
+      color: #333;
+      transition: all 0.2s ease;
+    }
+
+    .tags span:hover {
+      background: #000;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .skill-group.primary .tags span {
+      background: #e8f0ff;
+      color: #1a3cff;
+      font-weight: 500;
+    }
+  </style>
 </head>
 
 <body id="skills-body">
 
   <!-- Navbar -->
   <header class="header">
-    <a href="./" class="logo" style="color: #ffffff;">Alp Cagatay Batuhan</a>
+    <a href="./" class="logo">Alp Cagatay Batuhan</a>
 
     <input type="checkbox" id="check" />
     <label for="check" class="icons">
@@ -31,147 +95,97 @@
       <a href="./experience">Experience</a>
       <a href="./accomplishments">Accomplishments</a>
       <a href="./skills">Skills</a>
-      <a href="mailto:alpcbatuhan@gmail.com">alpcbatuhan@gmail.com</a>
+      <a href="mailto:alpcbatuhan@gmail.com">Email</a>
     </nav>
   </header>
 
-  <!-- Skills Section -->
-  <div class="skills">
+  <!-- Skills Matrix -->
+  <div class="skills-matrix">
+
+    <h1 class="skills-title">Core Expertise</h1>
 
     <!-- Business Analysis -->
-    <h2>Business Analysis</h2>
-
-    <div class="skill">
-      <div class="skill-name">Requirements Engineering</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Expert (7+ yrs)" style="max-width: 95%"></div>
+    <div class="skill-group primary">
+      <h2>Business Analysis</h2>
+      <div class="tags">
+        <span>Requirements Engineering</span>
+        <span>Stakeholder Management</span>
+        <span>Backlog Ownership</span>
+        <span>UAT Coordination</span>
+        <span>Process Modeling (BPMN, UML)</span>
+        <span>System Integration Analysis</span>
+        <span>End-to-End Traceability</span>
       </div>
     </div>
 
-    <div class="skill">
-      <div class="skill-name">Stakeholder Management</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Expert" style="max-width: 95%"></div>
-      </div>
-    </div>
-
-    <div class="skill">
-      <div class="skill-name">UAT Coordination</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Advanced" style="max-width: 90%"></div>
-      </div>
-    </div>
-
-    <div class="skill">
-      <div class="skill-name">Process Modeling (BPMN/UML)</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Advanced" style="max-width: 90%"></div>
+    <!-- Payments -->
+    <div class="skill-group primary">
+      <h2>Payments & Banking</h2>
+      <div class="tags">
+        <span>SWIFT (CBPR+)</span>
+        <span>SEPA (SCT, SCT Inst)</span>
+        <span>T2</span>
+        <span>SIC</span>
+        <span>ISO 20022</span>
+        <span>Payment Flows & Exceptions</span>
+        <span>Regulatory Delivery</span>
       </div>
     </div>
 
     <!-- Agile -->
-    <h2>Agile & Delivery</h2>
-
-    <div class="skill">
-      <div class="skill-name">Scrum / Agile</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Expert" style="max-width: 95%"></div>
-      </div>
-    </div>
-
-    <div class="skill">
-      <div class="skill-name">Jira & Confluence</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Expert" style="max-width: 95%"></div>
+    <div class="skill-group">
+      <h2>Agile & Delivery</h2>
+      <div class="tags">
+        <span>Scrum Mastery</span>
+        <span>Product Ownership</span>
+        <span>Agile Ceremonies</span>
+        <span>Jira & Confluence</span>
+        <span>Sprint Planning</span>
+        <span>Cross-Team Coordination</span>
       </div>
     </div>
 
     <!-- Technical -->
-    <h2>Technical</h2>
-
-    <div class="skill">
-      <div class="skill-name">SQL</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Advanced" style="max-width: 90%"></div>
-      </div>
-    </div>
-
-    <div class="skill">
-      <div class="skill-name">API Testing (Postman)</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Advanced" style="max-width: 85%"></div>
-      </div>
-    </div>
-
-    <div class="skill">
-      <div class="skill-name">Python</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Intermediate" style="max-width: 80%"></div>
-      </div>
-    </div>
-
-    <div class="skill">
-      <div class="skill-name">JavaScript</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Intermediate" style="max-width: 75%"></div>
-      </div>
-    </div>
-
-    <div class="skill">
-      <div class="skill-name">Git</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Intermediate" style="max-width: 75%"></div>
+    <div class="skill-group">
+      <h2>Technical</h2>
+      <div class="tags">
+        <span>SQL</span>
+        <span>API Testing (Postman)</span>
+        <span>Python (UAT Automation)</span>
+        <span>JavaScript</span>
+        <span>Git</span>
       </div>
     </div>
 
     <!-- Data -->
-    <h2>Data & Reporting</h2>
-
-    <div class="skill">
-      <div class="skill-name">Advanced Excel</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Expert" style="max-width: 95%"></div>
-      </div>
-    </div>
-
-    <div class="skill">
-      <div class="skill-name">Power BI</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Intermediate" style="max-width: 70%"></div>
+    <div class="skill-group">
+      <h2>Data & Reporting</h2>
+      <div class="tags">
+        <span>Advanced Excel</span>
+        <span>Power BI</span>
+        <span>Data Analysis</span>
+        <span>Dashboarding</span>
       </div>
     </div>
 
     <!-- Tools -->
-    <h2>Tools & Design</h2>
-
-    <div class="skill">
-      <div class="skill-name">Figma</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Intermediate" style="max-width: 85%"></div>
-      </div>
-    </div>
-
-    <div class="skill">
-      <div class="skill-name">Microsoft Office</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Expert" style="max-width: 95%"></div>
+    <div class="skill-group">
+      <h2>Tools & Design</h2>
+      <div class="tags">
+        <span>Figma</span>
+        <span>UML Diagrams</span>
+        <span>Process Visualization</span>
+        <span>Documentation Design</span>
       </div>
     </div>
 
     <!-- Cloud -->
-    <h2>Cloud & DevOps</h2>
-
-    <div class="skill">
-      <div class="skill-name">Microsoft Azure</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Basic" style="max-width: 60%"></div>
-      </div>
-    </div>
-
-    <div class="skill">
-      <div class="skill-name">Docker</div>
-      <div class="skill-bar">
-        <div class="skill-per" per="Basic" style="max-width: 60%"></div>
+    <div class="skill-group">
+      <h2>Cloud & DevOps</h2>
+      <div class="tags">
+        <span>Microsoft Azure</span>
+        <span>Docker</span>
+        <span>CI/CD Awareness</span>
       </div>
     </div>
 
@@ -185,8 +199,7 @@
 
     function counter() {
       counter.timer = setInterval(function () {
-        document.title =
-          msg.substring(character) + msg.substring(0, character);
+        document.title = msg.substring(character) + msg.substring(0, character);
         character++;
         if (character > msg.length) {
           character = 0;
