@@ -13,17 +13,31 @@
   <title>Skills</title>
 
   <style>
-    /* ===== NAVBAR FIX (color typo corrected) ===== */
+    /* ===== HEADER FIX (IMPORTANT) ===== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+    }
+
     .header a {
       color: #ffffff;
       text-decoration: none;
     }
 
-    /* ===== SKILL MATRIX ===== */
+    /* ===== PAGE LAYOUT OFFSET ===== */
+    body {
+      margin: 0;
+    }
+
     .skills-matrix {
       max-width: 1000px;
-      margin: 120px auto 60px;
-      padding: 0 20px;
+      margin: 0 auto 60px;
+      padding: 140px 20px 0; /* IMPORTANT: space for fixed navbar */
       font-family: 'Segoe UI', sans-serif;
     }
 
@@ -33,6 +47,7 @@
       color: #222;
     }
 
+    /* ===== SKILL GROUPS ===== */
     .skill-group {
       margin-bottom: 35px;
     }
@@ -48,6 +63,7 @@
       font-weight: 600;
     }
 
+    /* ===== TAG STYLE ===== */
     .tags {
       display: flex;
       flex-wrap: wrap;
@@ -81,7 +97,7 @@
 
   <!-- Navbar -->
   <header class="header">
-    <a style="color: #ffffff" href="./" class="logo">Alp Cagatay Batuhan</a>
+    <a href="./" class="logo">Alp Cagatay Batuhan</a>
 
     <input type="checkbox" id="check" />
     <label for="check" class="icons">
@@ -95,7 +111,7 @@
       <a href="./experience">Experience</a>
       <a href="./accomplishments">Accomplishments</a>
       <a href="./skills">Skills</a>
-      <a href="mailto:alpcbatuhan@gmail.com">alpcbatuhan@gmail.com</a>
+      <a href="mailto:alpcbatuhan@gmail.com">Email</a>
     </nav>
   </header>
 
