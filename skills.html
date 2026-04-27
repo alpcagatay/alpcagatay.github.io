@@ -13,31 +13,17 @@
   <title>Skills</title>
 
   <style>
-    /* ===== HEADER FIX (IMPORTANT) ===== */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 9999;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-    }
+    /* ===== ONLY PAGE-SPECIFIC FIXES ===== */
 
-    .header a {
-      color: #ffffff;
-      text-decoration: none;
-    }
-
-    /* ===== PAGE LAYOUT OFFSET ===== */
-    body {
+    /* IMPORTANT: prevent header overlap */
+    #skills-body {
       margin: 0;
     }
 
     .skills-matrix {
       max-width: 1000px;
       margin: 0 auto 60px;
-      padding: 140px 20px 0; /* IMPORTANT: space for fixed navbar */
+      padding: 140px 20px 0; /* space for fixed navbar */
       font-family: 'Segoe UI', sans-serif;
     }
 
@@ -47,7 +33,6 @@
       color: #222;
     }
 
-    /* ===== SKILL GROUPS ===== */
     .skill-group {
       margin-bottom: 35px;
     }
@@ -63,7 +48,6 @@
       font-weight: 600;
     }
 
-    /* ===== TAG STYLE ===== */
     .tags {
       display: flex;
       flex-wrap: wrap;
@@ -90,12 +74,14 @@
       color: #1a3cff;
       font-weight: 500;
     }
+
+    /* REMOVE any header overrides from this page */
   </style>
 </head>
 
 <body id="skills-body">
 
-  <!-- Navbar -->
+  <!-- Navbar (UNCHANGED - uses global style.css) -->
   <header class="header">
     <a href="./" class="logo">Alp Cagatay Batuhan</a>
 
@@ -120,7 +106,6 @@
 
     <h1 class="skills-title">Core Expertise</h1>
 
-    <!-- Business Analysis -->
     <div class="skill-group primary">
       <h2>Business Analysis</h2>
       <div class="tags">
@@ -134,7 +119,6 @@
       </div>
     </div>
 
-    <!-- Payments -->
     <div class="skill-group primary">
       <h2>Payments & Banking</h2>
       <div class="tags">
@@ -148,7 +132,6 @@
       </div>
     </div>
 
-    <!-- Agile -->
     <div class="skill-group">
       <h2>Agile & Delivery</h2>
       <div class="tags">
@@ -161,7 +144,6 @@
       </div>
     </div>
 
-    <!-- Technical -->
     <div class="skill-group">
       <h2>Technical</h2>
       <div class="tags">
@@ -173,7 +155,6 @@
       </div>
     </div>
 
-    <!-- Data -->
     <div class="skill-group">
       <h2>Data & Reporting</h2>
       <div class="tags">
@@ -184,7 +165,6 @@
       </div>
     </div>
 
-    <!-- Tools -->
     <div class="skill-group">
       <h2>Tools & Design</h2>
       <div class="tags">
@@ -195,7 +175,6 @@
       </div>
     </div>
 
-    <!-- Cloud -->
     <div class="skill-group">
       <h2>Cloud & DevOps</h2>
       <div class="tags">
@@ -217,9 +196,7 @@
       counter.timer = setInterval(function () {
         document.title = msg.substring(character) + msg.substring(0, character);
         character++;
-        if (character > msg.length) {
-          character = 0;
-        }
+        if (character > msg.length) character = 0;
       }, 500);
     }
 
