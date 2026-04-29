@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -13,34 +12,64 @@
   <title>Experience</title>
 
   <style>
-    /* ===== LOGO LINK FIX ===== */
+    /* ===== LINKS ===== */
+    .timeline-content a {
+      color: #6d8fcf;
+      text-decoration: none;
+    }
+
+    .timeline-content a:hover {
+      color: #5278c4;
+      text-decoration: underline;
+    }
+
+    /* ===== LOGO FIX ===== */
     .timeline-dot a {
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       width: 100%;
       height: 100%;
     }
 
     .timeline-dot img {
-      display: block;
+      max-width: 18px;
+      max-height: 18px;
       object-fit: contain;
     }
 
-    /* ===== TITLE SPACING ===== */
-    .timeline-content h3 {
-      margin-bottom: 4px;
-      line-height: 1.35;
-      color: #353535;
+    /* ===== SPACING FIX ===== */
+    .timeline-date {
+      margin-bottom: 6px;
+    }
+
+    .timeline-content {
+      padding-top: 10px;
+    }
+
+    /* ===== LEFT ALIGNMENT FIX ===== */
+    .timeline-item.left .timeline-content h3 {
+      text-align: right;
+    }
+
+    .timeline-item.left .accordion-content {
+      text-align: left;
+    }
+
+    .timeline-item.left .accordion-content ul {
+      text-align: left;
+      margin-left: 18px;
+      padding-left: 10px;
     }
 
     /* ===== ACCORDION ===== */
     .accordion {
-      margin-top: 4px;
+      margin-top: 8px;
     }
 
     .accordion-item {
-      margin-bottom: 8px;
+      border-top: 1px solid #eee;
+      padding-top: 8px;
     }
 
     .accordion-header {
@@ -49,18 +78,13 @@
       align-items: center;
       cursor: pointer;
       font-weight: 500;
-      color: #4a78c2;
-      padding: 4px 0;
+      color: #353535;
+      padding: 8px 0;
       user-select: none;
-      transition: 0.2s ease;
-    }
-
-    .accordion-header:hover {
-      color: #2f5ea8;
     }
 
     .accordion-icon {
-      transition: transform 0.3s ease;
+      transition: transform 0.35s ease;
     }
 
     .accordion-item.active .accordion-icon {
@@ -70,23 +94,17 @@
     .accordion-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.45s ease, padding 0.3s ease;
-      padding: 0;
+      transition: max-height 0.45s ease;
     }
 
-    .accordion-item.active .accordion-content {
-      padding: 5px 0 10px;
-    }
-
-    /* ===== BULLETS ===== */
     .accordion-content ul {
-      margin-left: 18px;
+      margin: 10px 0 10px 18px;
       padding-left: 10px;
     }
 
     .accordion-content li {
-      margin-bottom: 8px;
-      line-height: 1.5;
+      margin-bottom: 10px;
+      line-height: 1.55;
       color: #353535;
       font-size: 15px;
     }
@@ -95,7 +113,6 @@
 
 <body>
 
-<!-- Navbar -->
 <header class="header">
   <a href="./" class="logo">Alp Cagatay Batuhan</a>
 
@@ -115,7 +132,6 @@
   </nav>
 </header>
 
-<!-- Timeline -->
 <section class="timeline-section">
   <div class="timeline-items">
 
@@ -123,7 +139,7 @@
     <div class="timeline-item left">
       <div class="timeline-dot">
         <a href="https://www.nexentbank.com/" target="_blank">
-          <img src="icons/nexent.png" style="width:20px;" />
+          <img src="icons/nexent.png" />
         </a>
       </div>
 
@@ -141,13 +157,11 @@
             <div class="accordion-content">
               <ul>
                 <li>Elicited requirements from 10+ stakeholders; managed 120+ backlog items.</li>
-                <li>Ensured 100% compliance delivery across SWIFT, SEPA, T2, SIC.</li>
+                <li>Ensured 100% compliance delivery across SWIFT, SEPA, T2 and SIC.</li>
                 <li>Built Python UAT automation; increased test coverage 3x.</li>
                 <li>Reduced post-production incidents by 20%.</li>
                 <li>Improved onboarding time by 50% via documentation.</li>
-                <li>Designed system flows using Figma and UML diagrams.</li>
-                <li>Led integration analysis across multiple systems.</li>
-                <li>Maintained end-to-end traceability for audit readiness.</li>
+                <li>Designed solution flows using Figma and UML.</li>
               </ul>
             </div>
           </div>
@@ -159,7 +173,7 @@
     <div class="timeline-item right">
       <div class="timeline-dot">
         <a href="https://www.hsbc.com.tr/en/" target="_blank">
-          <img src="icons/hsbc.png" style="width:20px;" />
+          <img src="icons/hsbc.png" />
         </a>
       </div>
 
@@ -176,13 +190,11 @@
             </div>
             <div class="accordion-content">
               <ul>
-                <li>Managed EFT & SWIFT flows; reduced errors by 15%.</li>
-                <li>Delivered 95%+ on-time across 4–6 projects.</li>
-                <li>Led 30+ stakeholder sessions.</li>
+                <li>Managed EFT & SWIFT payment flows; reduced errors by 15%.</li>
+                <li>Delivered 95%+ on-time across multiple projects.</li>
+                <li>Led 30+ stakeholder workshops.</li>
                 <li>Improved sprint velocity by 25%.</li>
-                <li>Owned 100+ item backlog as Product Owner.</li>
-                <li>Coached Scrum teams and facilitated Agile ceremonies.</li>
-                <li>Led Payments Chapter across multiple squads.</li>
+                <li>Owned 100+ backlog items.</li>
               </ul>
             </div>
           </div>
@@ -194,7 +206,7 @@
     <div class="timeline-item left">
       <div class="timeline-dot">
         <a href="https://www.linkedin.com/company/lf-global-tech-pte-ltd/" target="_blank">
-          <img src="icons/lf.png" style="width:16px;" />
+          <img src="icons/lf.png" />
         </a>
       </div>
 
@@ -213,7 +225,7 @@
               <ul>
                 <li>Reduced requirement misalignment by 20%.</li>
                 <li>Improved sprint velocity by 20%.</li>
-                <li>Created 15+ process diagrams.</li>
+                <li>Produced 15+ process models.</li>
               </ul>
             </div>
           </div>
@@ -225,7 +237,7 @@
     <div class="timeline-item right">
       <div class="timeline-dot">
         <a href="https://www.garantibbva.com.tr/en" target="_blank">
-          <img src="icons/bbva.png" style="height:20px;" />
+          <img src="icons/bbva.png" />
         </a>
       </div>
 
@@ -242,12 +254,10 @@
             </div>
             <div class="accordion-content">
               <ul>
-                <li>Reduced audit findings by 20% across 10+ units.</li>
-                <li>Completed 30+ audit reports under GAAS compliance.</li>
-                <li>Delivered analytics-based audit insights to leadership.</li>
-                <li>Improved audit pass rates by 25%.</li>
-                <li>Saved 30+ person-days via automation.</li>
-                <li>Improved audit efficiency by 15% via Agile adoption.</li>
+                <li>Reduced unresolved audit findings by 20%.</li>
+                <li>Delivered 30+ audit reports.</li>
+                <li>Saved 30+ person-days annually via automation.</li>
+                <li>Improved audit cycle efficiency by 15%.</li>
               </ul>
             </div>
           </div>
