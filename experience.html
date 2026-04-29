@@ -13,24 +13,34 @@
   <title>Experience</title>
 
   <style>
-    /* ===== LINKS ===== */
-    .timeline-content a {
-      color: #4a78c2;
-      text-decoration: none;
+    /* ===== LOGO LINK FIX ===== */
+    .timeline-dot a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
     }
 
-    .timeline-content a:hover {
-      color: #2f5ea8;
-      text-decoration: underline;
+    .timeline-dot img {
+      display: block;
+      object-fit: contain;
+    }
+
+    /* ===== TITLE SPACING ===== */
+    .timeline-content h3 {
+      margin-bottom: 4px;
+      line-height: 1.35;
+      color: #353535;
     }
 
     /* ===== ACCORDION ===== */
     .accordion {
-      margin-top: 12px;
+      margin-top: 4px;
     }
 
     .accordion-item {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .accordion-header {
@@ -39,9 +49,14 @@
       align-items: center;
       cursor: pointer;
       font-weight: 500;
-      color: #353535;
-      padding: 8px 0;
+      color: #4a78c2;
+      padding: 4px 0;
       user-select: none;
+      transition: 0.2s ease;
+    }
+
+    .accordion-header:hover {
+      color: #2f5ea8;
     }
 
     .accordion-icon {
@@ -63,7 +78,7 @@
       padding: 5px 0 10px;
     }
 
-    /* ===== BULLETS FIX ===== */
+    /* ===== BULLETS ===== */
     .accordion-content ul {
       margin-left: 18px;
       padding-left: 10px;
@@ -107,20 +122,15 @@
     <!-- NEXENT -->
     <div class="timeline-item left">
       <div class="timeline-dot">
-        <div class="logo-container">
-          <a href="https://www.nexentbank.com/">
-          <img src="icons/nexent.png" style="width: 20px;" />
-          </a>  
-        </div>
+        <a href="https://www.nexentbank.com/" target="_blank">
+          <img src="icons/nexent.png" style="width:20px;" />
+        </a>
       </div>
 
       <div class="timeline-date">November 2024 - Present</div>
 
       <div class="timeline-content">
-        <h3>
-          Senior Business Analyst <br />
-          Nexent Bank | Bucharest, Romania
-        </h3>
+        <h3>Senior Business Analyst <br />Nexent Bank | Bucharest, Romania</h3>
 
         <div class="accordion">
           <div class="accordion-item">
@@ -132,7 +142,7 @@
               <ul>
                 <li>Elicited requirements from 10+ stakeholders; managed 120+ backlog items.</li>
                 <li>Ensured 100% compliance delivery across SWIFT, SEPA, T2, SIC.</li>
-                <li>Built Python UAT automation; increased coverage 3x.</li>
+                <li>Built Python UAT automation; increased test coverage 3x.</li>
                 <li>Reduced post-production incidents by 20%.</li>
                 <li>Improved onboarding time by 50% via documentation.</li>
                 <li>Designed system flows using Figma and UML diagrams.</li>
@@ -142,27 +152,21 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
     <!-- HSBC -->
     <div class="timeline-item right">
       <div class="timeline-dot">
-        <div class="logo-container">
-          <a href="https://www.hsbc.com.tr/en/">
-          <img src="icons/hsbc.png" style="width: 20px;" />
-          </a>  
-        </div>
+        <a href="https://www.hsbc.com.tr/en/" target="_blank">
+          <img src="icons/hsbc.png" style="width:20px;" />
+        </a>
       </div>
 
       <div class="timeline-date">July 2022 - November 2024</div>
 
       <div class="timeline-content">
-        <h3>
-          Senior Business Analyst - Scrum Master <br />
-          HSBC | Istanbul, Turkey
-        </h3>
+        <h3>Senior Business Analyst - Scrum Master <br />HSBC | Istanbul, Turkey</h3>
 
         <div class="accordion">
           <div class="accordion-item">
@@ -183,27 +187,21 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
     <!-- LF GLOBAL TECH -->
-    <div class="timeline-item">
+    <div class="timeline-item left">
       <div class="timeline-dot">
-        <div class="logo-container">
-          <a href="https://www.linkedin.com/company/lf-global-tech-pte-ltd/people/">
-          <img src="icons/lf.png" style="width: 16px;" />
-          </a>
-        </div>
+        <a href="https://www.linkedin.com/company/lf-global-tech-pte-ltd/" target="_blank">
+          <img src="icons/lf.png" style="width:16px;" />
+        </a>
       </div>
 
       <div class="timeline-date">January 2022 - June 2022</div>
 
       <div class="timeline-content">
-        <h3>
-          Business Analyst - Scrum Master <br />
-          LF Global Tech | Istanbul, Turkey
-        </h3>
+        <h3>Business Analyst - Scrum Master <br />LF Global Tech | Istanbul, Turkey</h3>
 
         <div class="accordion">
           <div class="accordion-item">
@@ -220,27 +218,21 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- GARANTI BBVA -->
-    <div class="timeline-item">
+    <!-- GARANTI -->
+    <div class="timeline-item right">
       <div class="timeline-dot">
-        <div class="logo-container">
-          <a href="https://www.garantibbva.com.tr/en">          
-          <img src="icons/bbva.png" style="height: 20px;" />
-          </a>
-        </div>
+        <a href="https://www.garantibbva.com.tr/en" target="_blank">
+          <img src="icons/bbva.png" style="height:20px;" />
+        </a>
       </div>
 
       <div class="timeline-date">August 2017 - December 2021</div>
 
       <div class="timeline-content">
-        <h3>
-          Internal Auditor - Data Specialist <br />
-          Garanti BBVA | Istanbul, Turkey
-        </h3>
+        <h3>Internal Auditor - Data Specialist <br />Garanti BBVA | Istanbul, Turkey</h3>
 
         <div class="accordion">
           <div class="accordion-item">
@@ -260,29 +252,27 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- SCRIPT -->
 <script>
-  document.querySelectorAll(".accordion-header").forEach(header => {
-    header.addEventListener("click", () => {
-      const item = header.parentElement;
-      const content = item.querySelector(".accordion-content");
+document.querySelectorAll(".accordion-header").forEach(header => {
+  header.addEventListener("click", () => {
+    const item = header.parentElement;
+    const content = item.querySelector(".accordion-content");
 
-      item.classList.toggle("active");
+    item.classList.toggle("active");
 
-      if (item.classList.contains("active")) {
-        content.style.maxHeight = content.scrollHeight + "px";
-      } else {
-        content.style.maxHeight = null;
-      }
-    });
+    if (item.classList.contains("active")) {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } else {
+      content.style.maxHeight = null;
+    }
   });
+});
 </script>
 
 </body>
